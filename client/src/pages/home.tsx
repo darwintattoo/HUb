@@ -429,7 +429,12 @@ export default function Home() {
       </section>
 
       <footer className="py-8 px-4 text-center text-gray-500 border-t border-gray-800">
-        <p>{t('footer')}</p>
+        <div className="max-w-4xl mx-auto">
+          <p className="mb-2">{t('footer')}</p>
+          <p className="text-sm">
+            Contact: <a href="mailto:contact@tattoostencilpro.app" className="text-blue-400 hover:text-blue-300 transition-colors">contact@tattoostencilpro.app</a>
+          </p>
+        </div>
       </footer>
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>
