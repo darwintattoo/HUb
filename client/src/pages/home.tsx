@@ -40,7 +40,8 @@ const translations = {
     subscribeError: "Hubo un error. Por favor, intenta de nuevo.",
     indicatesRequired: "indica que es obligatorio",
     emailAddress: "Dirección de correo electrónico",
-    subscribe: "Suscribirse"
+    subscribe: "Suscribirse",
+    featuredDesigns: "Diseños Destacados"
   },
   en: {
     byDarwinEnriquez: "By Darwin Enriquez",
@@ -78,7 +79,8 @@ const translations = {
     subscribeError: "There was an error. Please try again.",
     indicatesRequired: "indicates required",
     emailAddress: "Email Address",
-    subscribe: "Subscribe"
+    subscribe: "Subscribe",
+    featuredDesigns: "Featured Designs"
   }
 };
 
@@ -111,37 +113,88 @@ const ProgressMeter = ({ t, openModal }: { t: (key: string) => string; openModal
   );
 };
 
-const ToolCard = ({ title, description, icon: Icon, imageUrl, t }: {
+const ToolCard = ({ title, description, icon: Icon, videoSrc, t, cardType }: {
   title: string;
   description: string;
   icon: React.ComponentType<{ size?: number; className?: string }>;
-  imageUrl: string;
+  videoSrc: string;
   t: (key: string) => string;
+  cardType: string;
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      if (isMobile) {
+        videoRef.current.play().catch(error => console.log('Autoplay prevented:', error));
+      } else {
+        videoRef.current.pause();
+        videoRef.current.currentTime = 0;
+      }
+    }
+  }, [isMobile]);
+
+  const handleInteraction = () => {
+    if (!isMobile && videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const getVideoClass = () => {
+    switch (cardType) {
+      case 'stencilGenerator':
+        return 'sm:object-top md:object-[center_40%] lg:object-center';
+      case 'angleRotationModifier':
+        return 'sm:object-center md:object-[center_60%] lg:object-center';
+      default:
+        return 'object-center';
+    }
+  };
 
   return (
     <motion.div
       className="bg-gray-900 rounded-lg overflow-hidden flex flex-col border border-gray-800"
       whileHover={{ scale: 1.05 }}
       transition={{ type: "spring", stiffness: 300 }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={!isMobile ? handleInteraction : undefined}
+      onMouseLeave={!isMobile ? handleInteraction : undefined}
     >
       <div className="relative h-48 overflow-hidden">
-        <img 
-          src={imageUrl}
-          alt={t(title)}
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+        <video 
+          ref={videoRef}
+          src={videoSrc} 
+          loop
+          muted
+          playsInline
+          className={`w-full h-full object-cover ${getVideoClass()}`}
+          preload="auto"
         />
-        <div className={`absolute inset-0 bg-black ${isHovered ? 'bg-opacity-20' : 'bg-opacity-50'} flex items-center justify-center transition-opacity duration-300`}>
-          <motion.div
-            animate={{ rotate: isHovered ? 360 : 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Icon size={48} className={`text-blue-400 ${isHovered ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`} />
-          </motion.div>
-        </div>
+        {!isMobile && (
+          <div className={`absolute inset-0 bg-black ${isPlaying ? 'bg-opacity-0' : 'bg-opacity-50'} flex items-center justify-center transition-opacity duration-300`}>
+            <motion.div
+              animate={{ rotate: isPlaying ? 360 : 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Icon size={48} className={`text-blue-400 ${isPlaying ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`} />
+            </motion.div>
+          </div>
+        )}
       </div>
       <div className="p-6 flex-grow flex flex-col justify-between">
         <div>
@@ -359,24 +412,27 @@ export default function Home() {
               title="stencilGenerator.title"
               description="stencilGenerator.description"
               icon={Wand2}
-              imageUrl="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600"
+              videoSrc="https://cdn.tattoostencilpro.app/stencil-generator-demo.mp4"
               t={t}
+              cardType="stencilGenerator"
             />
 
             <ToolCard
               title="expressionModifier.title"
               description="expressionModifier.description"
               icon={Smile}
-              imageUrl="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600"
+              videoSrc="https://cdn.tattoostencilpro.app/expression-modifier-demo.mp4"
               t={t}
+              cardType="expressionModifier"
             />
 
             <ToolCard
               title="angleRotationModifier.title"
               description="angleRotationModifier.description"
               icon={RotateCcw}
-              imageUrl="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600"
+              videoSrc="https://cdn.tattoostencilpro.app/angle-rotation-demo.mp4"
               t={t}
+              cardType="angleRotationModifier"
             />
 
             <MoreAppsCard t={t} />
@@ -392,29 +448,29 @@ export default function Home() {
 
       <section className="py-16 px-4 bg-gray-900">
         <div className="max-w-7xl mx-auto">
-          <h3 className="text-3xl font-bold text-center mb-12">Featured Designs</h3>
+          <h3 className="text-3xl font-bold text-center mb-12">{t('featuredDesigns')}</h3>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
               "https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
               "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
               "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-              "https://images.unsplash.com/photo-1516841273335-e39b37888115?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-              "https://images.unsplash.com/photo-1629909613654-28e377c37b09?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-              "https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
+              "https://images.unsplash.com/photo-1590736969955-71cc94901144?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
+              "https://images.unsplash.com/photo-1583394838336-acd977736f90?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
               "https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-              "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400"
-            ].map((imageUrl, index) => (
-              <motion.div 
+              "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
+              "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400"
+            ].map((src, index) => (
+              <motion.div
                 key={index}
-                className="aspect-square rounded-lg overflow-hidden group cursor-pointer"
+                className="aspect-square overflow-hidden rounded-lg"
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
                 <img 
-                  src={imageUrl}
-                  alt={`Tattoo design ${index + 1}`}
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" 
+                  src={src} 
+                  alt={`Featured design ${index + 1}`}
+                  className="w-full h-full object-cover"
                 />
               </motion.div>
             ))}
@@ -422,16 +478,8 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="bg-black py-12 px-4 border-t border-gray-800">
-        <div className="max-w-7xl mx-auto text-center">
-          <div className="flex items-center justify-center space-x-4 mb-6">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">T</span>
-            </div>
-            <span className="text-xl font-bold">TattooStencilPro</span>
-          </div>
-          <p className="text-gray-400">{t('footer')}</p>
-        </div>
+      <footer className="py-8 px-4 text-center text-gray-500 border-t border-gray-800">
+        <p>{t('footer')}</p>
       </footer>
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>
