@@ -1,0 +1,419 @@
+import React, { useState, useRef, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import { Wand2, Smile, Plus, X, RotateCcw } from 'lucide-react'
+
+const translations = {
+  es: {
+    byDarwinEnriquez: "Por Darwin Enriquez",
+    notifyMe: "Notifícame",
+    heroTitle: "Revoluciona tus Diseños de Tatuajes",
+    heroSubtitle: "Herramientas profesionales para tatuadores, impulsadas por IA",
+    toolsTitle: "HERRAMIENTAS",
+    stencilGenerator: {
+      title: "Generador de Stencils",
+      description: "Convierte diseños en stencils estilo hecho a mano"
+    },
+    expressionModifier: {
+      title: "Modificador de Expresiones",
+      description: "Ajusta expresiones faciales y posiciones"
+    },
+    angleRotationModifier: {
+      title: "Modificador de Ángulo y Rotación",
+      description: "Transforma la perspectiva de tus diseños 2D con ajustes precisos de ángulo y rotación"
+    },
+    comingSoon: "Próximamente",
+    moreApps: "Más aplicaciones en camino",
+    moreAppsDescription: "Estamos trabajando en nuevas herramientas innovadoras para mejorar tu flujo de trabajo",
+    stayTuned: "Mantente atento",
+    stayInformed: "¡Mantente Informado!",
+    stayInformedDescription: "Sé el primero en saber cuando TattooStencilPro esté disponible",
+    emailPlaceholder: "Tu correo electrónico",
+    submit: "Enviar",
+    footer: "© 2024 TattooStencilPro por Darwin Enriquez. Todos los derechos reservados.",
+    developmentProgress: "Progreso del Desarrollo",
+    progressMessage: "¡La revolución del diseño de tatuajes está en camino!",
+    subscribeForUpdates: "Suscríbete para recibir actualizaciones sobre nuestro progreso y ser el primero en saber cuando estemos listos.",
+    notifyWhenReady: "Notifícame cuando esté listo",
+    sending: "Enviando...",
+    subscribeSuccess: "¡Gracias por suscribirte!",
+    subscribeError: "Hubo un error. Por favor, intenta de nuevo.",
+    indicatesRequired: "indica que es obligatorio",
+    emailAddress: "Dirección de correo electrónico",
+    subscribe: "Suscribirse"
+  },
+  en: {
+    byDarwinEnriquez: "By Darwin Enriquez",
+    notifyMe: "Notify me",
+    heroTitle: "Revolutionize your Tattoo Designs",
+    heroSubtitle: "Professional AI-powered tools for tattoo artists",
+    toolsTitle: "TOOLS",
+    stencilGenerator: {
+      title: "Stencil Generator",
+      description: "Convert designs into hand-drawn style stencils"
+    },
+    expressionModifier: {
+      title: "Expression Modifier",
+      description: "Adjust facial expressions and positions"
+    },
+    angleRotationModifier: {
+      title: "Angle and Rotation Modifier",
+      description: "Transform the perspective of your 2D designs with precise angle and rotation adjustments"
+    },
+    comingSoon: "Coming Soon",
+    moreApps: "More apps on the way",
+    moreAppsDescription: "We're working on new innovative tools to enhance your workflow",
+    stayTuned: "Stay tuned",
+    stayInformed: "Stay Informed!",
+    stayInformedDescription: "Be the first to know when TattooStencilPro is available",
+    emailPlaceholder: "Your email",
+    submit: "Submit",
+    footer: "© 2024 TattooStencilPro by Darwin Enriquez. All rights reserved.",
+    developmentProgress: "Development Progress",
+    progressMessage: "The tattoo design revolution is on its way!",
+    subscribeForUpdates: "Subscribe to receive updates on our progress and be the first to know when we're ready.",
+    notifyWhenReady: "Notify me when it's ready",
+    sending: "Sending...",
+    subscribeSuccess: "Thank you for subscribing!",
+    subscribeError: "There was an error. Please try again.",
+    indicatesRequired: "indicates required",
+    emailAddress: "Email Address",
+    subscribe: "Subscribe"
+  }
+}
+
+const Modal = ({ isOpen, onClose, children }) => {
+  if (!isOpen) return null
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div className="bg-gray-900 rounded-lg p-6 max-w-md w-full relative">
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-2 text-gray-400 hover:text-white"
+          aria-label="Close modal"
+        >
+          <X size={24} />
+        </button>
+        {children}
+      </div>
+    </div>
+  )
+}
+
+const ProgressMeter = ({ t, openModal }) => {
+  return (
+    <div className="my-12 text-center">
+      <h3 className="text-2xl font-bold mb-4">{t('developmentProgress')}</h3>
+      <div className="w-full bg-gray-700 rounded-full h-6 mb-4 overflow-hidden">
+        <motion.div 
+          className="bg-blue-600 h-full"
+          initial={{ x: "-100%" }}
+          animate={{ x: "100%" }}
+          transition={{
+            repeat: Infinity,
+            repeatType: "loop",
+            duration: 2,
+            ease: "linear"
+          }}
+        />
+      </div>
+      <p className="text-lg">{t('progressMessage')}</p>
+      <p className="mt-4 text-gray-400">{t('subscribeForUpdates')}</p>
+      <button
+        onClick={openModal}
+        className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-colors"
+      >
+        {t('notifyWhenReady')}
+      </button>
+    </div>
+  )
+}
+
+const ToolCard = ({ title, description, icon: Icon, videoSrc, t, cardType }) => {
+  const [isPlaying, setIsPlaying] = useState(false)
+  const videoRef = useRef(null)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  useEffect(() => {
+    if (videoRef.current) {
+      if (isMobile) {
+        videoRef.current.play().catch(error => console.log('Autoplay prevented:', error))
+      } else {
+        videoRef.current.pause()
+        videoRef.current.currentTime = 0
+      }
+    }
+  }, [isMobile])
+
+  const handleInteraction = () => {
+    if (!isMobile && videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause()
+      } else {
+        videoRef.current.play()
+      }
+      setIsPlaying(!isPlaying)
+    }
+  }
+
+  const getVideoClass = () => {
+    switch (cardType) {
+      case 'stencilGenerator':
+        return 'sm:object-top md:object-[center_40%] lg:object-center'
+      case 'angleRotationModifier':
+        return 'sm:object-center md:object-[center_60%] lg:object-center'
+      default:
+        return 'object-center'
+    }
+  }
+
+  return (
+    <motion.div
+      className="bg-gray-900 rounded-lg overflow-hidden flex flex-col border border-gray-800"
+      whileHover={{ scale: 1.05 }}
+      transition={{ type: "spring", stiffness: 300 }}
+      onMouseEnter={!isMobile ? handleInteraction : undefined}
+      onMouseLeave={!isMobile ? handleInteraction : undefined}
+    >
+      <div className="relative h-48 overflow-hidden">
+        <video 
+          ref={videoRef}
+          src={videoSrc} 
+          loop
+          muted
+          playsInline
+          className={`w-full h-full object-cover ${getVideoClass()}`}
+          preload="auto"
+        />
+        {!isMobile && (
+          <div className={`absolute inset-0 bg-black ${isPlaying ? 'bg-opacity-0' : 'bg-opacity-50'} flex items-center justify-center transition-opacity duration-300`}>
+            <motion.div
+              animate={{ rotate: isPlaying ? 360 : 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Icon size={48} className={`text-blue-400 ${isPlaying ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`} />
+            </motion.div>
+          </div>
+        )}
+      </div>
+      <div className="p-6 flex-grow flex flex-col justify-between">
+        <div>
+          <h3 className="text-xl font-bold mb-2 text-white">{t(title)}</h3>
+          <p className="text-gray-400 mb-4">{t(description)}</p>
+        </div>
+        <motion.button
+          className="bg-blue-600 text-white px-4 py-2 rounded-full mt-auto"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          {t('comingSoon')}
+        </motion.button>
+      </div>
+    </motion.div>
+  )
+}
+
+const MoreAppsCard = ({ t }) => {
+  return (
+    <motion.div
+      className="bg-gray-900 rounded-lg overflow-hidden flex flex-col border border-gray-800 p-6"
+      whileHover={{ scale: 1.05 }}
+      transition={{ type: "spring", stiffness: 300 }}
+    >
+      <div className="flex items-center justify-center mb-4">
+        <Plus size={48} className="text-blue-400" />
+      </div>
+      <h3 className="text-xl font-bold mb-2 text-white text-center">{t('moreApps')}</h3>
+      <p className="text-gray-400 mb-4 text-center">{t('moreAppsDescription')}</p>
+      <p className="text-blue-400 text-lg font-semibold text-center mt-auto">{t('stayTuned')}</p>
+    </motion.div>
+  )
+}
+
+const SimpleForm = ({ t }) => {
+  return (
+    <div className="bg-gray-900 p-8 rounded-lg max-w-md mx-auto">
+      <h3 className="text-2xl font-bold mb-4 text-center text-white">{t('stayInformed')}</h3>
+      <p className="text-gray-400 mb-6 text-center">{t('stayInformedDescription')}</p>
+      <div id="mc_embed_signup">
+        <form
+          action="https://build.us14.list-manage.com/subscribe/post?u=88c7d7ba6a43db8f37cac54c7&amp;id=24acc3709e&amp;f_id=001694e1f0"
+          method="post"
+          id="mc-embedded-subscribe-form"
+          name="mc-embedded-subscribe-form"
+          className="validate"
+          target="_blank"
+        >
+          <div id="mc_embed_signup_scroll">
+            <div className="indicates-required mb-2">
+              <span className="asterisk text-red-500">*</span>{' '}
+              <span className="text-gray-400 text-sm">{t('indicatesRequired')}</span>
+            </div>
+            <div className="mc-field-group mb-4">
+              <label htmlFor="mce-EMAIL" className="block text-white mb-2">
+                {t('emailAddress')} <span className="asterisk text-red-500">*</span>
+              </label>
+              <input
+                type="email"
+                name="EMAIL"
+                className="required email w-full px-4 py-2 rounded-md bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                id="mce-EMAIL"
+                required
+                placeholder={t('emailPlaceholder')}
+              />
+            </div>
+            <div id="mce-responses" className="clear foot">
+              <div className="response" id="mce-error-response" style={{ display: 'none' }}></div>
+              <div className="response" id="mce-success-response" style={{ display: 'none' }}></div>
+            </div>
+            <div aria-hidden="true" style={{ position: 'absolute', left: '-5000px' }}>
+              <input type="text" name="b_88c7d7ba6a43db8f37cac54c7_24acc3709e" tabIndex={-1} value="" />
+            </div>
+            <div className="clear">
+              <motion.input
+                type="submit"
+                value={t('subscribe')}
+                name="subscribe"
+                id="mc-embedded-subscribe"
+                className="button w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors cursor-pointer"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
+}
+
+export default function PaginaInicio() {
+  const [language, setLanguage] = useState('en')
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const t = (key) => {
+    const keys = key.split('.')
+    let value = translations[language]
+    for (const k of keys) {
+      value = value?.[k]
+    }
+    return value || key
+  }
+
+  const openModal = () => {
+    setIsModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false)
+  }
+
+  return (
+    <div className="min-h-screen bg-black text-white font-sans">
+      <header className="bg-black p-4 flex justify-between items-center border-b border-gray-800">
+        <div className="flex items-center space-x-4">
+          <img 
+            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Untitled%20design-qcuCDSVH6n5BPLSmRXdWsP8sghyNf0.svg" 
+            alt="TattooStencilPro Logo" 
+            className="h-16 w-16"
+          />
+          <div>
+            <h1 className="text-2xl font-bold">
+              <span className="font-bold">Tattoo</span>
+              <span className="font-light">Stencil</span>
+              <span className="font-bold">Pro</span>
+            </h1>
+            <p className="text-sm text-gray-400">{t('byDarwinEnriquez')}</p>
+          </div>
+        </div>
+        <div className="flex items-center space-x-4">
+          <button 
+            onClick={() => setLanguage(language === 'es' ? 'en' : 'es')}
+            className="text-white hover:text-blue-400 transition-colors"
+          >
+            {language === 'es' ? 'EN' : 'ES'}
+          </button>
+          <button
+            onClick={openModal}
+            className="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors hidden md:block"
+          >
+            {t('notifyMe')}
+          </button>
+        </div>
+      </header>
+
+      <main className="container mx-auto px-4 py-16">
+        <section className="text-center mb-16">
+          <motion.h2 
+            className="text-5xl font-bold mb-4 text-white"
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            {t('heroTitle')}
+          </motion.h2>
+          <motion.p 
+            className="text-xl text-gray-400"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            {t('heroSubtitle')}
+          </motion.p>
+        </section>
+
+        <ProgressMeter t={t} openModal={openModal} />
+
+        <section className="mb-16">
+          <h3 className="text-3xl font-bold mb-8 text-center text-white">{t('toolsTitle')}</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <ToolCard 
+              title="stencilGenerator.title"
+              description="stencilGenerator.description"
+              icon={Wand2}
+              videoSrc="https://inknationstudio.com/wp-content/uploads/2024/09/video021.mp4"
+              t={t}
+              cardType="stencilGenerator"
+            />
+            <ToolCard 
+              title="expressionModifier.title"
+              description="expressionModifier.description"
+              icon={Smile}
+              videoSrc="https://inknationstudio.com/wp-content/uploads/2024/09/video-expresiones.mp4"
+              t={t}
+              cardType="expressionModifier"
+            />
+            <ToolCard 
+              title="angleRotationModifier.title"
+              description="angleRotationModifier.description"
+              icon={RotateCcw}
+              videoSrc="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_9606-7wXjUza5iHfO4woAkktUJemkhAYzvt.MP4"
+              t={t}
+              cardType="angleRotationModifier"
+            />
+            <MoreAppsCard t={t} />
+          </div>
+        </section>
+
+        <SimpleForm t={t} />
+      </main>
+
+      <footer className="bg-black py-8 text-center border-t border-gray-800">
+        <p className="text-gray-400">{t('footer')}</p>
+      </footer>
+
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <SimpleForm t={t} />
+      </Modal>
+    </div>
+  )
+}
