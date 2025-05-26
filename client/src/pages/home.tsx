@@ -113,88 +113,37 @@ const ProgressMeter = ({ t, openModal }: { t: (key: string) => string; openModal
   );
 };
 
-const ToolCard = ({ title, description, icon: Icon, videoSrc, t, cardType }: {
+const ToolCard = ({ title, description, icon: Icon, imageUrl, t }: {
   title: string;
   description: string;
   icon: any;
-  videoSrc: string;
+  imageUrl: string;
   t: (key: string) => string;
-  cardType: string;
 }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  useEffect(() => {
-    if (videoRef.current) {
-      if (isMobile) {
-        videoRef.current.play().catch(error => console.log('Autoplay prevented:', error));
-      } else {
-        videoRef.current.pause();
-        videoRef.current.currentTime = 0;
-      }
-    }
-  }, [isMobile]);
-
-  const handleInteraction = () => {
-    if (!isMobile && videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
-
-  const getVideoClass = () => {
-    switch (cardType) {
-      case 'stencilGenerator':
-        return 'sm:object-top md:object-[center_40%] lg:object-center';
-      case 'angleRotationModifier':
-        return 'sm:object-center md:object-[center_60%] lg:object-center';
-      default:
-        return 'object-center';
-    }
-  };
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <motion.div
       className="bg-gray-900 rounded-lg overflow-hidden flex flex-col border border-gray-800"
       whileHover={{ scale: 1.05 }}
       transition={{ type: "spring", stiffness: 300 }}
-      onMouseEnter={!isMobile ? handleInteraction : undefined}
-      onMouseLeave={!isMobile ? handleInteraction : undefined}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <div className="relative h-48 overflow-hidden">
-        <video 
-          ref={videoRef}
-          src={videoSrc} 
-          loop
-          muted
-          playsInline
-          className={`w-full h-full object-cover ${getVideoClass()}`}
-          preload="auto"
+        <img 
+          src={imageUrl}
+          alt={t(title)}
+          className="w-full h-full object-cover"
         />
-        {!isMobile && (
-          <div className={`absolute inset-0 bg-black ${isPlaying ? 'bg-opacity-0' : 'bg-opacity-50'} flex items-center justify-center transition-opacity duration-300`}>
-            <motion.div
-              animate={{ rotate: isPlaying ? 360 : 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <Icon size={48} className={`text-blue-400 ${isPlaying ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`} />
-            </motion.div>
-          </div>
-        )}
+        <div className={`absolute inset-0 bg-black ${isHovered ? 'bg-opacity-20' : 'bg-opacity-50'} flex items-center justify-center transition-opacity duration-300`}>
+          <motion.div
+            animate={{ rotate: isHovered ? 360 : 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Icon size={48} className={`text-blue-400 ${isHovered ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`} />
+          </motion.div>
+        </div>
       </div>
       <div className="p-6 flex-grow flex flex-col justify-between">
         <div>
@@ -412,27 +361,24 @@ export default function Home() {
               title="stencilGenerator.title"
               description="stencilGenerator.description"
               icon={Wand2}
-              videoSrc="https://cdn.tattoostencilpro.app/stencil-generator-demo.mp4"
+              imageUrl="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
               t={t}
-              cardType="stencilGenerator"
             />
 
             <ToolCard
               title="expressionModifier.title"
               description="expressionModifier.description"
               icon={Smile}
-              videoSrc="https://cdn.tattoostencilpro.app/expression-modifier-demo.mp4"
+              imageUrl="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
               t={t}
-              cardType="expressionModifier"
             />
 
             <ToolCard
               title="angleRotationModifier.title"
               description="angleRotationModifier.description"
               icon={RotateCcw}
-              videoSrc="https://cdn.tattoostencilpro.app/angle-rotation-demo.mp4"
+              imageUrl="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
               t={t}
-              cardType="angleRotationModifier"
             />
 
             <MoreAppsCard t={t} />
