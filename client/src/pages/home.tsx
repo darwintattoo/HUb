@@ -182,6 +182,7 @@ const MoreAppsCard = ({ t }: { t: (key: string) => string }) => {
 const SimpleForm = ({ t }: { t: (key: string) => string }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [email, setEmail] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -221,6 +222,8 @@ const SimpleForm = ({ t }: { t: (key: string) => string }) => {
               <input
                 type="email"
                 name="EMAIL"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="required email w-full px-4 py-2 rounded-md bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 id="mce-EMAIL"
                 required
