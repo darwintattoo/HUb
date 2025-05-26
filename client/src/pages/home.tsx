@@ -339,6 +339,10 @@ export default function Home() {
             {t('heroSubtitle')}
           </motion.p>
 
+          <div className="max-w-2xl mx-auto mb-16">
+            <ProgressMeter t={t} openModal={openModal} />
+          </div>
+
           <div className="max-w-7xl mx-auto">
             <motion.h3 
               className="text-3xl font-bold text-center mb-12"
@@ -389,12 +393,6 @@ export default function Home() {
           >
             {t('notifyMe')}
           </motion.button>
-        </div>
-      </section>
-
-      <section className="py-16 px-4">
-        <div className="max-w-2xl mx-auto">
-          <ProgressMeter t={t} openModal={openModal} />
         </div>
       </section>
 
