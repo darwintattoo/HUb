@@ -282,11 +282,16 @@ export default function Home() {
       <header className="bg-black p-4 flex justify-between items-center border-b border-gray-800">
         <div className="flex items-center space-x-4">
           <img 
-            src="/tattoo-logo.png" 
+            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Untitled%20design-qcuCDSVH6n5BPLSmRXdWsP8sghyNf0.svg" 
             alt="TattooStencilPro Logo" 
-            className="h-16 w-auto"
+            className="h-16 w-16"
           />
           <div>
+            <h1 className="text-2xl font-bold">
+              <span className="font-bold">Tattoo</span>
+              <span className="font-light">Stencil</span>
+              <span className="text-blue-400">Pro</span>
+            </h1>
             <p className="text-sm text-gray-400">{t('byDarwinEnriquez')}</p>
           </div>
         </div>
