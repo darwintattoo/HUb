@@ -116,7 +116,7 @@ const ProgressMeter = ({ t, openModal }: { t: (key: string) => string; openModal
 const ToolCard = ({ title, description, icon: Icon, videoSrc, t, cardType }: {
   title: string;
   description: string;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
+  icon: any;
   videoSrc: string;
   t: (key: string) => string;
   cardType: string;
@@ -286,16 +286,16 @@ const SimpleForm = ({ t }: { t: (key: string) => string }) => {
               <input type="text" name="b_88c7d7ba6a43db8f37cac54c7_24acc3709e" tabIndex={-1} value="" />
             </div>
             <div className="clear">
-              <motion.input
+              <motion.button
                 type="submit"
-                value={isSubmitting ? t('sending') : (submitted ? t('subscribeSuccess') : t('subscribe'))}
-                name="subscribe"
-                id="mc-embedded-subscribe"
                 className="button w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors cursor-pointer disabled:opacity-50"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 disabled={isSubmitting || submitted}
-              />
+              >
+                {isSubmitting ? t('sending') : (submitted ? t('subscribeSuccess') : t('subscribe'))}
+              </motion.button>
+              <input type="hidden" name="subscribe" value="subscribe" />
             </div>
           </div>
         </form>
@@ -308,13 +308,13 @@ export default function Home() {
   const [language, setLanguage] = useState('en');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const t = (key: string) => {
+  const t = (key: string): string => {
     const keys = key.split('.');
-    let value = translations[language as keyof typeof translations];
+    let value: any = translations[language as keyof typeof translations];
     for (const k of keys) {
-      value = value?.[k as keyof typeof value] as any;
+      value = value?.[k];
     }
-    return value || key;
+    return (value as string) || key;
   };
 
   const openModal = () => {
