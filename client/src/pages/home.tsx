@@ -282,7 +282,7 @@ export default function Home() {
       <header className="bg-black p-4 flex justify-between items-center border-b border-gray-800">
         <div className="flex items-center space-x-4">
           <img 
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Untitled%20design-qcuCDSVH6n5BPLSmRXdWsP8sghyNf0.svg" 
+            src="@assets/1Asset 1zzz.png" 
             alt="TattooStencilPro Logo" 
             className="h-16 w-16"
           />
