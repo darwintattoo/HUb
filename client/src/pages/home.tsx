@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Wand2, Smile, Plus, X, RotateCcw } from 'lucide-react';
 import { Modal } from '@/components/ui/modal';
+import logoPath from '@assets/1Asset 1zzz.png';
 
 const translations = {
   es: {
@@ -282,7 +283,7 @@ export default function Home() {
       <header className="bg-black p-4 flex justify-between items-center border-b border-gray-800">
         <div className="flex items-center space-x-4">
           <img 
-            src="@assets/1Asset 1zzz.png" 
+            src={logoPath} 
             alt="TattooStencilPro Logo" 
             className="h-16 w-16"
           />
