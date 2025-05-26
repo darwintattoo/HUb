@@ -331,66 +331,64 @@ export default function Home() {
             </span>
           </motion.h2>
           <motion.p 
-            className="text-xl md:text-2xl text-gray-400 mb-8 max-w-2xl mx-auto"
+            className="text-xl md:text-2xl text-gray-400 mb-12 max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             {t('heroSubtitle')}
           </motion.p>
+
+          <div className="max-w-7xl mx-auto">
+            <motion.h3 
+              className="text-3xl font-bold text-center mb-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              <span className="text-blue-400">{t('toolsTitle')}</span>
+            </motion.h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+              <ToolCard
+                title="stencilGenerator.title"
+                description="stencilGenerator.description"
+                icon={Wand2}
+                imageUrl="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
+                t={t}
+              />
+
+              <ToolCard
+                title="expressionModifier.title"
+                description="expressionModifier.description"
+                icon={Smile}
+                imageUrl="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
+                t={t}
+              />
+
+              <ToolCard
+                title="angleRotationModifier.title"
+                description="angleRotationModifier.description"
+                icon={RotateCcw}
+                imageUrl="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
+                t={t}
+              />
+
+              <MoreAppsCard t={t} />
+            </div>
+          </div>
           
           <motion.button 
             onClick={openModal}
             className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             {t('notifyMe')}
           </motion.button>
-        </div>
-      </section>
-
-      <section className="py-16 px-4">
-        <div className="max-w-7xl mx-auto">
-          <motion.h3 
-            className="text-3xl font-bold text-center mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="text-blue-400">{t('toolsTitle')}</span>
-          </motion.h3>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <ToolCard
-              title="stencilGenerator.title"
-              description="stencilGenerator.description"
-              icon={Wand2}
-              imageUrl="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
-              t={t}
-            />
-
-            <ToolCard
-              title="expressionModifier.title"
-              description="expressionModifier.description"
-              icon={Smile}
-              imageUrl="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
-              t={t}
-            />
-
-            <ToolCard
-              title="angleRotationModifier.title"
-              description="angleRotationModifier.description"
-              icon={RotateCcw}
-              imageUrl="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
-              t={t}
-            />
-
-            <MoreAppsCard t={t} />
-          </div>
         </div>
       </section>
 
