@@ -391,7 +391,7 @@ export default function Home() {
                 title="stencilGenerator.title"
                 description="stencilGenerator.description"
                 icon={Wand2}
-                videoUrl="/attached_assets/IMG_8572.MP4"
+                videoUrl="https://inknationstudio.com/wp-content/uploads/2024/09/video021.mp4"
                 t={t}
               />
 
