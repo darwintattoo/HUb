@@ -138,21 +138,26 @@ const ToolCard = ({ title, description, icon: Icon, imageUrl, videoUrl, t }: {
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+    // Auto-play video when component mounts
+    if (videoUrl && videoRef.current) {
+      const playVideo = async () => {
+        try {
+          await videoRef.current?.play();
+          setIsPlaying(true);
+        } catch (error) {
+          console.log('Autoplay prevented:', error);
+        }
+      };
+      playVideo();
+    }
+  }, [videoUrl]);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
-    if (videoUrl && videoRef.current && !isMobile) {
+    if (videoUrl && videoRef.current) {
       videoRef.current.play();
       setIsPlaying(true);
     }
@@ -160,7 +165,7 @@ const ToolCard = ({ title, description, icon: Icon, imageUrl, videoUrl, t }: {
 
   const handleMouseLeave = () => {
     setIsHovered(false);
-    if (videoUrl && videoRef.current && !isMobile) {
+    if (videoUrl && videoRef.current) {
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
       setIsPlaying(false);
@@ -168,7 +173,7 @@ const ToolCard = ({ title, description, icon: Icon, imageUrl, videoUrl, t }: {
   };
 
   const handleClick = () => {
-    if (videoUrl && videoRef.current && isMobile) {
+    if (videoUrl && videoRef.current) {
       if (isPlaying) {
         videoRef.current.pause();
         setIsPlaying(false);
@@ -196,8 +201,9 @@ const ToolCard = ({ title, description, icon: Icon, imageUrl, videoUrl, t }: {
             loop
             muted
             playsInline
+            autoPlay
             className="w-full h-full object-cover"
-            preload="metadata"
+            preload="auto"
             poster={imageUrl}
           />
         ) : (
@@ -214,15 +220,6 @@ const ToolCard = ({ title, description, icon: Icon, imageUrl, videoUrl, t }: {
           >
             <Icon size={48} className={`text-blue-400 ${isHovered || isPlaying ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`} />
           </motion.div>
-          {isMobile && videoUrl && !isPlaying && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="bg-black bg-opacity-70 rounded-full p-3">
-                <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z"/>
-                </svg>
-              </div>
-            </div>
-          )}
         </div>
       </div>
       <div className="p-6 flex-grow flex flex-col justify-between">
