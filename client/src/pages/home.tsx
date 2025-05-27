@@ -188,7 +188,7 @@ const BeforeAfterSlider = ({ beforeImage, afterImage, t }: {
       
       {/* After image with clip */}
       <div 
-        className="absolute inset-0 transition-all duration-75 ease-out"
+        className="absolute inset-0"
         style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
       >
         <img
@@ -201,7 +201,7 @@ const BeforeAfterSlider = ({ beforeImage, afterImage, t }: {
 
       {/* Slider line and handle */}
       <div
-        className="absolute top-0 bottom-0 w-1 bg-white shadow-xl transition-all duration-75 ease-out"
+        className="absolute top-0 bottom-0 w-1 bg-white shadow-xl"
         style={{ left: `${sliderPosition}%` }}
       >
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-xl flex items-center justify-center border-2 border-blue-500 hover:scale-110 transition-transform duration-200">
