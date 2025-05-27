@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Wand2, Smile, Plus, X, RotateCcw } from 'lucide-react';
 import { Modal } from '@/components/ui/modal';
 import logoPath from '@assets/1Asset 1zzz.png';
+import stencilExample from '@assets/Captura de pantalla 2025-05-26 211021.png';
 
 const translations = {
   es: {
@@ -44,7 +45,9 @@ const translations = {
     indicatesRequired: "indica que es obligatorio",
     emailAddress: "Dirección de correo electrónico",
     subscribe: "Suscribirse",
-    featuredDesigns: "Diseños Destacados"
+    featuredDesigns: "Diseños Destacados",
+    stencilExample: "Ejemplo de Transformación",
+    stencilExampleDescription: "Ve cómo nuestro generador de stencils transforma diseños complejos en plantillas perfectas para tatuar"
   },
   en: {
     byDarwinEnriquez: "By Darwin Enriquez",
@@ -85,7 +88,9 @@ const translations = {
     indicatesRequired: "indicates required",
     emailAddress: "Email Address",
     subscribe: "Subscribe",
-    featuredDesigns: "Featured Designs"
+    featuredDesigns: "Featured Designs",
+    stencilExample: "Transformation Example",
+    stencilExampleDescription: "See how our stencil generator transforms complex designs into perfect tattoo templates"
   }
 };
 
@@ -452,34 +457,21 @@ export default function Home() {
       </section>
 
       <section className="py-16 px-4 bg-gray-900">
-        <div className="max-w-7xl mx-auto">
-          <h3 className="text-3xl font-bold text-center mb-12">{t('featuredDesigns')}</h3>
+        <div className="max-w-4xl mx-auto text-center">
+          <h3 className="text-3xl font-bold mb-8">{t('stencilExample')}</h3>
+          <p className="text-gray-400 mb-8">{t('stencilExampleDescription')}</p>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              "https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-              "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-              "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-              "https://images.unsplash.com/photo-1590736969955-71cc94901144?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-              "https://images.unsplash.com/photo-1583394838336-acd977736f90?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-              "https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-              "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400",
-              "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=400"
-            ].map((src, index) => (
-              <motion.div
-                key={index}
-                className="aspect-square overflow-hidden rounded-lg"
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <img 
-                  src={src} 
-                  alt={`Featured design ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              </motion.div>
-            ))}
-          </div>
+          <motion.div
+            className="relative overflow-hidden rounded-lg shadow-2xl"
+            whileHover={{ scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <img 
+              src={stencilExample}
+              alt="Stencil transformation example"
+              className="w-full h-auto object-cover"
+            />
+          </motion.div>
         </div>
       </section>
 
