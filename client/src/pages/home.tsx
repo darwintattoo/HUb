@@ -211,10 +211,10 @@ const BeforeAfterSlider = ({ beforeImage, afterImage, t }: {
 
       {/* Labels */}
       <div className="absolute top-4 left-4 bg-black bg-opacity-80 text-white px-4 py-2 rounded-full text-sm font-medium">
-        Original
+        Stencil
       </div>
       <div className="absolute top-4 right-4 bg-black bg-opacity-80 text-white px-4 py-2 rounded-full text-sm font-medium">
-        Stencil
+        Original
       </div>
     </div>
   );
