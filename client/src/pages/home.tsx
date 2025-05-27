@@ -213,22 +213,6 @@ const MoreAppsCard = ({ t }: { t: (key: string) => string }) => {
 };
 
 const SimpleForm = ({ t }: { t: (key: string) => string }) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [email, setEmail] = useState('');
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitted(true);
-      setTimeout(() => setSubmitted(false), 3000);
-    }, 1500);
-  };
-
   return (
     <div className="bg-gray-900 p-8 rounded-lg max-w-md mx-auto">
       <h3 className="text-2xl font-bold mb-4 text-center text-white">{t('stayInformed')}</h3>
@@ -241,7 +225,6 @@ const SimpleForm = ({ t }: { t: (key: string) => string }) => {
           name="mc-embedded-subscribe-form"
           className="validate"
           target="_blank"
-          onSubmit={handleSubmit}
         >
           <div id="mc_embed_signup_scroll">
             <div className="indicates-required mb-2">
@@ -255,8 +238,6 @@ const SimpleForm = ({ t }: { t: (key: string) => string }) => {
               <input
                 type="email"
                 name="EMAIL"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 className="required email w-full px-4 py-2 rounded-md bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 id="mce-EMAIL"
                 required
@@ -271,16 +252,15 @@ const SimpleForm = ({ t }: { t: (key: string) => string }) => {
               <input type="text" name="b_88c7d7ba6a43db8f37cac54c7_24acc3709e" tabIndex={-1} value="" />
             </div>
             <div className="clear">
-              <motion.button
+              <motion.input
                 type="submit"
-                className="button w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors cursor-pointer disabled:opacity-50"
+                value={t('subscribe')}
+                name="subscribe"
+                id="mc-embedded-subscribe"
+                className="button w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors cursor-pointer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                disabled={isSubmitting || submitted}
-              >
-                {isSubmitting ? t('sending') : (submitted ? t('subscribeSuccess') : t('subscribe'))}
-              </motion.button>
-              <input type="hidden" name="subscribe" value="subscribe" />
+              />
             </div>
           </div>
         </form>
