@@ -9,6 +9,9 @@ import stencilExample3 from '@assets/Captura de pantalla 2025-05-26 212441.png';
 import stencilExample4 from '@assets/Captura de pantalla 2025-05-26 213208.png';
 import stencilExample5 from '@assets/Captura de pantalla 2025-05-26 213749.png';
 import stencilExample6 from '@assets/Captura de pantalla 2025-05-26 215000.png';
+import beforeAfterImage1 from '@assets/image_1748306345513.png';
+import beforeAfterImage2 from '@assets/image_1748306383632.png';
+import beforeAfterImage3 from '@assets/image_1748306411168.png';
 
 const translations = {
   es: {
@@ -97,6 +100,76 @@ const translations = {
     stencilExamples: "Transformation Examples",
     stencilExampleDescription: "See how our stencil generator transforms complex designs into perfect tattoo templates"
   }
+};
+
+const BeforeAfterSlider = ({ beforeImage, afterImage, t }: { 
+  beforeImage: string; 
+  afterImage: string; 
+  t: (key: string) => string;
+}) => {
+  const [sliderPosition, setSliderPosition] = useState(50);
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleMouseDown = () => setIsDragging(true);
+  const handleMouseUp = () => setIsDragging(false);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const position = ((e.clientX - rect.left) / rect.width) * 100;
+    setSliderPosition(Math.max(0, Math.min(100, position)));
+  };
+
+  useEffect(() => {
+    const handleGlobalMouseUp = () => setIsDragging(false);
+    document.addEventListener('mouseup', handleGlobalMouseUp);
+    return () => document.removeEventListener('mouseup', handleGlobalMouseUp);
+  }, []);
+
+  return (
+    <div className="relative w-full h-96 overflow-hidden rounded-lg shadow-2xl select-none">
+      {/* Before image */}
+      <img
+        src={beforeImage}
+        alt="Original design"
+        className="absolute inset-0 w-full h-full object-cover"
+        draggable={false}
+      />
+      
+      {/* After image with clip */}
+      <div 
+        className="absolute inset-0"
+        style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
+      >
+        <img
+          src={afterImage}
+          alt="Stencil result"
+          className="w-full h-full object-cover"
+          draggable={false}
+        />
+      </div>
+
+      {/* Slider line and handle */}
+      <div
+        className="absolute top-0 bottom-0 w-1 bg-white shadow-lg cursor-ew-resize"
+        style={{ left: `${sliderPosition}%` }}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+      >
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center">
+          <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+        </div>
+      </div>
+
+      {/* Labels */}
+      <div className="absolute top-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm">
+        Original
+      </div>
+      <div className="absolute top-4 right-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm">
+        Stencil
+      </div>
+    </div>
+  );
 };
 
 const ProgressMeter = ({ t, openModal }: { t: (key: string) => string; openModal: () => void }) => {
@@ -433,6 +506,20 @@ export default function Home() {
           >
             {t('heroSubtitle')}
           </motion.p>
+
+          {/* Before/After Slider */}
+          <motion.div
+            className="max-w-4xl mx-auto mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            <BeforeAfterSlider 
+              beforeImage={beforeAfterImage1}
+              afterImage={stencilExample1}
+              t={t}
+            />
+          </motion.div>
 
           <div className="max-w-2xl mx-auto mb-16">
             <ProgressMeter t={t} openModal={openModal} />
