@@ -3,7 +3,10 @@ import { motion } from 'framer-motion';
 import { Wand2, Smile, Plus, X, RotateCcw } from 'lucide-react';
 import { Modal } from '@/components/ui/modal';
 import logoPath from '@assets/1Asset 1zzz.png';
-import stencilExample from '@assets/Captura de pantalla 2025-05-26 211021.png';
+import stencilExample1 from '@assets/Captura de pantalla 2025-05-26 211021.png';
+import stencilExample2 from '@assets/Captura de pantalla 2025-05-26 211801.png';
+import stencilExample3 from '@assets/Captura de pantalla 2025-05-26 212441.png';
+import stencilExample4 from '@assets/Captura de pantalla 2025-05-26 213208.png';
 
 const translations = {
   es: {
@@ -46,7 +49,7 @@ const translations = {
     emailAddress: "Dirección de correo electrónico",
     subscribe: "Suscribirse",
     featuredDesigns: "Diseños Destacados",
-    stencilExample: "Ejemplo de Transformación",
+    stencilExamples: "Ejemplos de Transformación",
     stencilExampleDescription: "Ve cómo nuestro generador de stencils transforma diseños complejos en plantillas perfectas para tatuar"
   },
   en: {
@@ -89,7 +92,7 @@ const translations = {
     emailAddress: "Email Address",
     subscribe: "Subscribe",
     featuredDesigns: "Featured Designs",
-    stencilExample: "Transformation Example",
+    stencilExamples: "Transformation Examples",
     stencilExampleDescription: "See how our stencil generator transforms complex designs into perfect tattoo templates"
   }
 };
@@ -457,21 +460,31 @@ export default function Home() {
       </section>
 
       <section className="py-16 px-4 bg-gray-900">
-        <div className="max-w-4xl mx-auto text-center">
-          <h3 className="text-3xl font-bold mb-8">{t('stencilExample')}</h3>
-          <p className="text-gray-400 mb-8">{t('stencilExampleDescription')}</p>
+        <div className="max-w-7xl mx-auto text-center">
+          <h3 className="text-3xl font-bold mb-8">{t('stencilExamples')}</h3>
+          <p className="text-gray-400 mb-12">{t('stencilExampleDescription')}</p>
           
-          <motion.div
-            className="relative overflow-hidden rounded-lg shadow-2xl"
-            whileHover={{ scale: 1.02 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <img 
-              src={stencilExample}
-              alt="Stencil transformation example"
-              className="w-full h-auto object-cover"
-            />
-          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {[
+              { src: stencilExample1, alt: "Medusa design transformation" },
+              { src: stencilExample2, alt: "Portrait design transformation" },
+              { src: stencilExample3, alt: "Lion design transformation" },
+              { src: stencilExample4, alt: "Raven design transformation" }
+            ].map((example, index) => (
+              <motion.div
+                key={index}
+                className="relative overflow-hidden rounded-lg shadow-2xl"
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <img 
+                  src={example.src}
+                  alt={example.alt}
+                  className="w-full h-auto object-cover"
+                />
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
