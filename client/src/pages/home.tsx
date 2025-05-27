@@ -250,8 +250,7 @@ const SimpleForm = ({ t }: { t: (key: string) => string }) => {
             <div aria-hidden="true" style={{ position: 'absolute', left: '-5000px' }}>
               <input type="text" name="b_88c7d7ba6a43db8f37cac54c7_24acc3709e" tabIndex={-1} value="" readOnly />
             </div>
-            <input type="hidden" name="SIGNUP" value="tattoostencilpro.app" />
-            <input type="hidden" name="REDIRECT" value="https://tattoostencilpro.app" />
+
             <div className="clear">
               <motion.input
                 type="submit"
