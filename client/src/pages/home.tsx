@@ -38,6 +38,8 @@ const translations = {
     notifyWhenReady: "Notifícame cuando esté listo",
     sending: "Enviando...",
     subscribeSuccess: "¡Gracias por suscribirte!",
+    subscribeSuccessMessage: "¡Gracias por suscribirte! Te notificaremos cuando esté disponible.",
+    close: "Cerrar",
     subscribeError: "Hubo un error. Por favor, intenta de nuevo.",
     indicatesRequired: "indica que es obligatorio",
     emailAddress: "Dirección de correo electrónico",
@@ -77,6 +79,8 @@ const translations = {
     notifyWhenReady: "Notify me when it's ready",
     sending: "Sending...",
     subscribeSuccess: "Thank you for subscribing!",
+    subscribeSuccessMessage: "Thank you for subscribing! We'll notify you when it's available.",
+    close: "Close",
     subscribeError: "There was an error. Please try again.",
     indicatesRequired: "indicates required",
     emailAddress: "Email Address",
@@ -213,58 +217,96 @@ const MoreAppsCard = ({ t }: { t: (key: string) => string }) => {
 };
 
 const SimpleForm = ({ t }: { t: (key: string) => string }) => {
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    
+    setIsSubmitting(true);
+    
+    try {
+      // Submit to MailChimp in the background
+      const formData = new FormData();
+      formData.append('EMAIL', email);
+      formData.append('b_88c7d7ba6a43db8f37cac54c7_24acc3709e', '');
+      
+      fetch('https://build.us14.list-manage.com/subscribe/post?u=88c7d7ba6a43db8f37cac54c7&id=24acc3709e&f_id=001694e1f0', {
+        method: 'POST',
+        body: formData,
+        mode: 'no-cors'
+      });
+      
+      // Show success immediately
+      setSubmitted(true);
+      setEmail('');
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitted(true); // Still show success since we can't check response in no-cors mode
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (submitted) {
+    return (
+      <div className="bg-gray-900 p-8 rounded-lg max-w-md mx-auto text-center">
+        <div className="mb-6">
+          <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h3 className="text-2xl font-bold text-white mb-2">{t('subscribeSuccess')}</h3>
+          <p className="text-gray-400">{t('subscribeSuccessMessage')}</p>
+        </div>
+        <motion.button
+          onClick={() => setSubmitted(false)}
+          className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          {t('close')}
+        </motion.button>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-gray-900 p-8 rounded-lg max-w-md mx-auto">
       <h3 className="text-2xl font-bold mb-4 text-center text-white">{t('stayInformed')}</h3>
       <p className="text-gray-400 mb-6 text-center">{t('stayInformedDescription')}</p>
-      <div id="mc_embed_signup">
-        <form
-          action="https://build.us14.list-manage.com/subscribe/post?u=88c7d7ba6a43db8f37cac54c7&amp;id=24acc3709e&amp;f_id=001694e1f0"
-          method="post"
-          id="mc-embedded-subscribe-form"
-          name="mc-embedded-subscribe-form"
-          className="validate"
+      <form onSubmit={handleSubmit}>
+        <div className="indicates-required mb-2">
+          <span className="asterisk text-red-500">*</span>{' '}
+          <span className="text-gray-400 text-sm">{t('indicatesRequired')}</span>
+        </div>
+        <div className="mb-4">
+          <label htmlFor="email" className="block text-white mb-2">
+            {t('emailAddress')} <span className="asterisk text-red-500">*</span>
+          </label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-4 py-2 rounded-md bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+            placeholder={t('emailPlaceholder')}
+          />
+        </div>
+        <motion.button
+          type="submit"
+          disabled={isSubmitting || !email}
+          className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          whileHover={{ scale: isSubmitting ? 1 : 1.05 }}
+          whileTap={{ scale: isSubmitting ? 1 : 0.95 }}
         >
-          <div id="mc_embed_signup_scroll">
-            <div className="indicates-required mb-2">
-              <span className="asterisk text-red-500">*</span>{' '}
-              <span className="text-gray-400 text-sm">{t('indicatesRequired')}</span>
-            </div>
-            <div className="mc-field-group mb-4">
-              <label htmlFor="mce-EMAIL" className="block text-white mb-2">
-                {t('emailAddress')} <span className="asterisk text-red-500">*</span>
-              </label>
-              <input
-                type="email"
-                name="EMAIL"
-                className="required email w-full px-4 py-2 rounded-md bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                id="mce-EMAIL"
-                required
-                placeholder={t('emailPlaceholder')}
-              />
-            </div>
-            <div id="mce-responses" className="clear foot">
-              <div className="response" id="mce-error-response" style={{ display: 'none' }}></div>
-              <div className="response" id="mce-success-response" style={{ display: 'none' }}></div>
-            </div>
-            <div aria-hidden="true" style={{ position: 'absolute', left: '-5000px' }}>
-              <input type="text" name="b_88c7d7ba6a43db8f37cac54c7_24acc3709e" tabIndex={-1} value="" readOnly />
-            </div>
-
-            <div className="clear">
-              <motion.input
-                type="submit"
-                value={t('subscribe')}
-                name="subscribe"
-                id="mc-embedded-subscribe"
-                className="button w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors cursor-pointer"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              />
-            </div>
-          </div>
-        </form>
-      </div>
+          {isSubmitting ? t('sending') : t('subscribe')}
+        </motion.button>
+      </form>
     </div>
   );
 };
