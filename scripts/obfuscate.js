@@ -2,59 +2,87 @@ const JavaScriptObfuscator = require('javascript-obfuscator');
 const fs = require('fs');
 const path = require('path');
 
-function obfuscateDirectory(dir) {
-  const files = fs.readdirSync(dir);
-  
-  files.forEach(file => {
-    const filePath = path.join(dir, file);
-    const stat = fs.statSync(filePath);
+console.log('🔐 TattooStencilPro - Sistema de Protección de Código');
+console.log('================================================');
+
+function obfuscateFile(filePath) {
+  try {
+    const sourceCode = fs.readFileSync(filePath, 'utf8');
     
-    if (stat.isDirectory()) {
-      obfuscateDirectory(filePath);
-    } else if (file.endsWith('.js') && !file.includes('.min.')) {
-      console.log(`Ofuscando: ${filePath}`);
-      
-      const sourceCode = fs.readFileSync(filePath, 'utf8');
-      
-      const obfuscationResult = JavaScriptObfuscator.obfuscate(sourceCode, {
-        compact: true,
-        controlFlowFlattening: true,
-        controlFlowFlatteningThreshold: 0.75,
-        deadCodeInjection: true,
-        deadCodeInjectionThreshold: 0.4,
-        debugProtection: true,
-        debugProtectionInterval: 4000,
-        disableConsoleOutput: true,
-        identifierNamesGenerator: 'hexadecimal',
-        log: false,
-        numbersToExpressions: true,
-        renameGlobals: false,
-        selfDefending: true,
-        simplify: true,
-        splitStrings: true,
-        splitStringsChunkLength: 10,
-        stringArray: true,
-        stringArrayCallsTransform: true,
-        stringArrayEncoding: ['base64'],
-        stringArrayRotate: true,
-        stringArrayShuffle: true,
-        stringArrayThreshold: 0.75,
-        transformObjectKeys: true,
-        unicodeEscapeSequence: false
-      });
-      
-      fs.writeFileSync(filePath, obfuscationResult.getObfuscatedCode());
-      console.log(`✅ Protegido: ${file}`);
-    }
-  });
+    // Configuración de máxima protección
+    const obfuscationResult = JavaScriptObfuscator.obfuscate(sourceCode, {
+      compact: true,
+      controlFlowFlattening: true,
+      controlFlowFlatteningThreshold: 0.8,
+      deadCodeInjection: true,
+      deadCodeInjectionThreshold: 0.5,
+      debugProtection: true,
+      debugProtectionInterval: 3000,
+      disableConsoleOutput: true,
+      identifierNamesGenerator: 'hexadecimal',
+      log: false,
+      numbersToExpressions: true,
+      renameGlobals: false,
+      selfDefending: true,
+      simplify: true,
+      splitStrings: true,
+      splitStringsChunkLength: 8,
+      stringArray: true,
+      stringArrayCallsTransform: true,
+      stringArrayEncoding: ['base64'],
+      stringArrayIndexShift: true,
+      stringArrayRotate: true,
+      stringArrayShuffle: true,
+      stringArrayThreshold: 0.8,
+      transformObjectKeys: true,
+      unicodeEscapeSequence: false
+    });
+    
+    fs.writeFileSync(filePath, obfuscationResult.getObfuscatedCode());
+    return true;
+  } catch (error) {
+    console.log(`❌ Error protegiendo ${filePath}:`, error.message);
+    return false;
+  }
 }
 
-// Ofuscar el directorio de build
-const buildDir = path.join(__dirname, '../dist/public');
-if (fs.existsSync(buildDir)) {
-  console.log('🔐 Iniciando protección de código...');
-  obfuscateDirectory(buildDir);
-  console.log('🎉 ¡Código completamente protegido!');
-} else {
-  console.log('❌ Directorio de build no encontrado. Ejecuta "npm run build" primero.');
+function protectDirectory(dir) {
+  if (!fs.existsSync(dir)) {
+    console.log(`❌ Directorio no encontrado: ${dir}`);
+    return;
+  }
+  
+  let protected = 0;
+  let total = 0;
+  
+  function processDirectory(currentDir) {
+    const files = fs.readdirSync(currentDir);
+    
+    files.forEach(file => {
+      const filePath = path.join(currentDir, file);
+      const stat = fs.statSync(filePath);
+      
+      if (stat.isDirectory()) {
+        processDirectory(filePath);
+      } else if (file.endsWith('.js') && !file.includes('.min.')) {
+        total++;
+        console.log(`🛡️  Protegiendo: ${path.relative(dir, filePath)}`);
+        
+        if (obfuscateFile(filePath)) {
+          protected++;
+          console.log(`✅ Completado`);
+        }
+      }
+    });
+  }
+  
+  processDirectory(dir);
+  
+  console.log('================================================');
+  console.log(`🎉 Protección completada: ${protected}/${total} archivos`);
+  console.log('🔒 Tu código está ahora completamente protegido');
 }
+
+// Proteger aplicación
+const buildDir = path.join(__dirname, '../dist/public');
+protectDirectory(buildDir);
