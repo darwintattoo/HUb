@@ -663,9 +663,23 @@ export default function Home() {
       <footer className="py-8 px-4 text-center text-gray-500 border-t border-gray-800">
         <div className="max-w-4xl mx-auto">
           <p className="mb-2">{t('footer')}</p>
-          <p className="text-sm">
+          <p className="text-sm mb-4">
             Contact: <a href="mailto:contact@tattoostencilpro.app" className="text-blue-400 hover:text-blue-300 transition-colors">contact@tattoostencilpro.app</a>
           </p>
+          
+          {/* Copyright Notice */}
+          <div className="border-t border-gray-800 pt-4 mt-4">
+            <p className="text-xs text-gray-600 mb-2">
+              © {new Date().getFullYear()} TattooStencilPro. All rights reserved.
+            </p>
+            <p className="text-xs text-gray-600 leading-relaxed">
+              This application, including its design, code, algorithms, and intellectual property, is protected by copyright law. 
+              Unauthorized reproduction, distribution, or reverse engineering is strictly prohibited.
+            </p>
+            <p className="text-xs text-gray-600 mt-2">
+              Patent Pending • Proprietary Technology • Trademark Protected
+            </p>
+          </div>
         </div>
       </footer>
 
