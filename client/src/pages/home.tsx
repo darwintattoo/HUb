@@ -7,6 +7,8 @@ import stencilExample1 from '@assets/Captura de pantalla 2025-05-26 211021.png';
 import stencilExample2 from '@assets/Captura de pantalla 2025-05-26 211801.png';
 import stencilExample3 from '@assets/Captura de pantalla 2025-05-26 212441.png';
 import stencilExample4 from '@assets/Captura de pantalla 2025-05-26 213208.png';
+import stencilExample5 from '@assets/Captura de pantalla 2025-05-26 213749.png';
+import stencilExample6 from '@assets/Captura de pantalla 2025-05-26 215000.png';
 
 const translations = {
   es: {
@@ -464,12 +466,14 @@ export default function Home() {
           <h3 className="text-3xl font-bold mb-8">{t('stencilExamples')}</h3>
           <p className="text-gray-400 mb-12">{t('stencilExampleDescription')}</p>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               { src: stencilExample1, alt: "Medusa design transformation" },
               { src: stencilExample2, alt: "Portrait design transformation" },
               { src: stencilExample3, alt: "Lion design transformation" },
-              { src: stencilExample4, alt: "Raven design transformation" }
+              { src: stencilExample4, alt: "Raven design transformation" },
+              { src: stencilExample5, alt: "Angel design transformation" },
+              { src: stencilExample6, alt: "Demon mask design transformation" }
             ].map((example, index) => (
               <motion.div
                 key={index}
