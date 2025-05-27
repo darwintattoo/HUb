@@ -138,11 +138,21 @@ const ToolCard = ({ title, description, icon: Icon, imageUrl, videoUrl, t }: {
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
-    if (videoUrl && videoRef.current) {
+    if (videoUrl && videoRef.current && !isMobile) {
       videoRef.current.play();
       setIsPlaying(true);
     }
@@ -150,10 +160,22 @@ const ToolCard = ({ title, description, icon: Icon, imageUrl, videoUrl, t }: {
 
   const handleMouseLeave = () => {
     setIsHovered(false);
-    if (videoUrl && videoRef.current) {
+    if (videoUrl && videoRef.current && !isMobile) {
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
       setIsPlaying(false);
+    }
+  };
+
+  const handleClick = () => {
+    if (videoUrl && videoRef.current && isMobile) {
+      if (isPlaying) {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      } else {
+        videoRef.current.play();
+        setIsPlaying(true);
+      }
     }
   };
 
@@ -164,6 +186,7 @@ const ToolCard = ({ title, description, icon: Icon, imageUrl, videoUrl, t }: {
       transition={{ type: "spring", stiffness: 300 }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
     >
       <div className="relative h-48 overflow-hidden">
         {videoUrl ? (
@@ -174,7 +197,8 @@ const ToolCard = ({ title, description, icon: Icon, imageUrl, videoUrl, t }: {
             muted
             playsInline
             className="w-full h-full object-cover"
-            preload="auto"
+            preload="metadata"
+            poster={imageUrl}
           />
         ) : (
           <img 
@@ -183,13 +207,22 @@ const ToolCard = ({ title, description, icon: Icon, imageUrl, videoUrl, t }: {
             className="w-full h-full object-cover"
           />
         )}
-        <div className={`absolute inset-0 bg-black ${isHovered ? 'bg-opacity-20' : 'bg-opacity-50'} flex items-center justify-center transition-opacity duration-300`}>
+        <div className={`absolute inset-0 bg-black ${isHovered || isPlaying ? 'bg-opacity-20' : 'bg-opacity-50'} flex items-center justify-center transition-opacity duration-300`}>
           <motion.div
             animate={{ rotate: isHovered ? 360 : 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Icon size={48} className={`text-blue-400 ${isHovered ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`} />
+            <Icon size={48} className={`text-blue-400 ${isHovered || isPlaying ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`} />
           </motion.div>
+          {isMobile && videoUrl && !isPlaying && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="bg-black bg-opacity-70 rounded-full p-3">
+                <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <div className="p-6 flex-grow flex flex-col justify-between">
@@ -424,6 +457,7 @@ export default function Home() {
                 description="stencilGenerator.description"
                 icon={Wand2}
                 videoUrl="https://inknationstudio.com/wp-content/uploads/2024/09/video021.mp4"
+                imageUrl="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
                 t={t}
               />
 
@@ -432,6 +466,7 @@ export default function Home() {
                 description="expressionModifier.description"
                 icon={Smile}
                 videoUrl="https://inknationstudio.com/wp-content/uploads/2024/09/video-expresiones.mp4"
+                imageUrl="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
                 t={t}
               />
 
@@ -440,6 +475,7 @@ export default function Home() {
                 description="angleRotationModifier.description"
                 icon={RotateCcw}
                 videoUrl="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_9606-7wXjUza5iHfO4woAkktUJemkhAYzvt.MP4"
+                imageUrl="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
                 t={t}
               />
 
