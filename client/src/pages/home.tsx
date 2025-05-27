@@ -114,29 +114,61 @@ const ProgressMeter = ({ t, openModal }: { t: (key: string) => string; openModal
   );
 };
 
-const ToolCard = ({ title, description, icon: Icon, imageUrl, t }: {
+const ToolCard = ({ title, description, icon: Icon, imageUrl, videoUrl, t }: {
   title: string;
   description: string;
   icon: any;
-  imageUrl: string;
+  imageUrl?: string;
+  videoUrl?: string;
   t: (key: string) => string;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    if (videoUrl && videoRef.current) {
+      videoRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    if (videoUrl && videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+      setIsPlaying(false);
+    }
+  };
 
   return (
     <motion.div
       className="bg-gray-900 rounded-lg overflow-hidden flex flex-col border border-gray-800"
       whileHover={{ scale: 1.05 }}
       transition={{ type: "spring", stiffness: 300 }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <div className="relative h-48 overflow-hidden">
-        <img 
-          src={imageUrl}
-          alt={t(title)}
-          className="w-full h-full object-cover"
-        />
+        {videoUrl ? (
+          <video 
+            ref={videoRef}
+            src={videoUrl}
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+            preload="auto"
+          />
+        ) : (
+          <img 
+            src={imageUrl}
+            alt={t(title)}
+            className="w-full h-full object-cover"
+          />
+        )}
         <div className={`absolute inset-0 bg-black ${isHovered ? 'bg-opacity-20' : 'bg-opacity-50'} flex items-center justify-center transition-opacity duration-300`}>
           <motion.div
             animate={{ rotate: isHovered ? 360 : 0 }}
@@ -359,7 +391,7 @@ export default function Home() {
                 title="stencilGenerator.title"
                 description="stencilGenerator.description"
                 icon={Wand2}
-                imageUrl="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
+                videoUrl="/attached_assets/IMG_8572.MP4"
                 t={t}
               />
 
