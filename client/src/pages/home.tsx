@@ -683,7 +683,7 @@ export default function Home() {
               <a href="/terms-of-service" className="text-blue-400 hover:text-blue-300 transition-colors underline">
                 Terms of Service
               </a> • 
-              <a href="mailto:legal@tattoostencilpro.app" className="text-blue-400 hover:text-blue-300 transition-colors underline ml-1">
+              <a href="mailto:legal@tattoostencilpro.app?subject=Legal Notice - TattooStencilPro&body=Dear Legal Department,%0A%0APlease describe your legal inquiry below:%0A%0A" className="text-blue-400 hover:text-blue-300 transition-colors underline ml-1">
                 Legal Notice
               </a>
             </p>
