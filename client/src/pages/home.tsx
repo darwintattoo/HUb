@@ -399,7 +399,7 @@ export default function Home() {
                 title="expressionModifier.title"
                 description="expressionModifier.description"
                 icon={Smile}
-                imageUrl="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
+                videoUrl="https://inknationstudio.com/wp-content/uploads/2024/09/video-expresiones.mp4"
                 t={t}
               />
 
