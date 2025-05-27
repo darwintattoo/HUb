@@ -407,7 +407,7 @@ export default function Home() {
                 title="angleRotationModifier.title"
                 description="angleRotationModifier.description"
                 icon={RotateCcw}
-                imageUrl="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
+                videoUrl="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_9606-7wXjUza5iHfO4woAkktUJemkhAYzvt.MP4"
                 t={t}
               />
 
