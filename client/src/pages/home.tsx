@@ -224,7 +224,6 @@ const SimpleForm = ({ t }: { t: (key: string) => string }) => {
           id="mc-embedded-subscribe-form"
           name="mc-embedded-subscribe-form"
           className="validate"
-          target="_blank"
         >
           <div id="mc_embed_signup_scroll">
             <div className="indicates-required mb-2">
