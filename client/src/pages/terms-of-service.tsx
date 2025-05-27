@@ -3,7 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
 
 export default function TermsOfService() {
-  const [language, setLanguage] = useState('es');
+  const [language, setLanguage] = useState('en');
 
   return (
     <div className="min-h-screen bg-black text-white">
