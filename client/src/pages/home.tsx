@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Wand2, Smile, Plus, X, RotateCcw } from 'lucide-react';
 import { Modal } from '@/components/ui/modal';
-import logoPath from '@assets/tattoostencilpro-logo.svg';
+import logoPath from '@assets/1Asset 1zzz.png';
 import stencilExample1 from '@assets/Captura de pantalla 2025-05-26 211021.png';
 import stencilExample2 from '@assets/Captura de pantalla 2025-05-26 211801.png';
 import stencilExample3 from '@assets/Captura de pantalla 2025-05-26 212441.png';
