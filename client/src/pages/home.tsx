@@ -9,9 +9,8 @@ import stencilExample3 from '@assets/Captura de pantalla 2025-05-26 212441.png';
 import stencilExample4 from '@assets/Captura de pantalla 2025-05-26 213208.png';
 import stencilExample5 from '@assets/Captura de pantalla 2025-05-26 213749.png';
 import stencilExample6 from '@assets/Captura de pantalla 2025-05-26 215000.png';
-import beforeAfterImage1 from '@assets/image_1748306345513.png';
-import beforeAfterImage2 from '@assets/image_1748306383632.png';
-import beforeAfterImage3 from '@assets/image_1748306411168.png';
+import medusaOriginal from '@assets/DALL·E 2024-08-29 12.18.53 - A 3D illustration of Medusa in a medium grey tone, very detailed and realistic, looking forward with a serious and intense expression. Her head is sur.webp';
+import medusaStencil from '@assets/tattoostencilpro_00001_ (13).png';
 
 const translations = {
   es: {
@@ -515,8 +514,8 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             <BeforeAfterSlider 
-              beforeImage={beforeAfterImage1}
-              afterImage={stencilExample1}
+              beforeImage={medusaOriginal}
+              afterImage={medusaStencil}
               t={t}
             />
           </motion.div>
