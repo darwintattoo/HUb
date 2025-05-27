@@ -679,6 +679,14 @@ export default function Home() {
             <p className="text-xs text-gray-600 mt-2">
               Patent Pending • Proprietary Technology • Trademark Protected
             </p>
+            <p className="text-xs text-gray-500 mt-3">
+              <a href="/terms-of-service" className="text-blue-400 hover:text-blue-300 transition-colors underline">
+                Terms of Service
+              </a> • 
+              <a href="mailto:legal@tattoostencilpro.app" className="text-blue-400 hover:text-blue-300 transition-colors underline ml-1">
+                Legal Notice
+              </a>
+            </p>
           </div>
         </div>
       </footer>
