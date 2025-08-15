@@ -355,6 +355,8 @@ const ToolCard = ({ title, description, icon: Icon, imageUrl, videoUrl, t, href,
         {isActive && href ? (
           <motion.a
             href={href}
+            target="_blank"
+            rel="noopener noreferrer"
             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full mt-auto text-center transition-colors inline-block"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
@@ -605,7 +607,7 @@ export default function Home() {
                 videoUrl="https://inknationstudio.com/wp-content/uploads/2024/09/video021.mp4"
                 imageUrl="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
                 t={t}
-                href="/stencil-generator"
+                href="https://ink-stencil-darwintattoo1.replit.app/"
                 isActive={true}
               />
 
