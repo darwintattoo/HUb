@@ -508,17 +508,29 @@ export default function Home() {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Element;
-      if (!target.closest('.dropdown-container')) {
+      
+      // Check if click is outside dropdown container (but not on the button itself)
+      const dropdownContainer = target.closest('.dropdown-container');
+      const dropdownButton = target.closest('.dropdown-button');
+      
+      if (!dropdownContainer && !dropdownButton) {
         setIsProductDropdownOpen(false);
       }
-      if (!target.closest('.mobile-menu-container')) {
+      
+      // Check mobile menu
+      const mobileMenuContainer = target.closest('.mobile-menu-container');
+      const mobileMenuButton = target.closest('.mobile-menu-button');
+      
+      if (!mobileMenuContainer && !mobileMenuButton) {
         setIsMobileMenuOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    if (isProductDropdownOpen || isMobileMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [isProductDropdownOpen, isMobileMenuOpen]);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -555,7 +567,7 @@ export default function Home() {
             <div className="relative dropdown-container">
               <button 
                 onClick={() => setIsProductDropdownOpen(!isProductDropdownOpen)}
-                className="flex items-center space-x-1 text-white font-semibold bg-blue-600/20 px-3 py-2 rounded-lg hover:bg-blue-600/30 transition-colors"
+                className="dropdown-button flex items-center space-x-1 text-white font-semibold bg-blue-600/20 px-3 py-2 rounded-lg hover:bg-blue-600/30 transition-colors"
               >
                 <span>{t('nav.product')}</span>
                 <ChevronDown size={16} className={`transition-transform ${isProductDropdownOpen ? 'rotate-180' : ''}`} />
@@ -629,7 +641,7 @@ export default function Home() {
             {/* Mobile Menu Button */}
             <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden text-gray-300 hover:text-white transition-colors"
+              className="mobile-menu-button lg:hidden text-gray-300 hover:text-white transition-colors"
             >
               <Menu size={24} />
             </button>
