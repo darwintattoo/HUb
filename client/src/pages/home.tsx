@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Wand2, Smile, Plus, X, RotateCcw, Sparkles } from 'lucide-react';
+import { Wand2, Smile, X, RotateCcw, Sparkles } from 'lucide-react';
 import { Modal } from '@/components/ui/modal';
 import logoPath from '@assets/1Asset 1zzz.png';
 import stencilExample1 from '@assets/Captura de pantalla 2025-05-26 211021.png';
@@ -36,26 +36,13 @@ const translations = {
       description: "Generador avanzado de tatuajes con inteligencia artificial"
     },
     comingSoon: "Próximamente",
-    moreApps: "Más aplicaciones en camino",
-    moreAppsDescription: "Estamos trabajando en nuevas herramientas innovadoras para mejorar tu flujo de trabajo",
-    stayTuned: "Mantente atento",
+
     stayInformed: "¡Mantente Informado!",
     stayInformedDescription: "Sé el primero en saber cuando TattooStencilPro esté disponible",
     emailPlaceholder: "Tu correo electrónico",
     submit: "Enviar",
     footer: "© 2024 TattooStencilPro por Darwin Enriquez. Todos los derechos reservados.",
-    developmentProgress: "Progreso del Desarrollo",
-    progressMessage: "¡La revolución del diseño de tatuajes está en camino!",
-    subscribeForUpdates: "Suscríbete para recibir actualizaciones sobre nuestro progreso y ser el primero en saber cuando estemos listos.",
-    notifyWhenReady: "Notifícame cuando esté listo",
-    sending: "Enviando...",
-    subscribeSuccess: "¡Gracias por suscribirte!",
-    subscribeSuccessMessage: "¡Gracias por suscribirte! Te notificaremos cuando esté disponible.",
-    close: "Cerrar",
-    subscribeError: "Hubo un error. Por favor, intenta de nuevo.",
-    indicatesRequired: "indica que es obligatorio",
-    emailAddress: "Dirección de correo electrónico",
-    subscribe: "Suscribirse",
+
     featuredDesigns: "Diseños Destacados",
     stencilExamples: "Ejemplos de Transformación",
     stencilExampleDescription: "Ve cómo nuestro generador de stencils transforma diseños complejos en plantillas perfectas para tatuar",
@@ -84,26 +71,13 @@ const translations = {
       description: "Advanced AI-powered tattoo generator and image editor"
     },
     comingSoon: "Coming Soon",
-    moreApps: "More apps on the way",
-    moreAppsDescription: "We're working on new innovative tools to enhance your workflow",
-    stayTuned: "Stay tuned",
+
     stayInformed: "Stay Informed!",
     stayInformedDescription: "Be the first to know when TattooStencilPro is available",
     emailPlaceholder: "Your email",
     submit: "Submit",
     footer: "© 2024 TattooStencilPro by Darwin Enriquez. All rights reserved.",
-    developmentProgress: "Development Progress",
-    progressMessage: "The tattoo design revolution is on its way!",
-    subscribeForUpdates: "Subscribe to receive updates on our progress and be the first to know when we're ready.",
-    notifyWhenReady: "Notify me when it's ready",
-    sending: "Sending...",
-    subscribeSuccess: "Thank you for subscribing!",
-    subscribeSuccessMessage: "Thank you for subscribing! We'll notify you when it's available.",
-    close: "Close",
-    subscribeError: "There was an error. Please try again.",
-    indicatesRequired: "indicates required",
-    emailAddress: "Email Address",
-    subscribe: "Subscribe",
+
     featuredDesigns: "Featured Designs",
     stencilExamples: "Transformation Examples",
     stencilExampleDescription: "See how our stencil generator transforms complex designs into perfect tattoo templates",
@@ -384,22 +358,7 @@ const ToolCard = ({ title, description, icon: Icon, imageUrl, videoUrl, t, href,
   );
 };
 
-const MoreAppsCard = ({ t }: { t: (key: string) => string }) => {
-  return (
-    <motion.div
-      className="bg-gray-900 rounded-lg overflow-hidden flex flex-col border border-gray-800 p-6"
-      whileHover={{ scale: 1.05 }}
-      transition={{ type: "spring", stiffness: 300 }}
-    >
-      <div className="flex items-center justify-center mb-4">
-        <Plus size={48} className="text-blue-400" />
-      </div>
-      <h3 className="text-xl font-bold mb-2 text-white text-center">{t('moreApps')}</h3>
-      <p className="text-gray-400 mb-4 text-center">{t('moreAppsDescription')}</p>
-      <p className="text-blue-400 text-lg font-semibold text-center mt-auto">{t('stayTuned')}</p>
-    </motion.div>
-  );
-};
+
 
 const SimpleForm = ({ t }: { t: (key: string) => string }) => {
   const [email, setEmail] = useState('');
@@ -593,9 +552,7 @@ export default function Home() {
             />
           </motion.div>
 
-          <div className="max-w-2xl mx-auto mb-16">
-            <ProgressMeter t={t} openModal={openModal} />
-          </div>
+
 
           <div className="max-w-7xl mx-auto">
             <motion.h3 
@@ -647,21 +604,10 @@ export default function Home() {
                 t={t}
               />
 
-              <MoreAppsCard t={t} />
+
             </div>
           </div>
-          
-          <motion.button 
-            onClick={openModal}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.8 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {t('notifyMe')}
-          </motion.button>
+
         </div>
       </section>
 
