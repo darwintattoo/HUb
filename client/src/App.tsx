@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "@/pages/home";
 import TermsOfService from "@/pages/terms-of-service";
+import StencilGenerator from "@/pages/stencil-generator";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -12,6 +13,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/terms-of-service" component={TermsOfService} />
+      <Route path="/stencil-generator" component={StencilGenerator} />
       <Route component={NotFound} />
     </Switch>
   );

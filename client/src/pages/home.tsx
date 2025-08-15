@@ -54,7 +54,8 @@ const translations = {
     subscribe: "Suscribirse",
     featuredDesigns: "Diseños Destacados",
     stencilExamples: "Ejemplos de Transformación",
-    stencilExampleDescription: "Ve cómo nuestro generador de stencils transforma diseños complejos en plantillas perfectas para tatuar"
+    stencilExampleDescription: "Ve cómo nuestro generador de stencils transforma diseños complejos en plantillas perfectas para tatuar",
+    tryNow: "Probar Ahora"
   },
   en: {
     byDarwinEnriquez: "By Darwin Enriquez",
@@ -97,7 +98,8 @@ const translations = {
     subscribe: "Subscribe",
     featuredDesigns: "Featured Designs",
     stencilExamples: "Transformation Examples",
-    stencilExampleDescription: "See how our stencil generator transforms complex designs into perfect tattoo templates"
+    stencilExampleDescription: "See how our stencil generator transforms complex designs into perfect tattoo templates",
+    tryNow: "Try Now"
   }
 };
 
@@ -249,13 +251,15 @@ const ProgressMeter = ({ t, openModal }: { t: (key: string) => string; openModal
   );
 };
 
-const ToolCard = ({ title, description, icon: Icon, imageUrl, videoUrl, t }: {
+const ToolCard = ({ title, description, icon: Icon, imageUrl, videoUrl, t, href, isActive = false }: {
   title: string;
   description: string;
   icon: any;
   imageUrl?: string;
   videoUrl?: string;
   t: (key: string) => string;
+  href?: string;
+  isActive?: boolean;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -348,13 +352,23 @@ const ToolCard = ({ title, description, icon: Icon, imageUrl, videoUrl, t }: {
           <h3 className="text-xl font-bold mb-2 text-white">{t(title)}</h3>
           <p className="text-gray-400 mb-4">{t(description)}</p>
         </div>
-        <motion.button
-          className="bg-blue-600 text-white px-4 py-2 rounded-full mt-auto"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          {t('comingSoon')}
-        </motion.button>
+        {isActive && href ? (
+          <motion.a
+            href={href}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full mt-auto text-center transition-colors inline-block"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            {t('tryNow') || 'Try Now'}
+          </motion.a>
+        ) : (
+          <motion.button
+            className="bg-gray-600 text-white px-4 py-2 rounded-full mt-auto cursor-not-allowed"
+            disabled
+          >
+            {t('comingSoon')}
+          </motion.button>
+        )}
       </div>
     </motion.div>
   );
@@ -591,6 +605,8 @@ export default function Home() {
                 videoUrl="https://inknationstudio.com/wp-content/uploads/2024/09/video021.mp4"
                 imageUrl="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
                 t={t}
+                href="/stencil-generator"
+                isActive={true}
               />
 
               <ToolCard
