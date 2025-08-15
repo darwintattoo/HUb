@@ -22,7 +22,7 @@ const translations = {
     
     // Navigation menu
     nav: {
-      product: "Producto",
+      product: "Tools",
       stencilConverter: "Convertir a Stencil",
       aiImageEditor: "Editor de imágenes (IA)",
       howItWorks: "Cómo funciona",
@@ -74,7 +74,7 @@ const translations = {
     
     // Navigation menu
     nav: {
-      product: "Product",
+      product: "Tools",
       stencilConverter: "Convert to Stencil",
       aiImageEditor: "AI Image Editor",
       howItWorks: "How it works",
@@ -570,22 +570,22 @@ export default function Home() {
                     href="https://ink-stencil-darwintattoo1.replit.app/" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-800 transition-colors border-b border-gray-700"
+                    className="block px-4 py-3 text-white font-medium hover:text-blue-300 hover:bg-blue-600/20 transition-colors border-b border-gray-700"
                   >
                     <div className="flex items-center justify-between">
                       <span>{t('nav.stencilConverter')}</span>
-                      <ExternalLink size={14} />
+                      <ExternalLink size={14} className="text-blue-400" />
                     </div>
                   </a>
                   <a 
                     href="https://darwinfluxkontext.replit.app" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-800 transition-colors"
+                    className="block px-4 py-3 text-white font-medium hover:text-blue-300 hover:bg-blue-600/20 transition-colors"
                   >
                     <div className="flex items-center justify-between">
                       <span>{t('nav.aiImageEditor')}</span>
-                      <ExternalLink size={14} />
+                      <ExternalLink size={14} className="text-blue-400" />
                     </div>
                   </a>
                 </motion.div>
@@ -645,13 +645,13 @@ export default function Home() {
           >
             <div className="space-y-4">
               <div>
-                <h4 className="text-white font-medium mb-2">{t('nav.product')}</h4>
+                <h4 className="text-white font-semibold mb-2 text-lg">{t('nav.product')}</h4>
                 <div className="pl-4 space-y-2">
                   <a 
                     href="https://ink-stencil-darwintattoo1.replit.app/" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="block text-gray-300 hover:text-white transition-colors"
+                    className="block text-white font-medium hover:text-blue-300 transition-colors"
                   >
                     {t('nav.stencilConverter')}
                   </a>
@@ -659,7 +659,7 @@ export default function Home() {
                     href="https://darwinfluxkontext.replit.app" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="block text-gray-300 hover:text-white transition-colors"
+                    className="block text-white font-medium hover:text-blue-300 transition-colors"
                   >
                     {t('nav.aiImageEditor')}
                   </a>
