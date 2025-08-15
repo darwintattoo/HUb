@@ -34,7 +34,7 @@ const translations = {
       support: "Soporte",
       faq: "FAQ",
       contact: "Contacto",
-      openApp: "Abrir aplicación"
+
     },
     stencilGenerator: {
       title: "Generador de Stencils",
@@ -86,7 +86,7 @@ const translations = {
       support: "Support",
       faq: "FAQ",
       contact: "Contact",
-      openApp: "Open Application"
+
     },
     stencilGenerator: {
       title: "Stencil Generator",
@@ -624,18 +624,7 @@ export default function Home() {
               </button>
             </div>
             
-            {/* CTA Button */}
-            <motion.a
-              href="https://ink-stencil-darwintattoo1.replit.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors hidden md:flex items-center space-x-2"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span>{t('nav.openApp')}</span>
-              <ExternalLink size={16} />
-            </motion.a>
+
             
             {/* Mobile Menu Button */}
             <button 
@@ -685,17 +674,7 @@ export default function Home() {
               <a href="#faq" className="block text-gray-300 hover:text-white transition-colors">{t('nav.faq')}</a>
               <a href="#contact" className="block text-gray-300 hover:text-white transition-colors">{t('nav.contact')}</a>
               
-              <motion.a
-                href="https://ink-stencil-darwintattoo1.replit.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2 mt-4"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <span>{t('nav.openApp')}</span>
-                <ExternalLink size={16} />
-              </motion.a>
+
             </div>
           </motion.div>
         )}
