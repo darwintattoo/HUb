@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Wand2, Smile, Plus, X, RotateCcw } from 'lucide-react';
+import { Wand2, Smile, Plus, X, RotateCcw, Sparkles } from 'lucide-react';
 import { Modal } from '@/components/ui/modal';
 import logoPath from '@assets/1Asset 1zzz.png';
 import stencilExample1 from '@assets/Captura de pantalla 2025-05-26 211021.png';
@@ -30,6 +30,10 @@ const translations = {
     angleRotationModifier: {
       title: "Modificador de Ángulo y Rotación",
       description: "Transforma la perspectiva de tus diseños 2D con ajustes precisos de ángulo y rotación"
+    },
+    aiImageEditor: {
+      title: "Editor de Imágenes AI",
+      description: "Generador avanzado de tatuajes con inteligencia artificial"
     },
     comingSoon: "Próximamente",
     moreApps: "Más aplicaciones en camino",
@@ -74,6 +78,10 @@ const translations = {
     angleRotationModifier: {
       title: "Angle and Rotation Modifier",
       description: "Transform the perspective of your 2D designs with precise angle and rotation adjustments"
+    },
+    aiImageEditor: {
+      title: "AI Image Editor",
+      description: "Advanced AI-powered tattoo generator and image editor"
     },
     comingSoon: "Coming Soon",
     moreApps: "More apps on the way",
@@ -608,6 +616,16 @@ export default function Home() {
                 imageUrl="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
                 t={t}
                 href="https://ink-stencil-darwintattoo1.replit.app/"
+                isActive={true}
+              />
+
+              <ToolCard
+                title="aiImageEditor.title"
+                description="aiImageEditor.description"
+                icon={Sparkles}
+                imageUrl="https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
+                t={t}
+                href="https://darwinfluxkontext.replit.app/"
                 isActive={true}
               />
 

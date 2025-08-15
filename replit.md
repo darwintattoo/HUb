@@ -48,6 +48,11 @@ Preferred communication style: Simple, everyday language.
 - **Email Integration**: Mailchimp integration for user notifications and updates
 - **SEO Optimization**: Meta tags, Open Graph, and Twitter Card support
 - **Code Protection**: JavaScript obfuscation system for intellectual property protection
+- **External Tool Integration**: Links to functional stencil generator and AI image editor applications
+
+## External Applications
+- **Stencil Generator**: https://ink-stencil-darwintattoo1.replit.app/ - Functional stencil conversion tool
+- **AI Image Editor**: https://darwinfluxkontext.replit.app/ - AI-powered tattoo generator and image editor
 
 ## External Dependencies
 
