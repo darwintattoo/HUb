@@ -555,7 +555,7 @@ export default function Home() {
             <div className="relative dropdown-container">
               <button 
                 onClick={() => setIsProductDropdownOpen(!isProductDropdownOpen)}
-                className="flex items-center space-x-1 text-gray-300 hover:text-white transition-colors"
+                className="flex items-center space-x-1 text-white font-semibold bg-blue-600/20 px-3 py-2 rounded-lg hover:bg-blue-600/30 transition-colors"
               >
                 <span>{t('nav.product')}</span>
                 <ChevronDown size={16} className={`transition-transform ${isProductDropdownOpen ? 'rotate-180' : ''}`} />
