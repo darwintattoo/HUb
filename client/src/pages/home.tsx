@@ -520,7 +520,7 @@ export default function Home() {
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <motion.h2 
-            className="text-5xl md:text-6xl font-bold mb-6 leading-tight"
+            className="text-4xl md:text-5xl font-bold mb-5 leading-tight"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -530,7 +530,7 @@ export default function Home() {
             </span>
           </motion.h2>
           <motion.p 
-            className="text-xl md:text-2xl text-gray-400 mb-12 max-w-2xl mx-auto"
+            className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
