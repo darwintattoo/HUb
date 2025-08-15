@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Wand2, Smile, X, RotateCcw, Sparkles } from 'lucide-react';
+import { Wand2, Smile, X, RotateCcw, Sparkles, Menu, ChevronDown, ExternalLink } from 'lucide-react';
 import { Modal } from '@/components/ui/modal';
 import logoPath from '@assets/1Asset 1zzz.png';
 import stencilExample1 from '@assets/Captura de pantalla 2025-05-26 211021.png';
@@ -19,6 +19,23 @@ const translations = {
     heroTitle: "Revoluciona tus Diseños de Tatuajes",
     heroSubtitle: "Herramientas profesionales para tatuadores, impulsadas por IA",
     toolsTitle: "HERRAMIENTAS",
+    
+    // Navigation menu
+    nav: {
+      product: "Producto",
+      stencilConverter: "Convertir a Stencil",
+      aiImageEditor: "Editor de imágenes (IA)",
+      howItWorks: "Cómo funciona",
+      security: "Seguridad & Privacidad",
+      pricing: "Planes y Precios",
+      tutorials: "Tutoriales & Guías",
+      gallery: "Galería",
+      blog: "Blog",
+      support: "Soporte",
+      faq: "FAQ",
+      contact: "Contacto",
+      openApp: "Abrir aplicación"
+    },
     stencilGenerator: {
       title: "Generador de Stencils",
       description: "Convierte diseños en stencils estilo hecho a mano"
@@ -54,6 +71,23 @@ const translations = {
     heroTitle: "Revolutionize your Tattoo Designs",
     heroSubtitle: "Professional AI-powered tools for tattoo artists",
     toolsTitle: "TOOLS",
+    
+    // Navigation menu
+    nav: {
+      product: "Product",
+      stencilConverter: "Convert to Stencil",
+      aiImageEditor: "AI Image Editor",
+      howItWorks: "How it works",
+      security: "Security & Privacy",
+      pricing: "Plans & Pricing",
+      tutorials: "Tutorials & Guides",
+      gallery: "Gallery",
+      blog: "Blog",
+      support: "Support",
+      faq: "FAQ",
+      contact: "Contact",
+      openApp: "Open Application"
+    },
     stencilGenerator: {
       title: "Stencil Generator",
       description: "Convert designs into hand-drawn style stencils"
@@ -458,6 +492,8 @@ const SimpleForm = ({ t }: { t: (key: string) => string }) => {
 export default function Home() {
   const [language, setLanguage] = useState('en');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isProductDropdownOpen, setIsProductDropdownOpen] = useState(false);
 
   const t = (key: string): string => {
     const keys = key.split('.');
@@ -467,6 +503,22 @@ export default function Home() {
     }
     return (value as string) || key;
   };
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (!target.closest('.dropdown-container')) {
+        setIsProductDropdownOpen(false);
+      }
+      if (!target.closest('.mobile-menu-container')) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -478,43 +530,175 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-black text-white font-sans">
-      <header className="bg-black p-4 flex justify-between items-center border-b border-gray-800">
-        <div className="flex items-center space-x-4">
-          <img 
-            src={logoPath} 
-            alt="TattooStencilPro Logo" 
-            className="h-16 w-16"
-          />
-          <div>
-            <h1 className="text-2xl font-bold">
-              <span className="font-bold">Tattoo</span>
-              <span className="font-light">Stencil</span>
-              <span className="text-blue-400">Pro</span>
-            </h1>
-            <p className="text-sm text-gray-400">{t('byDarwinEnriquez')}</p>
+      <header className="bg-black p-4 border-b border-gray-800 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          {/* Logo */}
+          <div className="flex items-center space-x-3">
+            <img 
+              src={logoPath} 
+              alt="TattooStencilPro Logo" 
+              className="h-12 w-12"
+            />
+            <div>
+              <h1 className="text-xl font-bold">
+                <span className="font-bold">Tattoo</span>
+                <span className="font-light">Stencil</span>
+                <span className="text-blue-400">Pro</span>
+              </h1>
+              <p className="text-xs text-gray-400 hidden sm:block">{t('byDarwinEnriquez')}</p>
+            </div>
+          </div>
+          
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center space-x-8">
+            {/* Product Dropdown */}
+            <div className="relative dropdown-container">
+              <button 
+                onClick={() => setIsProductDropdownOpen(!isProductDropdownOpen)}
+                className="flex items-center space-x-1 text-gray-300 hover:text-white transition-colors"
+              >
+                <span>{t('nav.product')}</span>
+                <ChevronDown size={16} className={`transition-transform ${isProductDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {isProductDropdownOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="absolute top-full left-0 mt-2 w-56 bg-gray-900 border border-gray-700 rounded-lg shadow-xl"
+                >
+                  <a 
+                    href="https://ink-stencil-darwintattoo1.replit.app/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-800 transition-colors border-b border-gray-700"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span>{t('nav.stencilConverter')}</span>
+                      <ExternalLink size={14} />
+                    </div>
+                  </a>
+                  <a 
+                    href="https://darwinfluxkontext.replit.app" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-800 transition-colors"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span>{t('nav.aiImageEditor')}</span>
+                      <ExternalLink size={14} />
+                    </div>
+                  </a>
+                </motion.div>
+              )}
+            </div>
+            
+            <a href="#how-it-works" className="text-gray-300 hover:text-white transition-colors">{t('nav.howItWorks')}</a>
+            <a href="#security" className="text-gray-300 hover:text-white transition-colors">{t('nav.security')}</a>
+            <a href="#pricing" className="text-gray-300 hover:text-white transition-colors">{t('nav.pricing')}</a>
+            <a href="#tutorials" className="text-gray-300 hover:text-white transition-colors">{t('nav.tutorials')}</a>
+            <a href="#gallery" className="text-gray-300 hover:text-white transition-colors">{t('nav.gallery')}</a>
+            <a href="#support" className="text-gray-300 hover:text-white transition-colors">{t('nav.support')}</a>
+            <a href="#faq" className="text-gray-300 hover:text-white transition-colors">{t('nav.faq')}</a>
+            <a href="#contact" className="text-gray-300 hover:text-white transition-colors">{t('nav.contact')}</a>
+          </nav>
+          
+          {/* Right side controls */}
+          <div className="flex items-center space-x-4">
+            {/* Language Switcher */}
+            <div className="flex bg-gray-800 rounded-lg p-1">
+              <button 
+                onClick={() => setLanguage('en')}
+                className={`px-3 py-1 rounded text-sm font-medium transition-all duration-200 ${
+                  language === 'en' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                EN
+              </button>
+              <button 
+                onClick={() => setLanguage('es')}
+                className={`px-3 py-1 rounded text-sm font-medium transition-all duration-200 ${
+                  language === 'es' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                ES
+              </button>
+            </div>
+            
+            {/* CTA Button */}
+            <motion.a
+              href="https://ink-stencil-darwintattoo1.replit.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors hidden md:flex items-center space-x-2"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <span>{t('nav.openApp')}</span>
+              <ExternalLink size={16} />
+            </motion.a>
+            
+            {/* Mobile Menu Button */}
+            <button 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="lg:hidden text-gray-300 hover:text-white transition-colors"
+            >
+              <Menu size={24} />
+            </button>
           </div>
         </div>
         
-        <div className="flex items-center space-x-4">
-          <div className="flex bg-gray-800 rounded-lg p-1">
-            <button 
-              onClick={() => setLanguage('en')}
-              className={`px-3 py-1 rounded text-sm font-medium transition-all duration-200 ${
-                language === 'en' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              EN
-            </button>
-            <button 
-              onClick={() => setLanguage('es')}
-              className={`px-3 py-1 rounded text-sm font-medium transition-all duration-200 ${
-                language === 'es' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              ES
-            </button>
-          </div>
-        </div>
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            className="lg:hidden mt-4 pt-4 border-t border-gray-800 mobile-menu-container"
+          >
+            <div className="space-y-4">
+              <div>
+                <h4 className="text-white font-medium mb-2">{t('nav.product')}</h4>
+                <div className="pl-4 space-y-2">
+                  <a 
+                    href="https://ink-stencil-darwintattoo1.replit.app/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="block text-gray-300 hover:text-white transition-colors"
+                  >
+                    {t('nav.stencilConverter')}
+                  </a>
+                  <a 
+                    href="https://darwinfluxkontext.replit.app" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="block text-gray-300 hover:text-white transition-colors"
+                  >
+                    {t('nav.aiImageEditor')}
+                  </a>
+                </div>
+              </div>
+              <a href="#how-it-works" className="block text-gray-300 hover:text-white transition-colors">{t('nav.howItWorks')}</a>
+              <a href="#security" className="block text-gray-300 hover:text-white transition-colors">{t('nav.security')}</a>
+              <a href="#pricing" className="block text-gray-300 hover:text-white transition-colors">{t('nav.pricing')}</a>
+              <a href="#tutorials" className="block text-gray-300 hover:text-white transition-colors">{t('nav.tutorials')}</a>
+              <a href="#gallery" className="block text-gray-300 hover:text-white transition-colors">{t('nav.gallery')}</a>
+              <a href="#support" className="block text-gray-300 hover:text-white transition-colors">{t('nav.support')}</a>
+              <a href="#faq" className="block text-gray-300 hover:text-white transition-colors">{t('nav.faq')}</a>
+              <a href="#contact" className="block text-gray-300 hover:text-white transition-colors">{t('nav.contact')}</a>
+              
+              <motion.a
+                href="https://ink-stencil-darwintattoo1.replit.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2 mt-4"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <span>{t('nav.openApp')}</span>
+                <ExternalLink size={16} />
+              </motion.a>
+            </div>
+          </motion.div>
+        )}
       </header>
 
       <section className="py-20 px-4">
