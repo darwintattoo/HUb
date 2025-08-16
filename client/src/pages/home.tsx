@@ -715,7 +715,7 @@ export default function Home() {
 
           {/* Video Container */}
           <motion.div
-            className="max-w-4xl mx-auto mb-16"
+            className="max-w-4xl mx-auto mb-8"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -746,7 +746,7 @@ export default function Home() {
       </section>
 
       {/* Tools Section */}
-      <section className="py-16 px-4">
+      <section className="py-8 px-4">
         <div className="max-w-7xl mx-auto">
             <motion.h3 
               className="text-3xl font-bold text-center mb-12"
