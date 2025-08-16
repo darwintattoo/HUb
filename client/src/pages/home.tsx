@@ -15,6 +15,7 @@ import roseTattoo from '@assets/generated_images/rose_tattoo_stencil_01ea124b.pn
 import eagleTattoo from '@assets/generated_images/eagle_tattoo_stencil_4c9fc26a.png';
 import dragonTattoo from '@assets/generated_images/dragon_tattoo_stencil_2da98a82.png';
 import mandalaTattoo from '@assets/generated_images/mandala_tattoo_stencil_10675b74.png';
+import aiEditorImage from '@assets/Ai editor_1755352512747.webp';
 
 const translations = {
   es: {
@@ -843,7 +844,7 @@ export default function Home() {
                 title="aiImageEditor.title"
                 description="aiImageEditor.description"
                 icon={Sparkles}
-                imageUrl="https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
+                imageUrl={aiEditorImage}
                 t={t}
                 href="https://darwinfluxkontext.replit.app/"
                 isActive={true}
