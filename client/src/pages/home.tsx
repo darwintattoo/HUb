@@ -11,6 +11,10 @@ import stencilExample5 from '@assets/Captura de pantalla 2025-05-26 213749.png';
 import stencilExample6 from '@assets/Captura de pantalla 2025-05-26 215000.png';
 import medusaOriginal from '@assets/DALL·E 2024-08-29 12.18.53 - A 3D illustration of Medusa in a medium grey tone, very detailed and realistic, looking forward with a serious and intense expression. Her head is sur.webp';
 import medusaStencil from '@assets/tattoostencilpro_00001_ (13).png';
+import roseTattoo from '@assets/generated_images/rose_tattoo_stencil_01ea124b.png';
+import eagleTattoo from '@assets/generated_images/eagle_tattoo_stencil_4c9fc26a.png';
+import dragonTattoo from '@assets/generated_images/dragon_tattoo_stencil_2da98a82.png';
+import mandalaTattoo from '@assets/generated_images/mandala_tattoo_stencil_10675b74.png';
 
 const translations = {
   es: {
@@ -733,8 +737,8 @@ export default function Home() {
               whileHover={{ scale: 1.05 }}
             >
               <img 
-                src="/attached_assets/Captura de pantalla 2025-05-26 213208.png" 
-                alt="Tattoo design"
+                src={roseTattoo} 
+                alt="Rose tattoo stencil"
                 className="w-full h-full object-cover"
               />
             </motion.div>
@@ -748,8 +752,8 @@ export default function Home() {
               whileHover={{ scale: 1.05 }}
             >
               <img 
-                src="/attached_assets/Captura de pantalla 2025-05-26 211021.png" 
-                alt="Tattoo design"
+                src={eagleTattoo} 
+                alt="Eagle tattoo stencil"
                 className="w-full h-full object-cover"
               />
             </motion.div>
@@ -766,8 +770,8 @@ export default function Home() {
                 whileHover={{ scale: 1.05 }}
               >
                 <img 
-                  src="/attached_assets/Captura de pantalla 2025-05-26 212441.png" 
-                  alt="Tattoo design"
+                  src={dragonTattoo} 
+                  alt="Dragon tattoo stencil"
                   className="w-full h-full object-cover"
                 />
               </motion.div>
@@ -776,8 +780,8 @@ export default function Home() {
                 whileHover={{ scale: 1.05 }}
               >
                 <img 
-                  src="/attached_assets/Captura de pantalla 2025-05-26 213749.png" 
-                  alt="Tattoo design"
+                  src={mandalaTattoo} 
+                  alt="Mandala tattoo stencil"
                   className="w-full h-full object-cover"
                 />
               </motion.div>
