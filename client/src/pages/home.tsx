@@ -794,7 +794,7 @@ export default function Home() {
                 loop
                 muted
                 playsInline
-                className="w-full h-auto object-cover"
+                className="w-full h-auto object-cover rounded-2xl"
                 poster={medusaStencil}
               >
                 <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_9606-7wXjUza5iHfO4woAkktUJemkhAYzvt.MP4" type="video/mp4" />
