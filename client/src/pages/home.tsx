@@ -845,10 +845,12 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
 
-
-
-          <div className="max-w-7xl mx-auto">
+      {/* Tools Section */}
+      <section className="py-16 px-4">
+        <div className="max-w-7xl mx-auto">
             <motion.h3 
               className="text-3xl font-bold text-center mb-12"
               initial={{ opacity: 0, y: 20 }}
@@ -900,8 +902,6 @@ export default function Home() {
 
 
             </div>
-          </div>
-
         </div>
       </section>
 
