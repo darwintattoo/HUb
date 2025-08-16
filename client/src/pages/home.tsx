@@ -801,13 +801,7 @@ export default function Home() {
                 Your browser does not support the video tag.
               </video>
               
-              {/* Video Overlay Labels */}
-              <div className="absolute top-4 left-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm font-medium">
-                Stencil
-              </div>
-              <div className="absolute top-4 right-4 bg-white/90 text-black px-3 py-1 rounded-full text-sm font-medium">
-                Original
-              </div>
+
             </div>
           </motion.div>
         </div>
