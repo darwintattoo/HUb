@@ -723,14 +723,14 @@ export default function Home() {
 
           {/* Video Container with Floating Images */}
           <motion.div
-            className="max-w-5xl mx-auto mb-1 relative"
+            className="max-w-3xl mx-auto mb-1 relative"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             {/* Floating Image Top Left */}
             <motion.div
-              className="absolute -top-4 -left-8 w-32 h-32 rounded-xl overflow-hidden shadow-lg z-10 hidden lg:block"
+              className="absolute -top-4 -left-20 w-28 h-28 rounded-xl overflow-hidden shadow-lg z-10 hidden lg:block"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.8 }}
@@ -745,7 +745,7 @@ export default function Home() {
 
             {/* Floating Image Bottom Left */}
             <motion.div
-              className="absolute -bottom-4 left-12 w-28 h-28 rounded-xl overflow-hidden shadow-lg z-10 hidden lg:block"
+              className="absolute -bottom-4 -left-12 w-24 h-24 rounded-xl overflow-hidden shadow-lg z-10 hidden lg:block"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 1 }}
@@ -760,7 +760,7 @@ export default function Home() {
 
             {/* Floating Images Right Side */}
             <motion.div
-              className="absolute top-8 -right-8 hidden lg:flex flex-col gap-3"
+              className="absolute top-8 -right-20 hidden lg:flex flex-col gap-3"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.9 }}
