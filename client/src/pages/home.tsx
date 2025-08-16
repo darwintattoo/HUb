@@ -696,7 +696,7 @@ export default function Home() {
         )}
       </header>
 
-      <section className="pt-10 pb-2 px-4">
+      <section className="pt-10 pb-6 px-4 overflow-visible">
         <div className="max-w-4xl mx-auto text-center">
           <motion.h2 
             className="text-4xl md:text-5xl font-bold mb-5 leading-tight"
@@ -717,13 +717,73 @@ export default function Home() {
             {t('heroSubtitle')}
           </motion.p>
 
-          {/* Video Container */}
+          {/* Video Container with Floating Images */}
           <motion.div
-            className="max-w-4xl mx-auto mb-1"
+            className="max-w-5xl mx-auto mb-1 relative"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
+            {/* Floating Image Top Left */}
+            <motion.div
+              className="absolute -top-4 -left-8 w-32 h-32 rounded-xl overflow-hidden shadow-lg z-10 hidden lg:block"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+              whileHover={{ scale: 1.05 }}
+            >
+              <img 
+                src="/attached_assets/Captura de pantalla 2025-05-26 213208.png" 
+                alt="Tattoo design"
+                className="w-full h-full object-cover"
+              />
+            </motion.div>
+
+            {/* Floating Image Bottom Left */}
+            <motion.div
+              className="absolute -bottom-4 left-12 w-28 h-28 rounded-xl overflow-hidden shadow-lg z-10 hidden lg:block"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 1 }}
+              whileHover={{ scale: 1.05 }}
+            >
+              <img 
+                src="/attached_assets/Captura de pantalla 2025-05-26 211021.png" 
+                alt="Tattoo design"
+                className="w-full h-full object-cover"
+              />
+            </motion.div>
+
+            {/* Floating Images Right Side */}
+            <motion.div
+              className="absolute top-8 -right-8 hidden lg:flex flex-col gap-3"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.9 }}
+            >
+              <motion.div 
+                className="w-24 h-28 rounded-xl overflow-hidden shadow-lg"
+                whileHover={{ scale: 1.05 }}
+              >
+                <img 
+                  src="/attached_assets/Captura de pantalla 2025-05-26 212441.png" 
+                  alt="Tattoo design"
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+              <motion.div 
+                className="w-24 h-28 rounded-xl overflow-hidden shadow-lg"
+                whileHover={{ scale: 1.05 }}
+              >
+                <img 
+                  src="/attached_assets/Captura de pantalla 2025-05-26 213749.png" 
+                  alt="Tattoo design"
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+            </motion.div>
+
+            {/* Main Video */}
             <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-black">
               <video
                 autoPlay
