@@ -696,7 +696,7 @@ export default function Home() {
         )}
       </header>
 
-      <section className="py-20 px-4">
+      <section className="py-4 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <motion.h2 
             className="text-4xl md:text-5xl font-bold mb-5 leading-tight"
