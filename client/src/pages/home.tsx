@@ -905,7 +905,36 @@ export default function Home() {
         </div>
       </section>
 
-
+      <section className="py-16 px-4 bg-gray-900">
+        <div className="max-w-7xl mx-auto text-center">
+          <h3 className="text-3xl font-bold mb-8">{t('stencilExamples')}</h3>
+          <p className="text-gray-400 mb-12">{t('stencilExampleDescription')}</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              { src: stencilExample1, alt: "Medusa design transformation" },
+              { src: stencilExample2, alt: "Portrait design transformation" },
+              { src: stencilExample3, alt: "Lion design transformation" },
+              { src: stencilExample4, alt: "Raven design transformation" },
+              { src: stencilExample5, alt: "Angel design transformation" },
+              { src: stencilExample6, alt: "Demon mask design transformation" }
+            ].map((example, index) => (
+              <motion.div
+                key={index}
+                className="relative overflow-hidden rounded-lg shadow-2xl"
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <img 
+                  src={example.src}
+                  alt={example.alt}
+                  className="w-full h-auto object-cover"
+                />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <footer className="py-8 px-4 text-center text-gray-500 border-t border-gray-800">
         <div className="max-w-4xl mx-auto">
