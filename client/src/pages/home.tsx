@@ -713,138 +713,35 @@ export default function Home() {
             {t('heroSubtitle')}
           </motion.p>
 
-          {/* Landscape Layout with Video and Images */}
-          <div className="relative min-h-[600px] flex items-center justify-center mb-16">
-            {/* Main Video Container */}
-            <motion.div
-              className="relative z-20 w-full max-w-4xl"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-black">
-                <video
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="w-full h-auto object-cover"
-                  poster={medusaStencil}
-                >
-                  <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_9606-7wXjUza5iHfO4woAkktUJemkhAYzvt.MP4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-                
-                {/* Video Overlay Labels */}
-                <div className="absolute top-4 left-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm font-medium">
-                  Stencil
-                </div>
-                <div className="absolute top-4 right-4 bg-white/90 text-black px-3 py-1 rounded-full text-sm font-medium">
-                  Original
-                </div>
-              </div>
-            </motion.div>
-            
-            {/* Floating Images Around Video */}
-            {/* Top Left Image */}
-            <motion.div
-              className="absolute top-0 left-0 w-48 h-32 hidden lg:block"
-              initial={{ opacity: 0, x: -50, y: -50 }}
-              animate={{ opacity: 1, x: 0, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-            >
-              <div className="rounded-xl overflow-hidden shadow-xl bg-gradient-to-r from-orange-400 to-yellow-500">
-                <img 
-                  src={stencilExample2} 
-                  alt="Tattoo transformation"
-                  className="w-full h-full object-cover opacity-90"
-                />
-              </div>
-            </motion.div>
-            
-            {/* Bottom Left Image */}
-            <motion.div
-              className="absolute bottom-0 left-8 w-44 h-44 hidden lg:block"
-              initial={{ opacity: 0, x: -50, y: 50 }}
-              animate={{ opacity: 1, x: 0, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.7 }}
-            >
-              <div className="rounded-xl overflow-hidden shadow-xl bg-gradient-to-r from-blue-400 to-cyan-500">
-                <img 
-                  src={stencilExample3} 
-                  alt="Design transformation"
-                  className="w-full h-full object-cover opacity-90"
-                />
-              </div>
-            </motion.div>
-            
-            {/* Top Right Image */}
-            <motion.div
-              className="absolute top-8 right-0 w-52 h-64 hidden lg:block"
-              initial={{ opacity: 0, x: 50, y: -50 }}
-              animate={{ opacity: 1, x: 0, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-            >
-              <div className="rounded-xl overflow-hidden shadow-xl">
-                <img 
-                  src={stencilExample4} 
-                  alt="Stencil example"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </motion.div>
-            
-            {/* Bottom Right Small Image */}
-            <motion.div
-              className="absolute bottom-12 right-12 w-36 h-36 hidden lg:block"
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.9 }}
-            >
-              <div className="rounded-full overflow-hidden shadow-xl border-4 border-gray-800">
-                <img 
-                  src={stencilExample5} 
-                  alt="Detail transformation"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </motion.div>
-            
-            {/* Small Decorative Image Top Center */}
-            <motion.div
-              className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-32 h-20 hidden lg:block"
-              initial={{ opacity: 0, y: -30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.0 }}
-            >
-              <div className="rounded-lg overflow-hidden shadow-lg">
-                <img 
-                  src={stencilExample6} 
-                  alt="Additional example"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </motion.div>
-          </div>
-          
-          {/* Mobile Gallery - Shows on smaller screens */}
-          <div className="grid grid-cols-2 gap-4 mt-8 lg:hidden">
-            {[stencilExample2, stencilExample3, stencilExample4, stencilExample5].map((src, index) => (
-              <motion.div
-                key={index}
-                className="rounded-lg overflow-hidden shadow-xl"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+          {/* Video Container */}
+          <motion.div
+            className="max-w-4xl mx-auto mb-16"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-black">
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-auto object-cover"
+                poster={medusaStencil}
               >
-                <img 
-                  src={src}
-                  alt={`Example ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              </motion.div>
-            ))}
-          </div>
+                <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_9606-7wXjUza5iHfO4woAkktUJemkhAYzvt.MP4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              
+              {/* Video Overlay Labels */}
+              <div className="absolute top-4 left-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm font-medium">
+                Stencil
+              </div>
+              <div className="absolute top-4 right-4 bg-white/90 text-black px-3 py-1 rounded-full text-sm font-medium">
+                Original
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
