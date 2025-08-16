@@ -19,6 +19,8 @@ const translations = {
     heroTitle: "Revoluciona tus Diseños de Tatuajes",
     heroSubtitle: "Herramientas profesionales para tatuadores, impulsadas por IA",
     toolsTitle: "HERRAMIENTAS",
+    transformYourIdeas: "Transforma tus ideas en arte profesional",
+    professionalTools: "Herramientas avanzadas para artistas del tatuaje",
     
     // Navigation menu
     nav: {
@@ -71,6 +73,8 @@ const translations = {
     heroTitle: "Revolutionize your Tattoo Designs",
     heroSubtitle: "Professional AI-powered tools for tattoo artists",
     toolsTitle: "TOOLS",
+    transformYourIdeas: "Transform your ideas into professional art",
+    professionalTools: "Advanced tools for tattoo artists",
     
     // Navigation menu
     nav: {
@@ -748,14 +752,22 @@ export default function Home() {
       {/* Tools Section */}
       <section className="py-2 px-4">
         <div className="max-w-7xl mx-auto">
-            <motion.h3 
-              className="text-3xl font-bold text-center mb-12"
+            <motion.div
+              className="text-center mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <span className="text-blue-400">{t('toolsTitle')}</span>
-            </motion.h3>
+              <p className="text-gray-400 mb-4 text-lg">
+                {t('transformYourIdeas')}
+              </p>
+              <h3 className="text-3xl font-bold">
+                <span className="text-blue-400">{t('toolsTitle')}</span>
+              </h3>
+              <p className="text-gray-500 mt-2 text-sm">
+                {t('professionalTools')}
+              </p>
+            </motion.div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
               <ToolCard
