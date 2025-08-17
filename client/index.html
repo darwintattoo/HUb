@@ -259,6 +259,33 @@
         await renderProfile();
         await checkAuthStatus();
         
+        // Force immediate button update for logged in users
+        if (session && session.user && session.user.email) {
+          console.log('Forcing immediate button update for:', session.user.email);
+          // Wait a bit for React to render the buttons
+          setTimeout(() => {
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(btn => {
+              if (btn.textContent === 'Sign In' || btn.textContent === 'Iniciar Sesión') {
+                console.log('Found and updating button:', btn.textContent);
+                btn.textContent = session.user.email;
+                btn.style.fontSize = '12px';
+                btn.style.minWidth = '140px';
+                // Clone to remove React handlers
+                const newBtn = btn.cloneNode(true);
+                newBtn.onclick = async (e) => {
+                  e.preventDefault();
+                  if (confirm('¿Cerrar sesión?')) {
+                    await supabase.auth.signOut();
+                    window.location.reload();
+                  }
+                };
+                btn.parentNode.replaceChild(newBtn, btn);
+              }
+            });
+          }, 500);
+        }
+        
         // Force check every 2 seconds to ensure button updates
         setInterval(async () => {
           await checkAuthStatus();
