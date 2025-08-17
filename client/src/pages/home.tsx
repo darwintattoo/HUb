@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Wand2, Smile, X, RotateCcw, Sparkles, Menu, ChevronDown, ExternalLink } from 'lucide-react';
+import { Wand2, Smile, X, RotateCcw, Sparkles, Menu, ChevronDown, ExternalLink, Palette } from 'lucide-react';
 import { Modal } from '@/components/ui/modal';
 import logoPath from '@assets/1Asset 1zzz.png';
 import stencilExample1 from '@assets/Captura de pantalla 2025-05-26 211021.png';
@@ -595,9 +595,12 @@ export default function Home() {
                       rel="noopener noreferrer"
                       className="flex items-center justify-between px-5 py-4 text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-blue-600/10 hover:to-purple-600/10 transition-all duration-200 border-b border-gray-800 group"
                     >
-                      <div>
-                        <div className="font-medium text-sm">{t('nav.stencilConverter')}</div>
-                        <div className="text-xs text-gray-500 mt-0.5">Convert images to stencils</div>
+                      <div className="flex items-center gap-3">
+                        <Palette size={18} className="text-gray-400" />
+                        <div>
+                          <div className="font-medium text-sm">{t('nav.stencilConverter')}</div>
+                          <div className="text-xs text-gray-500 mt-0.5">Convert images to stencils</div>
+                        </div>
                       </div>
                       <ExternalLink size={16} className="text-gray-500 group-hover:text-blue-400 transition-colors" />
                     </a>
@@ -607,9 +610,12 @@ export default function Home() {
                       rel="noopener noreferrer"
                       className="flex items-center justify-between px-5 py-4 text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-blue-600/10 hover:to-purple-600/10 transition-all duration-200 group"
                     >
-                      <div>
-                        <div className="font-medium text-sm">{t('nav.aiImageEditor')}</div>
-                        <div className="text-xs text-gray-500 mt-0.5">AI-powered design tools</div>
+                      <div className="flex items-center gap-3">
+                        <Wand2 size={18} className="text-gray-400" />
+                        <div>
+                          <div className="font-medium text-sm">{t('nav.aiImageEditor')}</div>
+                          <div className="text-xs text-gray-500 mt-0.5">AI-powered design tools</div>
+                        </div>
                       </div>
                       <ExternalLink size={16} className="text-gray-500 group-hover:text-blue-400 transition-colors" />
                     </a>
@@ -683,7 +689,10 @@ export default function Home() {
                       rel="noopener noreferrer"
                       className="flex items-center justify-between p-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all duration-200 group"
                     >
-                      <span className="font-medium text-sm">{t('nav.stencilConverter')}</span>
+                      <div className="flex items-center gap-3">
+                        <Palette size={18} className="text-gray-400" />
+                        <span className="font-medium text-sm">{t('nav.stencilConverter')}</span>
+                      </div>
                       <ExternalLink size={14} className="text-gray-500 group-hover:text-blue-400 transition-colors" />
                     </a>
                     <a 
@@ -692,7 +701,10 @@ export default function Home() {
                       rel="noopener noreferrer"
                       className="flex items-center justify-between p-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all duration-200 group"
                     >
-                      <span className="font-medium text-sm">{t('nav.aiImageEditor')}</span>
+                      <div className="flex items-center gap-3">
+                        <Wand2 size={18} className="text-gray-400" />
+                        <span className="font-medium text-sm">{t('nav.aiImageEditor')}</span>
+                      </div>
                       <ExternalLink size={14} className="text-gray-500 group-hover:text-blue-400 transition-colors" />
                     </a>
                   </div>
