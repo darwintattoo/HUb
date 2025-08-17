@@ -187,12 +187,18 @@
 
       // --- Acciones del modal ---
       $("#tsp-google").onclick = async () => {
+        msg.textContent = "Redirigiendo a Google...";
         const pending = localStorage.getItem('tsp:pendingTool') || "";
         localStorage.setItem('tsp:pendingTool', pending);
-        await supabase.auth.signInWithOAuth({
-          provider: "google",
-          options: { redirectTo: HUB_URL }
-        });
+        try {
+          await supabase.auth.signInWithOAuth({
+            provider: "google",
+            options: { redirectTo: HUB_URL }
+          });
+        } catch (error) {
+          console.error('Google OAuth error:', error);
+          msg.textContent = "Error con Google OAuth. Intenta con email.";
+        }
       };
 
       $("#tsp-login").onclick = async () => {
