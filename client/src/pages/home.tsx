@@ -572,7 +572,7 @@ export default function Home() {
           </div>
           
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8">
+          <nav className="hidden lg:flex items-center space-x-6">
             {/* Product Dropdown */}
             <div className="relative dropdown-container">
               <button 
@@ -614,23 +614,19 @@ export default function Home() {
               )}
             </div>
             
-            <a href="#how-it-works" className="text-gray-300 hover:text-white transition-colors">{t('nav.howItWorks')}</a>
-            <a href="#security" className="text-gray-300 hover:text-white transition-colors">{t('nav.security')}</a>
-            <a href="#pricing" className="text-gray-300 hover:text-white transition-colors">{t('nav.pricing')}</a>
-            <a href="#tutorials" className="text-gray-300 hover:text-white transition-colors">{t('nav.tutorials')}</a>
-            <a href="#gallery" className="text-gray-300 hover:text-white transition-colors">{t('nav.gallery')}</a>
-            <a href="#support" className="text-gray-300 hover:text-white transition-colors">{t('nav.support')}</a>
-            <a href="#faq" className="text-gray-300 hover:text-white transition-colors">{t('nav.faq')}</a>
-            <a href="#contact" className="text-gray-300 hover:text-white transition-colors">{t('nav.contact')}</a>
+            <a href="#how-it-works" className="text-gray-300 hover:text-white transition-colors text-sm">{t('nav.howItWorks')}</a>
+            <a href="#pricing" className="text-gray-300 hover:text-white transition-colors text-sm">{t('nav.pricing')}</a>
+            <a href="#tutorials" className="text-gray-300 hover:text-white transition-colors text-sm">{t('nav.tutorials')}</a>
+            <a href="#support" className="text-gray-300 hover:text-white transition-colors text-sm">{t('nav.support')}</a>
           </nav>
           
           {/* Right side controls */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
             {/* Language Switcher */}
             <div className="flex bg-gray-800 rounded-lg p-1">
               <button 
                 onClick={() => setLanguage('en')}
-                className={`px-3 py-1 rounded text-sm font-medium transition-all duration-200 ${
+                className={`px-2 py-1 rounded text-xs font-medium transition-all duration-200 ${
                   language === 'en' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'
                 }`}
               >
@@ -638,7 +634,7 @@ export default function Home() {
               </button>
               <button 
                 onClick={() => setLanguage('es')}
-                className={`px-3 py-1 rounded text-sm font-medium transition-all duration-200 ${
+                className={`px-2 py-1 rounded text-xs font-medium transition-all duration-200 ${
                   language === 'es' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'
                 }`}
               >
@@ -652,7 +648,7 @@ export default function Home() {
                 const modal = document.getElementById('tsp-auth');
                 if (modal) modal.classList.remove('hidden');
               }}
-              className="hidden lg:block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+              className="hidden lg:block bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap"
             >
               {language === 'es' ? 'Iniciar Sesión' : 'Sign In'}
             </button>
