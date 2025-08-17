@@ -644,6 +644,8 @@ export default function Home() {
             
             {/* Login Button */}
             <button 
+              data-login-btn="true"
+              data-lang={language}
               onClick={() => {
                 const modal = document.getElementById('tsp-auth');
                 if (modal) {

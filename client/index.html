@@ -173,6 +173,30 @@
         });
       });
 
+      // Check authentication status and update UI
+      async function checkAuthStatus() {
+        const { data: { session } } = await supabase.auth.getSession();
+        const loginButtons = document.querySelectorAll('[data-login-btn]');
+        
+        if (session) {
+          // User is logged in
+          loginButtons.forEach(btn => {
+            btn.textContent = session.user.email || 'Usuario';
+            btn.onclick = async () => {
+              if (confirm('¿Cerrar sesión?')) {
+                await supabase.auth.signOut();
+                window.location.reload();
+              }
+            };
+          });
+        } else {
+          // User is not logged in
+          loginButtons.forEach(btn => {
+            btn.textContent = btn.getAttribute('data-lang') === 'es' ? 'Iniciar Sesión' : 'Sign In';
+          });
+        }
+      }
+
       // Si el usuario volvió del login (Google/email), abre la herramienta que pidió
       (async () => {
         const { data: { session } } = await supabase.auth.getSession();
@@ -183,7 +207,14 @@
           return;
         }
         await renderProfile();
+        await checkAuthStatus();
       })();
+      
+      // Listen for auth changes
+      supabase.auth.onAuthStateChange(async (event, session) => {
+        console.log('Auth state changed:', event);
+        await checkAuthStatus();
+      });
 
       // --- Acciones del modal ---
       $("#tsp-google").onclick = async () => {
@@ -205,22 +236,93 @@
         msg.textContent = "Entrando…";
         const email = $("#tsp-email").value.trim();
         const password = $("#tsp-pass").value;
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error){ msg.textContent = "Error: " + error.message; return; }
-        showModal(false);
-        await renderProfile();
-        const pending = localStorage.getItem('tsp:pendingTool');
-        if (pending){ localStorage.removeItem('tsp:pendingTool'); await goTo(TOOL_URLS[pending]); }
+        
+        if (!email || !password) {
+          msg.textContent = "Por favor completa todos los campos";
+          return;
+        }
+        
+        try {
+          const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+          
+          if (error) {
+            console.error('Login error:', error);
+            msg.textContent = "Error: " + error.message;
+            return;
+          }
+          
+          console.log('Login successful:', data);
+          msg.textContent = "¡Bienvenido!";
+          
+          // Close modal
+          const modal = $("#tsp-auth");
+          if (modal) {
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+          }
+          
+          // Update UI
+          await checkAuthStatus();
+          await renderProfile();
+          
+          // Check for pending tool navigation
+          const pending = localStorage.getItem('tsp:pendingTool');
+          if (pending) {
+            localStorage.removeItem('tsp:pendingTool');
+            await goTo(TOOL_URLS[pending]);
+          }
+        } catch (err) {
+          console.error('Unexpected error:', err);
+          msg.textContent = "Error inesperado. Intenta de nuevo.";
+        }
       };
 
       $("#tsp-signup").onclick = async () => {
         msg.textContent = "Creando cuenta…";
         const email = $("#tsp-email").value.trim();
         const password = $("#tsp-pass").value;
-        const { error } = await supabase.auth.signUp({
-          email, password, options: { emailRedirectTo: HUB_URL }
-        });
-        msg.textContent = error ? ("Error: " + error.message) : "Revisa tu correo para confirmar.";
+        
+        if (!email || !password) {
+          msg.textContent = "Por favor completa todos los campos";
+          return;
+        }
+        
+        if (password.length < 6) {
+          msg.textContent = "La contraseña debe tener al menos 6 caracteres";
+          return;
+        }
+        
+        try {
+          const { data, error } = await supabase.auth.signUp({
+            email, 
+            password, 
+            options: { emailRedirectTo: HUB_URL }
+          });
+          
+          if (error) {
+            console.error('Signup error:', error);
+            msg.textContent = "Error: " + error.message;
+            return;
+          }
+          
+          console.log('Signup successful:', data);
+          msg.textContent = "¡Cuenta creada! Revisa tu correo para confirmar.";
+          
+          // If auto-confirmed (some Supabase configs), log them in
+          if (data.session) {
+            setTimeout(async () => {
+              const modal = $("#tsp-auth");
+              if (modal) {
+                modal.classList.add('hidden');
+                modal.style.display = 'none';
+              }
+              await checkAuthStatus();
+            }, 2000);
+          }
+        } catch (err) {
+          console.error('Unexpected error:', err);
+          msg.textContent = "Error inesperado. Intenta de nuevo.";
+        }
       };
 
       $("#tsp-close").onclick = () => {
@@ -231,8 +333,34 @@
         }
       };
 
+      // Test Supabase connection
+      async function testSupabase() {
+        try {
+          const { data, error } = await supabase.auth.getSession();
+          console.log('Supabase connection test:', { data, error });
+          if (error) {
+            console.error('Supabase error:', error);
+            return false;
+          }
+          console.log('Supabase connected successfully');
+          return true;
+        } catch (err) {
+          console.error('Failed to connect to Supabase:', err);
+          return false;
+        }
+      }
+      
+      // Initialize and test connection
+      testSupabase().then(connected => {
+        if (!connected) {
+          console.error('⚠️ Supabase connection failed. Check your configuration.');
+        } else {
+          console.log('✅ Supabase connected and ready');
+        }
+      });
+      
       // (Opcional) expón para inspección en consola
-      window.TSPAuth = { supabase };
+      window.TSPAuth = { supabase, testSupabase };
     </script>
   </body>
 </html>
