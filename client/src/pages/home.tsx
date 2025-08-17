@@ -576,13 +576,13 @@ export default function Home() {
             
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center space-x-1">
-              {/* Product Dropdown */}
+              {/* Tools Dropdown */}
               <div className="relative dropdown-container">
                 <button 
                   onClick={() => setIsProductDropdownOpen(!isProductDropdownOpen)}
                   className="dropdown-button flex items-center space-x-2 text-gray-300 font-medium px-4 py-2.5 rounded-lg hover:bg-white/5 hover:text-white transition-all duration-200 group"
                 >
-                  <span className="text-sm tracking-wide">{t('nav.product')}</span>
+                  <span className="text-sm tracking-wide">Tools</span>
                   <ChevronDown size={16} className={`transition-all duration-200 text-gray-400 group-hover:text-blue-400 ${isProductDropdownOpen ? 'rotate-180 text-blue-400' : ''}`} />
                 </button>
                 {isProductDropdownOpen && (
@@ -620,36 +620,12 @@ export default function Home() {
                 )}
               </div>
               
-              <a href="#how-it-works" className="relative text-gray-300 font-medium text-sm px-4 py-2.5 rounded-lg hover:bg-white/5 hover:text-white transition-all duration-200 tracking-wide group">
-                <span>{t('nav.howItWorks')}</span>
-                <span className="absolute bottom-1 left-4 right-4 h-px bg-gradient-to-r from-blue-400 to-purple-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
-              </a>
-              <a href="#security" className="relative text-gray-300 font-medium text-sm px-4 py-2.5 rounded-lg hover:bg-white/5 hover:text-white transition-all duration-200 tracking-wide group">
-                <span>{t('nav.security')}</span>
+              <a href="#plans" className="relative text-gray-300 font-medium text-sm px-4 py-2.5 rounded-lg hover:bg-white/5 hover:text-white transition-all duration-200 tracking-wide group">
+                <span>Plans</span>
                 <span className="absolute bottom-1 left-4 right-4 h-px bg-gradient-to-r from-blue-400 to-purple-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
               </a>
               <a href="#pricing" className="relative text-gray-300 font-medium text-sm px-4 py-2.5 rounded-lg hover:bg-white/5 hover:text-white transition-all duration-200 tracking-wide group">
                 <span>{t('nav.pricing')}</span>
-                <span className="absolute bottom-1 left-4 right-4 h-px bg-gradient-to-r from-blue-400 to-purple-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
-              </a>
-              <a href="#tutorials" className="relative text-gray-300 font-medium text-sm px-4 py-2.5 rounded-lg hover:bg-white/5 hover:text-white transition-all duration-200 tracking-wide group">
-                <span>{t('nav.tutorials')}</span>
-                <span className="absolute bottom-1 left-4 right-4 h-px bg-gradient-to-r from-blue-400 to-purple-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
-              </a>
-              <a href="#gallery" className="relative text-gray-300 font-medium text-sm px-4 py-2.5 rounded-lg hover:bg-white/5 hover:text-white transition-all duration-200 tracking-wide group">
-                <span>{t('nav.gallery')}</span>
-                <span className="absolute bottom-1 left-4 right-4 h-px bg-gradient-to-r from-blue-400 to-purple-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
-              </a>
-              <a href="#support" className="relative text-gray-300 font-medium text-sm px-4 py-2.5 rounded-lg hover:bg-white/5 hover:text-white transition-all duration-200 tracking-wide group">
-                <span>{t('nav.support')}</span>
-                <span className="absolute bottom-1 left-4 right-4 h-px bg-gradient-to-r from-blue-400 to-purple-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
-              </a>
-              <a href="#faq" className="relative text-gray-300 font-medium text-sm px-4 py-2.5 rounded-lg hover:bg-white/5 hover:text-white transition-all duration-200 tracking-wide group">
-                <span>{t('nav.faq')}</span>
-                <span className="absolute bottom-1 left-4 right-4 h-px bg-gradient-to-r from-blue-400 to-purple-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
-              </a>
-              <a href="#contact" className="relative text-gray-300 font-medium text-sm px-4 py-2.5 rounded-lg hover:bg-white/5 hover:text-white transition-all duration-200 tracking-wide group">
-                <span>{t('nav.contact')}</span>
                 <span className="absolute bottom-1 left-4 right-4 h-px bg-gradient-to-r from-blue-400 to-purple-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
               </a>
             </nav>
@@ -705,7 +681,7 @@ export default function Home() {
               <div className="space-y-2">
                 <div className="pb-2 mb-2 border-b border-gray-800/50">
                   <h4 className="text-white font-semibold text-sm uppercase tracking-wider mb-3 flex items-center">
-                    <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">{t('nav.product')}</span>
+                    <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Tools</span>
                   </h4>
                   <div className="space-y-1">
                     <a 
@@ -729,14 +705,8 @@ export default function Home() {
                   </div>
                 </div>
                 
-                <a href="#how-it-works" className="block p-3 rounded-lg text-gray-300 font-medium text-sm hover:text-white hover:bg-white/5 transition-all duration-200">{t('nav.howItWorks')}</a>
-                <a href="#security" className="block p-3 rounded-lg text-gray-300 font-medium text-sm hover:text-white hover:bg-white/5 transition-all duration-200">{t('nav.security')}</a>
+                <a href="#plans" className="block p-3 rounded-lg text-gray-300 font-medium text-sm hover:text-white hover:bg-white/5 transition-all duration-200">Plans</a>
                 <a href="#pricing" className="block p-3 rounded-lg text-gray-300 font-medium text-sm hover:text-white hover:bg-white/5 transition-all duration-200">{t('nav.pricing')}</a>
-                <a href="#tutorials" className="block p-3 rounded-lg text-gray-300 font-medium text-sm hover:text-white hover:bg-white/5 transition-all duration-200">{t('nav.tutorials')}</a>
-                <a href="#gallery" className="block p-3 rounded-lg text-gray-300 font-medium text-sm hover:text-white hover:bg-white/5 transition-all duration-200">{t('nav.gallery')}</a>
-                <a href="#support" className="block p-3 rounded-lg text-gray-300 font-medium text-sm hover:text-white hover:bg-white/5 transition-all duration-200">{t('nav.support')}</a>
-                <a href="#faq" className="block p-3 rounded-lg text-gray-300 font-medium text-sm hover:text-white hover:bg-white/5 transition-all duration-200">{t('nav.faq')}</a>
-                <a href="#contact" className="block p-3 rounded-lg text-gray-300 font-medium text-sm hover:text-white hover:bg-white/5 transition-all duration-200">{t('nav.contact')}</a>
               </div>
             </div>
           </motion.div>
