@@ -617,10 +617,6 @@ export default function Home() {
                 )}
               </div>
               
-              <a href="#plans" className="relative text-gray-300 font-medium text-sm px-4 py-2.5 rounded-lg hover:bg-white/5 hover:text-white transition-all duration-200 tracking-wide group">
-                <span>Plans</span>
-                <span className="absolute bottom-1 left-4 right-4 h-px bg-gradient-to-r from-blue-400 to-purple-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
-              </a>
               <a href="#pricing" className="relative text-gray-300 font-medium text-sm px-4 py-2.5 rounded-lg hover:bg-white/5 hover:text-white transition-all duration-200 tracking-wide group">
                 <span>{t('nav.pricing')}</span>
                 <span className="absolute bottom-1 left-4 right-4 h-px bg-gradient-to-r from-blue-400 to-purple-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
@@ -702,7 +698,6 @@ export default function Home() {
                   </div>
                 </div>
                 
-                <a href="#plans" className="block p-3 rounded-lg text-gray-300 font-medium text-sm hover:text-white hover:bg-white/5 transition-all duration-200">Plans</a>
                 <a href="#pricing" className="block p-3 rounded-lg text-gray-300 font-medium text-sm hover:text-white hover:bg-white/5 transition-all duration-200">{t('nav.pricing')}</a>
               </div>
             </div>
