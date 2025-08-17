@@ -551,109 +551,146 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-black text-white font-sans">
-      <header className="bg-black p-4 border-b border-gray-800 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          {/* Logo */}
-          <div className="flex items-center space-x-3">
-            <img 
-              src={logoPath} 
-              alt="TattooStencilPro Logo" 
-              className="h-12 w-12"
-            />
-            <div>
-              <h1 className="text-xl font-bold">
-                <span className="font-bold">Tattoo</span>
-                <span className="font-light">Stencil</span>
-                <span className="text-blue-400">Pro</span>
-              </h1>
-              <p className="text-xs text-gray-400 hidden sm:block">{t('byDarwinEnriquez')}</p>
+      <header className="bg-gradient-to-b from-gray-900 via-gray-900/95 to-black/90 backdrop-blur-lg border-b border-gray-800/50 sticky top-0 z-50 shadow-2xl">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex justify-between items-center">
+            {/* Logo */}
+            <div className="flex items-center space-x-4 group cursor-pointer">
+              <div className="relative">
+                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur opacity-25 group-hover:opacity-75 transition duration-1000"></div>
+                <img 
+                  src={logoPath} 
+                  alt="TattooStencilPro Logo" 
+                  className="relative h-14 w-14 rounded-full shadow-xl"
+                />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold tracking-tight">
+                  <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Tattoo</span>
+                  <span className="bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">Stencil</span>
+                  <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Pro</span>
+                </h1>
+                <p className="text-xs text-gray-500 font-medium tracking-wide hidden sm:block">{t('byDarwinEnriquez')}</p>
+              </div>
             </div>
-          </div>
-          
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8">
-            {/* Product Dropdown */}
-            <div className="relative dropdown-container">
-              <button 
-                onClick={() => setIsProductDropdownOpen(!isProductDropdownOpen)}
-                className="dropdown-button flex items-center space-x-1 text-white font-semibold bg-blue-600/20 px-3 py-2 rounded-lg hover:bg-blue-600/30 transition-colors"
-              >
-                <span>{t('nav.product')}</span>
-                <ChevronDown size={16} className={`transition-transform ${isProductDropdownOpen ? 'rotate-180' : ''}`} />
-              </button>
-              {isProductDropdownOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="absolute top-full left-0 mt-2 w-56 bg-gray-900 border border-gray-700 rounded-lg shadow-xl"
+            
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex items-center space-x-1">
+              {/* Product Dropdown */}
+              <div className="relative dropdown-container">
+                <button 
+                  onClick={() => setIsProductDropdownOpen(!isProductDropdownOpen)}
+                  className="dropdown-button flex items-center space-x-2 text-gray-300 font-medium px-4 py-2.5 rounded-lg hover:bg-white/5 hover:text-white transition-all duration-200 group"
                 >
-                  <a 
-                    href="https://ink-stencil-darwintattoo1.replit.app/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="block px-4 py-3 text-white font-medium hover:text-blue-300 hover:bg-blue-600/20 transition-colors border-b border-gray-700"
+                  <span className="text-sm tracking-wide">{t('nav.product')}</span>
+                  <ChevronDown size={16} className={`transition-all duration-200 text-gray-400 group-hover:text-blue-400 ${isProductDropdownOpen ? 'rotate-180 text-blue-400' : ''}`} />
+                </button>
+                {isProductDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-full left-0 mt-2 w-64 bg-gradient-to-b from-gray-900 to-gray-950 border border-gray-800 rounded-xl shadow-2xl overflow-hidden"
                   >
-                    <div className="flex items-center justify-between">
-                      <span>{t('nav.stencilConverter')}</span>
-                      <ExternalLink size={14} className="text-blue-400" />
-                    </div>
-                  </a>
-                  <a 
-                    href="https://darwinfluxkontext.replit.app" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="block px-4 py-3 text-white font-medium hover:text-blue-300 hover:bg-blue-600/20 transition-colors"
+                    <a 
+                      href="https://ink-stencil-darwintattoo1.replit.app/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between px-5 py-4 text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-blue-600/10 hover:to-purple-600/10 transition-all duration-200 border-b border-gray-800 group"
+                    >
+                      <div>
+                        <div className="font-medium text-sm">{t('nav.stencilConverter')}</div>
+                        <div className="text-xs text-gray-500 mt-0.5">Convert images to stencils</div>
+                      </div>
+                      <ExternalLink size={16} className="text-gray-500 group-hover:text-blue-400 transition-colors" />
+                    </a>
+                    <a 
+                      href="https://darwinfluxkontext.replit.app" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between px-5 py-4 text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-blue-600/10 hover:to-purple-600/10 transition-all duration-200 group"
+                    >
+                      <div>
+                        <div className="font-medium text-sm">{t('nav.aiImageEditor')}</div>
+                        <div className="text-xs text-gray-500 mt-0.5">AI-powered design tools</div>
+                      </div>
+                      <ExternalLink size={16} className="text-gray-500 group-hover:text-blue-400 transition-colors" />
+                    </a>
+                  </motion.div>
+                )}
+              </div>
+              
+              <a href="#how-it-works" className="relative text-gray-300 font-medium text-sm px-4 py-2.5 rounded-lg hover:bg-white/5 hover:text-white transition-all duration-200 tracking-wide group">
+                <span>{t('nav.howItWorks')}</span>
+                <span className="absolute bottom-1 left-4 right-4 h-px bg-gradient-to-r from-blue-400 to-purple-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
+              </a>
+              <a href="#security" className="relative text-gray-300 font-medium text-sm px-4 py-2.5 rounded-lg hover:bg-white/5 hover:text-white transition-all duration-200 tracking-wide group">
+                <span>{t('nav.security')}</span>
+                <span className="absolute bottom-1 left-4 right-4 h-px bg-gradient-to-r from-blue-400 to-purple-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
+              </a>
+              <a href="#pricing" className="relative text-gray-300 font-medium text-sm px-4 py-2.5 rounded-lg hover:bg-white/5 hover:text-white transition-all duration-200 tracking-wide group">
+                <span>{t('nav.pricing')}</span>
+                <span className="absolute bottom-1 left-4 right-4 h-px bg-gradient-to-r from-blue-400 to-purple-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
+              </a>
+              <a href="#tutorials" className="relative text-gray-300 font-medium text-sm px-4 py-2.5 rounded-lg hover:bg-white/5 hover:text-white transition-all duration-200 tracking-wide group">
+                <span>{t('nav.tutorials')}</span>
+                <span className="absolute bottom-1 left-4 right-4 h-px bg-gradient-to-r from-blue-400 to-purple-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
+              </a>
+              <a href="#gallery" className="relative text-gray-300 font-medium text-sm px-4 py-2.5 rounded-lg hover:bg-white/5 hover:text-white transition-all duration-200 tracking-wide group">
+                <span>{t('nav.gallery')}</span>
+                <span className="absolute bottom-1 left-4 right-4 h-px bg-gradient-to-r from-blue-400 to-purple-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
+              </a>
+              <a href="#support" className="relative text-gray-300 font-medium text-sm px-4 py-2.5 rounded-lg hover:bg-white/5 hover:text-white transition-all duration-200 tracking-wide group">
+                <span>{t('nav.support')}</span>
+                <span className="absolute bottom-1 left-4 right-4 h-px bg-gradient-to-r from-blue-400 to-purple-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
+              </a>
+              <a href="#faq" className="relative text-gray-300 font-medium text-sm px-4 py-2.5 rounded-lg hover:bg-white/5 hover:text-white transition-all duration-200 tracking-wide group">
+                <span>{t('nav.faq')}</span>
+                <span className="absolute bottom-1 left-4 right-4 h-px bg-gradient-to-r from-blue-400 to-purple-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
+              </a>
+              <a href="#contact" className="relative text-gray-300 font-medium text-sm px-4 py-2.5 rounded-lg hover:bg-white/5 hover:text-white transition-all duration-200 tracking-wide group">
+                <span>{t('nav.contact')}</span>
+                <span className="absolute bottom-1 left-4 right-4 h-px bg-gradient-to-r from-blue-400 to-purple-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
+              </a>
+            </nav>
+            
+            {/* Right side controls */}
+            <div className="flex items-center space-x-4">
+              {/* Language Switcher */}
+              <div className="relative bg-gray-800/50 backdrop-blur-sm rounded-xl p-1 border border-gray-700/50 shadow-lg">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10 rounded-xl"></div>
+                <div className="relative flex">
+                  <button 
+                    onClick={() => setLanguage('en')}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                      language === 'en' 
+                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-600/25' 
+                        : 'text-gray-400 hover:text-white hover:bg-white/10'
+                    }`}
                   >
-                    <div className="flex items-center justify-between">
-                      <span>{t('nav.aiImageEditor')}</span>
-                      <ExternalLink size={14} className="text-blue-400" />
-                    </div>
-                  </a>
-                </motion.div>
-              )}
-            </div>
-            
-            <a href="#how-it-works" className="text-gray-300 hover:text-white transition-colors">{t('nav.howItWorks')}</a>
-            <a href="#security" className="text-gray-300 hover:text-white transition-colors">{t('nav.security')}</a>
-            <a href="#pricing" className="text-gray-300 hover:text-white transition-colors">{t('nav.pricing')}</a>
-            <a href="#tutorials" className="text-gray-300 hover:text-white transition-colors">{t('nav.tutorials')}</a>
-            <a href="#gallery" className="text-gray-300 hover:text-white transition-colors">{t('nav.gallery')}</a>
-            <a href="#support" className="text-gray-300 hover:text-white transition-colors">{t('nav.support')}</a>
-            <a href="#faq" className="text-gray-300 hover:text-white transition-colors">{t('nav.faq')}</a>
-            <a href="#contact" className="text-gray-300 hover:text-white transition-colors">{t('nav.contact')}</a>
-          </nav>
-          
-          {/* Right side controls */}
-          <div className="flex items-center space-x-4">
-            {/* Language Switcher */}
-            <div className="flex bg-gray-800 rounded-lg p-1">
+                    EN
+                  </button>
+                  <button 
+                    onClick={() => setLanguage('es')}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                      language === 'es' 
+                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-600/25' 
+                        : 'text-gray-400 hover:text-white hover:bg-white/10'
+                    }`}
+                  >
+                    ES
+                  </button>
+                </div>
+              </div>
+              
+              {/* Mobile Menu Button */}
               <button 
-                onClick={() => setLanguage('en')}
-                className={`px-3 py-1 rounded text-sm font-medium transition-all duration-200 ${
-                  language === 'en' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'
-                }`}
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="mobile-menu-button lg:hidden p-2.5 rounded-lg bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-200"
               >
-                EN
-              </button>
-              <button 
-                onClick={() => setLanguage('es')}
-                className={`px-3 py-1 rounded text-sm font-medium transition-all duration-200 ${
-                  language === 'es' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'
-                }`}
-              >
-                ES
+                <Menu size={24} />
               </button>
             </div>
-            
-
-            
-            {/* Mobile Menu Button */}
-            <button 
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="mobile-menu-button lg:hidden text-gray-300 hover:text-white transition-colors"
-            >
-              <Menu size={24} />
-            </button>
           </div>
         </div>
         
@@ -662,40 +699,45 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
-            className="lg:hidden mt-4 pt-4 border-t border-gray-800 mobile-menu-container"
+            className="lg:hidden mobile-menu-container"
           >
-            <div className="space-y-4">
-              <div>
-                <h4 className="text-white font-semibold mb-2 text-lg">{t('nav.product')}</h4>
-                <div className="pl-4 space-y-2">
-                  <a 
-                    href="https://ink-stencil-darwintattoo1.replit.app/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="block text-white font-medium hover:text-blue-300 transition-colors"
-                  >
-                    {t('nav.stencilConverter')}
-                  </a>
-                  <a 
-                    href="https://darwinfluxkontext.replit.app" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="block text-white font-medium hover:text-blue-300 transition-colors"
-                  >
-                    {t('nav.aiImageEditor')}
-                  </a>
+            <div className="px-6 py-4 bg-gradient-to-b from-gray-900/50 to-black/50 backdrop-blur-lg border-t border-gray-800/50">
+              <div className="space-y-2">
+                <div className="pb-2 mb-2 border-b border-gray-800/50">
+                  <h4 className="text-white font-semibold text-sm uppercase tracking-wider mb-3 flex items-center">
+                    <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">{t('nav.product')}</span>
+                  </h4>
+                  <div className="space-y-1">
+                    <a 
+                      href="https://ink-stencil-darwintattoo1.replit.app/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between p-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all duration-200 group"
+                    >
+                      <span className="font-medium text-sm">{t('nav.stencilConverter')}</span>
+                      <ExternalLink size={14} className="text-gray-500 group-hover:text-blue-400 transition-colors" />
+                    </a>
+                    <a 
+                      href="https://darwinfluxkontext.replit.app" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between p-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/5 transition-all duration-200 group"
+                    >
+                      <span className="font-medium text-sm">{t('nav.aiImageEditor')}</span>
+                      <ExternalLink size={14} className="text-gray-500 group-hover:text-blue-400 transition-colors" />
+                    </a>
+                  </div>
                 </div>
+                
+                <a href="#how-it-works" className="block p-3 rounded-lg text-gray-300 font-medium text-sm hover:text-white hover:bg-white/5 transition-all duration-200">{t('nav.howItWorks')}</a>
+                <a href="#security" className="block p-3 rounded-lg text-gray-300 font-medium text-sm hover:text-white hover:bg-white/5 transition-all duration-200">{t('nav.security')}</a>
+                <a href="#pricing" className="block p-3 rounded-lg text-gray-300 font-medium text-sm hover:text-white hover:bg-white/5 transition-all duration-200">{t('nav.pricing')}</a>
+                <a href="#tutorials" className="block p-3 rounded-lg text-gray-300 font-medium text-sm hover:text-white hover:bg-white/5 transition-all duration-200">{t('nav.tutorials')}</a>
+                <a href="#gallery" className="block p-3 rounded-lg text-gray-300 font-medium text-sm hover:text-white hover:bg-white/5 transition-all duration-200">{t('nav.gallery')}</a>
+                <a href="#support" className="block p-3 rounded-lg text-gray-300 font-medium text-sm hover:text-white hover:bg-white/5 transition-all duration-200">{t('nav.support')}</a>
+                <a href="#faq" className="block p-3 rounded-lg text-gray-300 font-medium text-sm hover:text-white hover:bg-white/5 transition-all duration-200">{t('nav.faq')}</a>
+                <a href="#contact" className="block p-3 rounded-lg text-gray-300 font-medium text-sm hover:text-white hover:bg-white/5 transition-all duration-200">{t('nav.contact')}</a>
               </div>
-              <a href="#how-it-works" className="block text-gray-300 hover:text-white transition-colors">{t('nav.howItWorks')}</a>
-              <a href="#security" className="block text-gray-300 hover:text-white transition-colors">{t('nav.security')}</a>
-              <a href="#pricing" className="block text-gray-300 hover:text-white transition-colors">{t('nav.pricing')}</a>
-              <a href="#tutorials" className="block text-gray-300 hover:text-white transition-colors">{t('nav.tutorials')}</a>
-              <a href="#gallery" className="block text-gray-300 hover:text-white transition-colors">{t('nav.gallery')}</a>
-              <a href="#support" className="block text-gray-300 hover:text-white transition-colors">{t('nav.support')}</a>
-              <a href="#faq" className="block text-gray-300 hover:text-white transition-colors">{t('nav.faq')}</a>
-              <a href="#contact" className="block text-gray-300 hover:text-white transition-colors">{t('nav.contact')}</a>
-              
-
             </div>
           </motion.div>
         )}
