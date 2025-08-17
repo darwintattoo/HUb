@@ -248,7 +248,13 @@ function main() {
         msg.textContent = error ? ("Error: " + error.message) : "Revisa tu correo para confirmar.";
       };
 
-      $("#tsp-close").onclick = () => showModal(false);
+      $("#tsp-close").onclick = () => {
+        const modal = $("#tsp-auth");
+        if (modal) {
+          modal.classList.add('hidden');
+          modal.style.display = 'none';
+        }
+      };
 
       // (Opcional) expón para inspección en consola
       window.TSPAuth = { supabase };
