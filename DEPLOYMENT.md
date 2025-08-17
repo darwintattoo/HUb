@@ -41,8 +41,7 @@ node scripts/deploy-fix.js
 1. Check if `dist/public` directory exists (build output)
 2. Create `dist` directory if it doesn't exist
 3. Copy all files from `dist/public` to `dist`
-4. **Add authentication script to deployment HTML** (ensures login buttons work in production)
-5. Provide success/error feedback
+4. Provide success/error feedback
 
 ## Automation Options
 

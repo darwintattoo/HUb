@@ -17,15 +17,6 @@ import dragonTattoo from '@assets/generated_images/dragon_tattoo_stencil_2da98a8
 import mandalaTattoo from '@assets/generated_images/mandala_tattoo_stencil_10675b74.png';
 import aiEditorImage from '@assets/Ai editor_1755352512747.webp';
 
-// Declare global type for Supabase auth
-declare global {
-  interface Window {
-    TSPAuth: {
-      supabase: any;
-    };
-  }
-}
-
 const translations = {
   es: {
     byDarwinEnriquez: "Por Darwin Enriquez",
@@ -391,8 +382,7 @@ const ToolCard = ({ title, description, icon: Icon, imageUrl, videoUrl, t, href,
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full mt-auto text-center transition-colors inline-block btn"
-            data-tool={href.includes('ink-stencil') ? 'stencil' : href.includes('darwinfluxkontext') ? 'editor' : undefined}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full mt-auto text-center transition-colors inline-block"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
           >
@@ -513,13 +503,6 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProductDropdownOpen, setIsProductDropdownOpen] = useState(false);
-  const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
-  
-  // Debug logout modal state
-  useEffect(() => {
-    console.log('🔵 showLogoutModal changed to:', showLogoutModal);
-  }, [showLogoutModal]);
 
   const t = (key: string): string => {
     const keys = key.split('.');
@@ -529,110 +512,6 @@ export default function Home() {
     }
     return (value as string) || key;
   };
-
-  // Check authentication status from Supabase
-  useEffect(() => {
-    let mounted = true;
-    let checkCount = 0;
-    
-    const checkAuth = async () => {
-      // Try multiple ways to get Supabase instance
-      const supabase = window.TSPAuth?.supabase || (window as any).supabase;
-      
-      if (!supabase) {
-        console.log('Supabase not found in window object, waiting... (attempt', checkCount + 1, ')');
-        checkCount++;
-        // Don't set to null if we haven't found Supabase yet
-        return;
-      }
-      
-      try {
-        const { data: { session }, error } = await supabase.auth.getSession();
-        console.log('React auth check:', { 
-          session: session ? 'EXISTS' : 'NULL', 
-          email: session?.user?.email,
-          error 
-        });
-        
-        if (!mounted) return;
-        
-        if (session && session.user && session.user.email) {
-          console.log('✅ Setting userEmail to:', session.user.email);
-          setUserEmail(session.user.email);
-        } else if (checkCount > 3) {
-          // Only set to null after we've tried a few times
-          console.log('❌ No session found after', checkCount, 'attempts');
-          setUserEmail(null);
-        }
-      } catch (err) {
-        console.error('Error checking auth:', err);
-      }
-    };
-
-    // Initial check with delay to ensure Supabase is loaded
-    setTimeout(checkAuth, 100);
-
-    // Also listen for auth state changes
-    const setupListener = () => {
-      const supabase = window.TSPAuth?.supabase || (window as any).supabase;
-      
-      if (supabase) {
-        const { data } = supabase.auth.onAuthStateChange((event: string, session: any) => {
-          console.log('🔔 Auth state changed:', event, session?.user?.email);
-          if (!mounted) return;
-          
-          if (session?.user?.email) {
-            console.log('🔔 Updating userEmail to:', session.user.email);
-            setUserEmail(session.user.email);
-          } else if (event === 'SIGNED_OUT') {
-            setUserEmail(null);
-          }
-        });
-        return data?.subscription;
-      }
-      return null;
-    };
-    
-    const authListener = setupListener();
-
-    // Check every 500ms for first 5 seconds, then every 2 seconds
-    let interval = setInterval(() => {
-      checkAuth();
-      checkCount++;
-      
-      if (checkCount > 10) {
-        clearInterval(interval);
-        interval = setInterval(checkAuth, 2000);
-      }
-    }, 500);
-
-    return () => {
-      mounted = false;
-      clearInterval(interval);
-      if (authListener) {
-        authListener.unsubscribe();
-      }
-    };
-  }, []);
-  
-  // Log when userEmail changes
-  useEffect(() => {
-    console.log('🔄 userEmail state updated to:', userEmail);
-    
-    // Also check if Supabase has a session directly
-    const checkDirectly = async () => {
-      const supabase = window.TSPAuth?.supabase || (window as any).supabase;
-      if (supabase) {
-        const { data: { session } } = await supabase.auth.getSession();
-        console.log('🔍 Direct Supabase check:', {
-          hasSession: !!session,
-          email: session?.user?.email,
-          userEmailState: userEmail
-        });
-      }
-    };
-    checkDirectly();
-  }, [userEmail]);
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -692,7 +571,7 @@ export default function Home() {
           </div>
           
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-6">
+          <nav className="hidden lg:flex items-center space-x-8">
             {/* Product Dropdown */}
             <div className="relative dropdown-container">
               <button 
@@ -734,19 +613,23 @@ export default function Home() {
               )}
             </div>
             
-            <a href="#how-it-works" className="text-gray-300 hover:text-white transition-colors text-sm">{t('nav.howItWorks')}</a>
-            <a href="#pricing" className="text-gray-300 hover:text-white transition-colors text-sm">{t('nav.pricing')}</a>
-            <a href="#tutorials" className="text-gray-300 hover:text-white transition-colors text-sm">{t('nav.tutorials')}</a>
-            <a href="#support" className="text-gray-300 hover:text-white transition-colors text-sm">{t('nav.support')}</a>
+            <a href="#how-it-works" className="text-gray-300 hover:text-white transition-colors">{t('nav.howItWorks')}</a>
+            <a href="#security" className="text-gray-300 hover:text-white transition-colors">{t('nav.security')}</a>
+            <a href="#pricing" className="text-gray-300 hover:text-white transition-colors">{t('nav.pricing')}</a>
+            <a href="#tutorials" className="text-gray-300 hover:text-white transition-colors">{t('nav.tutorials')}</a>
+            <a href="#gallery" className="text-gray-300 hover:text-white transition-colors">{t('nav.gallery')}</a>
+            <a href="#support" className="text-gray-300 hover:text-white transition-colors">{t('nav.support')}</a>
+            <a href="#faq" className="text-gray-300 hover:text-white transition-colors">{t('nav.faq')}</a>
+            <a href="#contact" className="text-gray-300 hover:text-white transition-colors">{t('nav.contact')}</a>
           </nav>
           
           {/* Right side controls */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-4">
             {/* Language Switcher */}
             <div className="flex bg-gray-800 rounded-lg p-1">
               <button 
                 onClick={() => setLanguage('en')}
-                className={`px-2 py-1 rounded text-xs font-medium transition-all duration-200 ${
+                className={`px-3 py-1 rounded text-sm font-medium transition-all duration-200 ${
                   language === 'en' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'
                 }`}
               >
@@ -754,7 +637,7 @@ export default function Home() {
               </button>
               <button 
                 onClick={() => setLanguage('es')}
-                className={`px-2 py-1 rounded text-xs font-medium transition-all duration-200 ${
+                className={`px-3 py-1 rounded text-sm font-medium transition-all duration-200 ${
                   language === 'es' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'
                 }`}
               >
@@ -762,84 +645,7 @@ export default function Home() {
               </button>
             </div>
             
-            {/* Login/Logout Button */}
-            <button 
-              data-login-btn="true"
-              data-lang={language}
-              onClick={async (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log('Button clicked, userEmail:', userEmail);
-                
-                if (userEmail) {
-                  // User is logged in, sign out directly
-                  console.log('Signing out...');
-                  try {
-                    // Try to get Supabase instance from various sources
-                    const supabase = window.TSPAuth?.supabase || 
-                                   (window as any).supabase || 
-                                   (window as any).TSPSupabase;
-                    
-                    if (supabase && supabase.auth) {
-                      console.log('Found Supabase, calling signOut');
-                      const { error } = await supabase.auth.signOut();
-                      if (error) {
-                        console.error('SignOut error:', error);
-                      } else {
-                        console.log('SignOut successful');
-                      }
-                    } else {
-                      console.log('No Supabase found, clearing storage only');
-                    }
-                  } catch (err) {
-                    console.error('Error during signOut:', err);
-                  }
-                  
-                  // Always clear storage and reload
-                  console.log('Clearing storage and reloading...');
-                  localStorage.clear();
-                  sessionStorage.clear();
-                  setTimeout(() => {
-                    window.location.href = '/';
-                  }, 100);
-                } else {
-                  // User is not logged in, show login modal
-                  const modal = document.getElementById('tsp-auth');
-                  if (modal) {
-                    modal.classList.remove('hidden');
-                    modal.setAttribute('style', `
-                      display: flex !important;
-                      position: fixed !important;
-                      top: 0 !important;
-                      left: 0 !important;
-                      width: 100vw !important;
-                      height: 100vh !important;
-                      background: rgba(0,0,0,0.8) !important;
-                      align-items: center !important;
-                      justify-content: center !important;
-                      z-index: 99999 !important;
-                    `);
-                    console.log('Modal forcefully displayed');
-                  }
-                }
-              }}
-              className={`hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
-                userEmail 
-                  ? 'bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border border-gray-700' 
-                  : 'bg-blue-600 hover:bg-blue-700 text-white'
-              }`}
-            >
-              {userEmail ? (
-                <>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                  <span className="truncate max-w-[150px]">{userEmail}</span>
-                </>
-              ) : (
-                language === 'es' ? 'Iniciar Sesión' : 'Sign In'
-              )}
-            </button>
+
             
             {/* Mobile Menu Button */}
             <button 
@@ -889,32 +695,6 @@ export default function Home() {
               <a href="#faq" className="block text-gray-300 hover:text-white transition-colors">{t('nav.faq')}</a>
               <a href="#contact" className="block text-gray-300 hover:text-white transition-colors">{t('nav.contact')}</a>
               
-              {/* Mobile Login Button */}
-              <button 
-                onClick={() => {
-                  const modal = document.getElementById('tsp-auth');
-                  if (modal) {
-                    // Force show the modal by overriding all styles
-                    modal.classList.remove('hidden');
-                    modal.setAttribute('style', `
-                      display: flex !important;
-                      position: fixed !important;
-                      top: 0 !important;
-                      left: 0 !important;
-                      width: 100vw !important;
-                      height: 100vh !important;
-                      background: rgba(0,0,0,0.8) !important;
-                      align-items: center !important;
-                      justify-content: center !important;
-                      z-index: 99999 !important;
-                    `);
-                  }
-                  setIsMobileMenuOpen(false);
-                }}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg font-medium transition-colors text-center mt-4"
-              >
-                {language === 'es' ? 'Iniciar Sesión' : 'Sign In'}
-              </button>
 
             </div>
           </motion.div>
@@ -1158,8 +938,6 @@ export default function Home() {
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <SimpleForm t={t} />
       </Modal>
-      
-
     </div>
   );
 }
