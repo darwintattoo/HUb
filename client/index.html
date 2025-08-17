@@ -127,6 +127,10 @@
       // =============
 
       const supabase = createClient(SUPABASE_URL, ANON_KEY);
+      
+      // Make Supabase available globally for React component
+      window.TSPAuth = { supabase };
+      window.supabase = supabase;
 
       // Helpers
       const $  = (q) => document.querySelector(q);

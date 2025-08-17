@@ -527,25 +527,57 @@ export default function Home() {
   // Check authentication status from Supabase
   useEffect(() => {
     const checkAuth = async () => {
-      // Access Supabase from window object (loaded in index.html)
-      if (window.TSPAuth && window.TSPAuth.supabase) {
-        const { data: { session } } = await window.TSPAuth.supabase.auth.getSession();
+      // Try multiple ways to get Supabase instance
+      const supabase = window.TSPAuth?.supabase || (window as any).supabase;
+      
+      if (!supabase) {
+        console.log('Supabase not found in window object, waiting...');
+        return;
+      }
+      
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        console.log('React auth check:', { session, error });
+        
         if (session && session.user && session.user.email) {
-          console.log('User authenticated in React:', session.user.email);
+          console.log('✅ User authenticated in React:', session.user.email);
           setUserEmail(session.user.email);
         } else {
-          console.log('User not authenticated in React');
+          console.log('❌ User not authenticated in React');
           setUserEmail(null);
         }
+      } catch (err) {
+        console.error('Error checking auth:', err);
       }
     };
 
+    // Initial check
     checkAuth();
+
+    // Also listen for auth state changes
+    const supabase = window.TSPAuth?.supabase || (window as any).supabase;
+    let subscription: any = null;
+    
+    if (supabase) {
+      subscription = supabase.auth.onAuthStateChange((event: string, session: any) => {
+        console.log('React detected auth change:', event, session?.user?.email);
+        if (session?.user?.email) {
+          setUserEmail(session.user.email);
+        } else {
+          setUserEmail(null);
+        }
+      });
+    }
 
     // Check every second for authentication changes
     const interval = setInterval(checkAuth, 1000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      if (subscription) {
+        subscription.unsubscribe();
+      }
+    };
   }, []);
 
   // Close dropdowns when clicking outside
