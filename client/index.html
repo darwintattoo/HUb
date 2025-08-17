@@ -178,21 +178,50 @@
         const { data: { session } } = await supabase.auth.getSession();
         console.log('Checking auth status, session:', session);
         
-        const loginButtons = document.querySelectorAll('[data-login-btn]');
-        console.log('Found login buttons:', loginButtons.length);
-        
         if (session && session.user) {
           console.log('User is logged in:', session.user.email);
-          // User is logged in - update all buttons
+          const userEmail = session.user.email || 'Usuario';
+          
+          // Update all buttons that contain "Sign In" or "Iniciar Sesión"
+          const allButtons = document.querySelectorAll('button');
+          allButtons.forEach(btn => {
+            const btnText = btn.textContent.trim();
+            if (btnText === 'Sign In' || btnText === 'Iniciar Sesión') {
+              console.log('Updating button from', btnText, 'to', userEmail);
+              
+              // Force update the button
+              btn.textContent = userEmail;
+              btn.style.fontSize = '12px';
+              btn.style.minWidth = '140px'; // Ensure email fits
+              
+              // Override ALL click handlers
+              btn.replaceWith(btn.cloneNode(true)); // Remove all event listeners
+              const newBtn = document.querySelector(`button:contains("${userEmail}")`);
+              if (!newBtn) {
+                // Find the button again
+                const updatedBtns = document.querySelectorAll('button');
+                updatedBtns.forEach(b => {
+                  if (b.textContent === userEmail) {
+                    b.onclick = async (e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      if (confirm('¿Cerrar sesión?')) {
+                        await supabase.auth.signOut();
+                        window.location.reload();
+                      }
+                    };
+                  }
+                });
+              }
+            }
+          });
+          
+          // Also try with data-login-btn attribute
+          const loginButtons = document.querySelectorAll('[data-login-btn]');
           loginButtons.forEach(btn => {
-            const userEmail = session.user.email || 'Usuario';
-            console.log('Updating button to show:', userEmail);
-            
-            // Force update the button text
             btn.textContent = userEmail;
-            btn.style.fontSize = '12px'; // Make email fit better
-            
-            // Change click handler to logout
+            btn.style.fontSize = '12px';
+            btn.style.minWidth = '140px';
             btn.onclick = async (e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -202,32 +231,18 @@
               }
             };
           });
-          
-          // Also update any React-rendered buttons by forcing a re-render
-          setTimeout(() => {
-            const reactButtons = document.querySelectorAll('button');
-            reactButtons.forEach(btn => {
-              if (btn.textContent === 'Sign In' || btn.textContent === 'Iniciar Sesión') {
-                btn.textContent = session.user.email || 'Usuario';
-                btn.style.fontSize = '12px';
-                btn.onclick = async (e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  if (confirm('¿Cerrar sesión?')) {
-                    await supabase.auth.signOut();
-                    window.location.reload();
-                  }
-                };
-              }
-            });
-          }, 100);
         } else {
           console.log('User is not logged in');
-          // User is not logged in
-          loginButtons.forEach(btn => {
-            const lang = btn.getAttribute('data-lang') || 'es';
-            btn.textContent = lang === 'es' ? 'Iniciar Sesión' : 'Sign In';
-            btn.style.fontSize = '14px';
+          // User is not logged in - reset buttons
+          const allButtons = document.querySelectorAll('button');
+          allButtons.forEach(btn => {
+            if (btn.textContent.includes('@')) {
+              // This was an email, reset it
+              const lang = btn.getAttribute('data-lang') || document.documentElement.lang || 'es';
+              btn.textContent = lang === 'es' ? 'Iniciar Sesión' : 'Sign In';
+              btn.style.fontSize = '14px';
+              btn.style.minWidth = 'auto';
+            }
           });
         }
       }
