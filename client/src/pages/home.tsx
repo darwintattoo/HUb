@@ -646,7 +646,16 @@ export default function Home() {
               </button>
             </div>
             
-
+            {/* Login Button */}
+            <button 
+              onClick={() => {
+                const modal = document.getElementById('tsp-auth');
+                if (modal) modal.classList.remove('hidden');
+              }}
+              className="hidden lg:block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+            >
+              {language === 'es' ? 'Iniciar Sesión' : 'Sign In'}
+            </button>
             
             {/* Mobile Menu Button */}
             <button 
@@ -696,6 +705,17 @@ export default function Home() {
               <a href="#faq" className="block text-gray-300 hover:text-white transition-colors">{t('nav.faq')}</a>
               <a href="#contact" className="block text-gray-300 hover:text-white transition-colors">{t('nav.contact')}</a>
               
+              {/* Mobile Login Button */}
+              <button 
+                onClick={() => {
+                  const modal = document.getElementById('tsp-auth');
+                  if (modal) modal.classList.remove('hidden');
+                  setIsMobileMenuOpen(false);
+                }}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg font-medium transition-colors text-center mt-4"
+              >
+                {language === 'es' ? 'Iniciar Sesión' : 'Sign In'}
+              </button>
 
             </div>
           </motion.div>
