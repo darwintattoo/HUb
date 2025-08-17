@@ -1134,11 +1134,20 @@ export default function Home() {
       
       {/* Logout Confirmation Modal */}
       {showLogoutModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4">
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4"
+          style={{ zIndex: 999999 }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setShowLogoutModal(false);
+            }
+          }}
+        >
           <motion.div 
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             className="bg-gray-900 rounded-xl p-6 max-w-sm w-full border border-gray-800"
+            onClick={(e) => e.stopPropagation()}
           >
             <h3 className="text-xl font-semibold mb-2 text-white">
               {language === 'es' ? 'Cerrar Sesión' : 'Sign Out'}
@@ -1153,38 +1162,63 @@ export default function Home() {
             </div>
             <div className="flex gap-3">
               <button
-                onClick={async () => {
-                  console.log('Sign out button clicked');
+                type="button"
+                onClick={async (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('✅ Sign out button clicked!');
+                  
+                  // Get Supabase instance
                   const supabase = window.TSPAuth?.supabase || (window as any).supabase;
-                  console.log('Supabase instance:', !!supabase);
                   
                   if (supabase) {
                     try {
                       console.log('Calling signOut...');
+                      // Clear local storage first
+                      localStorage.clear();
+                      sessionStorage.clear();
+                      
+                      // Then sign out from Supabase
                       const { error } = await supabase.auth.signOut();
-                      console.log('SignOut result:', error ? error : 'Success');
                       
-                      setUserEmail(null);
-                      setShowLogoutModal(false);
+                      if (error) {
+                        console.error('SignOut error:', error);
+                      } else {
+                        console.log('✅ Signed out successfully');
+                      }
                       
-                      // Small delay before reload
-                      setTimeout(() => {
-                        window.location.reload();
-                      }, 100);
+                      // Force immediate reload
+                      window.location.href = '/';
                     } catch (err) {
-                      console.error('Error signing out:', err);
+                      console.error('Exception during signOut:', err);
+                      // Even if there's an error, clear and reload
+                      localStorage.clear();
+                      sessionStorage.clear();
+                      window.location.href = '/';
                     }
                   } else {
-                    console.error('Supabase not found!');
+                    console.error('No Supabase instance found');
+                    // Fallback: clear everything and reload
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    window.location.href = '/';
                   }
                 }}
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2.5 px-4 rounded-lg transition-colors font-medium text-sm cursor-pointer"
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2.5 px-4 rounded-lg transition-colors font-medium text-sm cursor-pointer select-none"
+                style={{ pointerEvents: 'auto' }}
               >
                 {language === 'es' ? 'Sí, cerrar sesión' : 'Yes, sign out'}
               </button>
               <button
-                onClick={() => setShowLogoutModal(false)}
-                className="flex-1 bg-gray-800 hover:bg-gray-700 text-white py-2.5 px-4 rounded-lg transition-colors font-medium text-sm"
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('Cancel clicked');
+                  setShowLogoutModal(false);
+                }}
+                className="flex-1 bg-gray-800 hover:bg-gray-700 text-white py-2.5 px-4 rounded-lg transition-colors font-medium text-sm cursor-pointer select-none"
+                style={{ pointerEvents: 'auto' }}
               >
                 {language === 'es' ? 'Cancelar' : 'Cancel'}
               </button>
