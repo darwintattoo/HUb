@@ -645,8 +645,15 @@ export default function Home() {
             {/* Login Button */}
             <button 
               onClick={() => {
+                console.log('Login button clicked');
                 const modal = document.getElementById('tsp-auth');
-                if (modal) modal.classList.remove('hidden');
+                console.log('Modal found:', modal);
+                if (modal) {
+                  modal.classList.remove('hidden');
+                  console.log('Modal shown');
+                } else {
+                  console.error('Modal not found');
+                }
               }}
               className="hidden lg:block bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap"
             >
