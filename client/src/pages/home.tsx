@@ -757,23 +757,28 @@ export default function Home() {
             </div>
             
             {/* Login/Logout Button */}
-            {console.log('🔴 Button rendering with userEmail:', userEmail)}
             <button 
               data-login-btn="true"
               data-lang={language}
-              onClick={() => {
+              onClick={async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Button clicked, userEmail:', userEmail);
+                
                 if (userEmail) {
                   // User is logged in, handle logout
                   if (confirm('¿Cerrar sesión? / Sign out?')) {
-                    window.TSPAuth?.supabase?.auth.signOut();
-                    setUserEmail(null);
-                    window.location.reload();
+                    const supabase = window.TSPAuth?.supabase || (window as any).supabase;
+                    if (supabase) {
+                      await supabase.auth.signOut();
+                      setUserEmail(null);
+                      window.location.reload();
+                    }
                   }
                 } else {
                   // User is not logged in, show login modal
                   const modal = document.getElementById('tsp-auth');
                   if (modal) {
-                    // Force show the modal by overriding all styles
                     modal.classList.remove('hidden');
                     modal.setAttribute('style', `
                       display: flex !important;
