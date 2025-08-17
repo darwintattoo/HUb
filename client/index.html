@@ -212,8 +212,39 @@
       
       // Listen for auth changes
       supabase.auth.onAuthStateChange(async (event, session) => {
-        console.log('Auth state changed:', event);
-        await checkAuthStatus();
+        console.log('Auth state changed:', event, session);
+        
+        if (event === 'SIGNED_IN' && session) {
+          console.log('User signed in successfully');
+          
+          // Close the modal immediately
+          const modal = $("#tsp-auth");
+          if (modal) {
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+            modal.removeAttribute('style'); // Remove forced styles
+          }
+          
+          // Clear form fields
+          if ($("#tsp-email")) $("#tsp-email").value = '';
+          if ($("#tsp-pass")) $("#tsp-pass").value = '';
+          if (msg) msg.textContent = '';
+          
+          // Update auth status
+          await checkAuthStatus();
+          
+          // Check for pending tool
+          const pending = localStorage.getItem('tsp:pendingTool');
+          if (pending) {
+            localStorage.removeItem('tsp:pendingTool');
+            setTimeout(() => goTo(TOOL_URLS[pending]), 500);
+          }
+        }
+        
+        if (event === 'SIGNED_OUT') {
+          console.log('User signed out');
+          await checkAuthStatus();
+        }
       });
 
       // --- Acciones del modal ---
