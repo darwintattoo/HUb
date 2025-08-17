@@ -38,5 +38,28 @@
     <script type="module" src="/src/main.tsx"></script>
     <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
     <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
+    
+    <!-- Authentication Modal Package -->
+    <style>
+      .tsp-auth-overlay{position:fixed;inset:0;background:#0008;display:flex;align-items:center;justify-content:center;z-index:9999}
+      .tsp-auth-card{background:#111;color:#fff;width:100%;max-width:360px;border-radius:12px;padding:16px;box-shadow:0 10px 30px #000}
+      .tsp-auth-overlay.hidden{display:none}
+      .tsp-auth-card input,.tsp-auth-card button{width:100%;margin:6px 0;padding:10px;border-radius:8px;border:1px solid #333}
+      .tsp-auth-muted{color:#aaa;font-size:14px;text-align:center;margin:6px 0}
+    </style>
+
+    <div id="tsp-auth" class="tsp-auth-overlay hidden">
+      <div class="tsp-auth-card">
+        <h3 style="margin:0 0 10px">Inicia sesión</h3>
+        <button id="tsp-google">Continuar con Google</button>
+        <div class="tsp-auth-muted">o</div>
+        <input id="tsp-email" type="email" placeholder="tu@correo.com" />
+        <input id="tsp-pass" type="password" placeholder="Contraseña" />
+        <button id="tsp-login">Entrar</button>
+        <button id="tsp-signup">Crear cuenta</button>
+        <button id="tsp-close" style="background:#222">Cerrar</button>
+        <p id="tsp-msg" class="tsp-auth-muted"></p>
+      </div>
+    </div>
   </body>
 </html>
