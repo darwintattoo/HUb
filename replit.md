@@ -86,3 +86,27 @@ Preferred communication style: Simple, everyday language.
 - **Performance**: Asset optimization and lazy loading
 - **SEO**: Complete meta tag implementation for search engine optimization
 - **Security**: Environment variable management for sensitive configurations
+
+## Deployment Configuration
+
+### Issue and Resolution
+The project had a deployment configuration mismatch where:
+- Vite builds output to `dist/public` directory (configured in vite.config.ts)
+- Replit static deployment expects files in `dist` directory (configured in .replit)
+
+### Solution Implemented (August 17, 2025)
+Created deployment fix scripts to resolve the mismatch:
+
+1. **Node.js Script**: `scripts/deploy-fix.js` - Copies build files from `dist/public` to `dist`
+2. **Bash Script**: `scripts/deploy-fix.sh` - Alternative shell script approach
+3. **Documentation**: `DEPLOYMENT.md` - Complete deployment guide
+
+### Deployment Process
+1. Run `npm run build` to build the project
+2. Run `node scripts/deploy-fix.js` to fix file locations
+3. Deploy via Replit Deploy button
+
+### Technical Details
+- Cannot modify core config files (vite.config.ts, .replit, package.json) due to environment restrictions
+- Solution preserves existing build configuration while ensuring deployment compatibility
+- Scripts use ES modules syntax to match project configuration
