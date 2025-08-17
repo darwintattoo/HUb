@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TattooStencilPro — Hub</title>
+  <style>
+    body{font-family:system-ui,sans-serif;max-width:720px;margin:40px auto;padding:0 16px}
+    .card{border:1px solid #ddd;border-radius:12px;padding:16px;margin:16px 0}
+    .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .hidden{display:none}.muted{color:#666;font-size:14px}
+    button,input{padding:10px;border-radius:8px;border:1px solid #ddd}
+    input{width:100%}
+  </style>
+</head>
+<body>
+  <h1>tattoostencilpro.app — Hub</h1>
+  <p class="muted">Inicia sesión aquí. Desde aquí entras a Stencil o Editor con tu sesión y créditos.</p>
+
+  <div id="estado" class="card">Comprobando sesión…</div>
+
+  <div id="login" class="card hidden">
+    <h3>Entrar</h3>
+    <div class="row">
+      <input id="email" type="email" placeholder="tu@correo.com" />
+      <input id="password" type="password" placeholder="contraseña" />
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button id="btn-login">Entrar</button>
+      <button id="btn-signup">Crear cuenta</button>
+      <button id="btn-google">Entrar con Google</button>
+    </div>
+    <p id="login-msg" class="muted"></p>
+  </div>
+
+  <div id="apps" class="card hidden">
+    <h3>Tu cuenta</h3>
+    <p>Plan: <b id="plan">-</b> · Créditos: <b id="credits">-</b></p>
+    <div class="row" style="margin-top:8px">
+      <button id="open-stencil">Abrir Stencil</button>
+      <button id="open-editor">Abrir Editor</button>
+      <span style="flex:0 0 auto"></span>
+      <button id="btn-logout">Cerrar sesión</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+    // ====== TUS DATOS (ya cargados con tu URL y anon key) ======
+    const SUPABASE_URL  = "https://kruunkysfiwzlgybppjt.supabase.co";
+    const ANON_KEY      = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtydXVua3lzZml3emxneWJwcGp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ4NTU1NTUsImV4cCI6MjA3MDQzMTU1NX0.DPZjBnc1Ia4WjhLBL7ZwDB8iQ6X2J83Y4fXehwVj9qM";
+    const STENCIL_URL   = "https://ink-stencil-darwintattoo1.replit.app/";
+    const EDITOR_URL    = "https://darwinfluxkontext.replit.app/";
+    // ============================================================
+
+    const supabase = createClient(SUPABASE_URL, ANON_KEY);
+    const $ = id => document.getElementById(id);
+    const show = (id, on) => $(id).classList.toggle("hidden", !on);
+
+    async function render() {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        $("estado").textContent = "No has iniciado sesión.";
+        show("login", true); show("apps", false); return;
+      }
+      $("estado").textContent = `Sesión: ${session.user.email}`;
+      show("login", false); show("apps", true);
+
+      const { data: prof, error } = await supabase
+        .from("profiles").select("plan, credits").eq("id", session.user.id).single();
+      $("plan").textContent    = error ? "-" : (prof?.plan ?? "free");
+      $("credits").textContent = error ? "-" : (prof?.credits ?? 0);
+    }
+
+    // Email / password
+    $("btn-login").onclick = async () => {
+      const email = $("email").value.trim(), password = $("password").value;
+      $("login-msg").textContent = "Entrando…";
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      $("login-msg").textContent = error ? ("Error: " + error.message) : "Listo";
+      render();
+    };
+    $("btn-signup").onclick = async () => {
+      const email = $("email").value.trim(), password = $("password").value;
+      $("login-msg").textContent = "Creando cuenta…";
+      const { error } = await supabase.auth.signUp({
+        email, password, options: { emailRedirectTo: window.location.origin }
+      });
+      $("login-msg").textContent = error
+        ? ("Error: " + error.message)
+        : "Revisa tu correo para confirmar.";
+    };
+
+    // Google OAuth
+    $("btn-google").onclick = async () => {
+      await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo: window.location.origin }
+      });
+    };
+
+    // Logout
+    $("btn-logout").onclick = async () => { await supabase.auth.signOut(); render(); };
+
+    // Abrir apps con handoff (#access_token y #refresh_token)
+    async function abrir(baseUrl) {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return alert("Inicia sesión primero");
+      const { access_token, refresh_token, expires_in } = session;
+      const url = `${baseUrl}#access_token=${encodeURIComponent(access_token)}&refresh_token=${encodeURIComponent(refresh_token)}&expires_in=${expires_in}`;
+      location.href = url;
+    }
+    $("open-stencil").onclick = () => abrir(STENCIL_URL);
+    $("open-editor").onclick  = () => abrir(EDITOR_URL);
+
+    render();
+  </script>
+</body>
+</html>
