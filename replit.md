@@ -2,7 +2,7 @@
 
 ## Overview
 
-TattooStencilPro is a web application designed for tattoo artists, providing AI-powered tools for creating and modifying tattoo designs. The application features a landing page showcasing tools like stencil generation, expression modification, and angle/rotation adjustments for tattoo designs. It's built as a full-stack application with a React frontend and Express backend, supporting both English and Spanish languages.
+TattooStencilPro is a centralized Hub platform designed for tattoo artists, serving as the main portal to access multiple AI-powered tattoo design applications. The platform will continuously expand as new tools and applications are added. Currently features a landing page showcasing tools like stencil generation and AI image editing, with more applications to be integrated over time. It's built as a full-stack application with a React frontend and Express backend, supporting both English and Spanish languages.
 
 ## User Preferences
 
@@ -43,14 +43,15 @@ Preferred communication style: Simple, everyday language.
 - **Storage**: Abstracted storage interface supporting in-memory and database implementations
 
 ### Key Features
+- **Centralized Hub**: Main portal for accessing all tattoo design applications, designed to scale as new tools are added
 - **Internationalization**: Built-in support for English and Spanish languages
 - **Responsive Design**: Mobile-first responsive design with Tailwind CSS
 - **Email Integration**: Mailchimp integration for user notifications and updates
 - **SEO Optimization**: Meta tags, Open Graph, and Twitter Card support
 - **Code Protection**: JavaScript obfuscation system for intellectual property protection
-- **External Tool Integration**: Links to functional stencil generator and AI image editor applications
+- **External Tool Integration**: Links to functional stencil generator and AI image editor applications (with capacity for unlimited future tools)
 - **Professional Navigation**: Comprehensive navigation menu with product dropdown, mobile-responsive design, and sticky header
-- **Clean Landing Page**: Focused landing page showcasing two functional tools without distractions
+- **Clean Landing Page**: Focused landing page showcasing functional tools with modern video presentation and floating image design
 
 ## External Applications
 - **Stencil Generator**: https://ink-stencil-darwintattoo1.replit.app/ - Functional stencil conversion tool
