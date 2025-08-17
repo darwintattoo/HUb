@@ -526,24 +526,36 @@ export default function Home() {
 
   // Check authentication status from Supabase
   useEffect(() => {
+    let mounted = true;
+    let checkCount = 0;
+    
     const checkAuth = async () => {
       // Try multiple ways to get Supabase instance
       const supabase = window.TSPAuth?.supabase || (window as any).supabase;
       
       if (!supabase) {
-        console.log('Supabase not found in window object, waiting...');
+        console.log('Supabase not found in window object, waiting... (attempt', checkCount + 1, ')');
+        checkCount++;
+        // Don't set to null if we haven't found Supabase yet
         return;
       }
       
       try {
         const { data: { session }, error } = await supabase.auth.getSession();
-        console.log('React auth check:', { session, error });
+        console.log('React auth check:', { 
+          session: session ? 'EXISTS' : 'NULL', 
+          email: session?.user?.email,
+          error 
+        });
+        
+        if (!mounted) return;
         
         if (session && session.user && session.user.email) {
-          console.log('✅ User authenticated in React:', session.user.email);
+          console.log('✅ Setting userEmail to:', session.user.email);
           setUserEmail(session.user.email);
-        } else {
-          console.log('❌ User not authenticated in React');
+        } else if (checkCount > 3) {
+          // Only set to null after we've tried a few times
+          console.log('❌ No session found after', checkCount, 'attempts');
           setUserEmail(null);
         }
       } catch (err) {
@@ -551,34 +563,70 @@ export default function Home() {
       }
     };
 
-    // Initial check
-    checkAuth();
+    // Initial check with delay to ensure Supabase is loaded
+    setTimeout(checkAuth, 100);
 
     // Also listen for auth state changes
-    const supabase = window.TSPAuth?.supabase || (window as any).supabase;
-    let subscription: any = null;
+    const setupListener = () => {
+      const supabase = window.TSPAuth?.supabase || (window as any).supabase;
+      
+      if (supabase) {
+        const { data } = supabase.auth.onAuthStateChange((event: string, session: any) => {
+          console.log('🔔 Auth state changed:', event, session?.user?.email);
+          if (!mounted) return;
+          
+          if (session?.user?.email) {
+            console.log('🔔 Updating userEmail to:', session.user.email);
+            setUserEmail(session.user.email);
+          } else if (event === 'SIGNED_OUT') {
+            setUserEmail(null);
+          }
+        });
+        return data?.subscription;
+      }
+      return null;
+    };
     
-    if (supabase) {
-      subscription = supabase.auth.onAuthStateChange((event: string, session: any) => {
-        console.log('React detected auth change:', event, session?.user?.email);
-        if (session?.user?.email) {
-          setUserEmail(session.user.email);
-        } else {
-          setUserEmail(null);
-        }
-      });
-    }
+    const authListener = setupListener();
 
-    // Check every second for authentication changes
-    const interval = setInterval(checkAuth, 1000);
+    // Check every 500ms for first 5 seconds, then every 2 seconds
+    let interval = setInterval(() => {
+      checkAuth();
+      checkCount++;
+      
+      if (checkCount > 10) {
+        clearInterval(interval);
+        interval = setInterval(checkAuth, 2000);
+      }
+    }, 500);
 
     return () => {
+      mounted = false;
       clearInterval(interval);
-      if (subscription) {
-        subscription.unsubscribe();
+      if (authListener) {
+        authListener.unsubscribe();
       }
     };
   }, []);
+  
+  // Log when userEmail changes
+  useEffect(() => {
+    console.log('🔄 userEmail state updated to:', userEmail);
+    
+    // Also check if Supabase has a session directly
+    const checkDirectly = async () => {
+      const supabase = window.TSPAuth?.supabase || (window as any).supabase;
+      if (supabase) {
+        const { data: { session } } = await supabase.auth.getSession();
+        console.log('🔍 Direct Supabase check:', {
+          hasSession: !!session,
+          email: session?.user?.email,
+          userEmailState: userEmail
+        });
+      }
+    };
+    checkDirectly();
+  }, [userEmail]);
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -709,6 +757,7 @@ export default function Home() {
             </div>
             
             {/* Login/Logout Button */}
+            {console.log('🔴 Button rendering with userEmail:', userEmail)}
             <button 
               data-login-btn="true"
               data-lang={language}
@@ -745,7 +794,7 @@ export default function Home() {
               className="hidden lg:block bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap"
               style={{ minWidth: userEmail ? '140px' : 'auto', fontSize: userEmail ? '12px' : '14px' }}
             >
-              {userEmail || (language === 'es' ? 'Iniciar Sesión' : 'Sign In')}
+              {userEmail ? userEmail : (language === 'es' ? 'Iniciar Sesión' : 'Sign In')}
             </button>
             
             {/* Mobile Menu Button */}
