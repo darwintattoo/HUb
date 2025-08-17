@@ -176,23 +176,58 @@
       // Check authentication status and update UI
       async function checkAuthStatus() {
         const { data: { session } } = await supabase.auth.getSession();
-        const loginButtons = document.querySelectorAll('[data-login-btn]');
+        console.log('Checking auth status, session:', session);
         
-        if (session) {
-          // User is logged in
+        const loginButtons = document.querySelectorAll('[data-login-btn]');
+        console.log('Found login buttons:', loginButtons.length);
+        
+        if (session && session.user) {
+          console.log('User is logged in:', session.user.email);
+          // User is logged in - update all buttons
           loginButtons.forEach(btn => {
-            btn.textContent = session.user.email || 'Usuario';
-            btn.onclick = async () => {
+            const userEmail = session.user.email || 'Usuario';
+            console.log('Updating button to show:', userEmail);
+            
+            // Force update the button text
+            btn.textContent = userEmail;
+            btn.style.fontSize = '12px'; // Make email fit better
+            
+            // Change click handler to logout
+            btn.onclick = async (e) => {
+              e.preventDefault();
+              e.stopPropagation();
               if (confirm('¿Cerrar sesión?')) {
                 await supabase.auth.signOut();
                 window.location.reload();
               }
             };
           });
+          
+          // Also update any React-rendered buttons by forcing a re-render
+          setTimeout(() => {
+            const reactButtons = document.querySelectorAll('button');
+            reactButtons.forEach(btn => {
+              if (btn.textContent === 'Sign In' || btn.textContent === 'Iniciar Sesión') {
+                btn.textContent = session.user.email || 'Usuario';
+                btn.style.fontSize = '12px';
+                btn.onclick = async (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (confirm('¿Cerrar sesión?')) {
+                    await supabase.auth.signOut();
+                    window.location.reload();
+                  }
+                };
+              }
+            });
+          }, 100);
         } else {
+          console.log('User is not logged in');
           // User is not logged in
           loginButtons.forEach(btn => {
-            btn.textContent = btn.getAttribute('data-lang') === 'es' ? 'Iniciar Sesión' : 'Sign In';
+            const lang = btn.getAttribute('data-lang') || 'es';
+            btn.textContent = lang === 'es' ? 'Iniciar Sesión' : 'Sign In';
+            btn.style.fontSize = '14px';
           });
         }
       }
@@ -208,6 +243,11 @@
         }
         await renderProfile();
         await checkAuthStatus();
+        
+        // Force check every 2 seconds to ensure button updates
+        setInterval(async () => {
+          await checkAuthStatus();
+        }, 2000);
       })();
       
       // Listen for auth changes
