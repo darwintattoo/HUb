@@ -515,6 +515,11 @@ export default function Home() {
   const [isProductDropdownOpen, setIsProductDropdownOpen] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  
+  // Debug logout modal state
+  useEffect(() => {
+    console.log('🔵 showLogoutModal changed to:', showLogoutModal);
+  }, [showLogoutModal]);
 
   const t = (key: string): string => {
     const keys = key.split('.');
@@ -768,6 +773,7 @@ export default function Home() {
                 
                 if (userEmail) {
                   // User is logged in, show logout modal
+                  console.log('Setting showLogoutModal to true');
                   setShowLogoutModal(true);
                 } else {
                   // User is not logged in, show login modal
