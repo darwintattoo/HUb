@@ -1154,15 +1154,31 @@ export default function Home() {
             <div className="flex gap-3">
               <button
                 onClick={async () => {
+                  console.log('Sign out button clicked');
                   const supabase = window.TSPAuth?.supabase || (window as any).supabase;
+                  console.log('Supabase instance:', !!supabase);
+                  
                   if (supabase) {
-                    await supabase.auth.signOut();
-                    setUserEmail(null);
-                    setShowLogoutModal(false);
-                    window.location.reload();
+                    try {
+                      console.log('Calling signOut...');
+                      const { error } = await supabase.auth.signOut();
+                      console.log('SignOut result:', error ? error : 'Success');
+                      
+                      setUserEmail(null);
+                      setShowLogoutModal(false);
+                      
+                      // Small delay before reload
+                      setTimeout(() => {
+                        window.location.reload();
+                      }, 100);
+                    } catch (err) {
+                      console.error('Error signing out:', err);
+                    }
+                  } else {
+                    console.error('Supabase not found!');
                   }
                 }}
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2.5 px-4 rounded-lg transition-colors font-medium text-sm"
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2.5 px-4 rounded-lg transition-colors font-medium text-sm cursor-pointer"
               >
                 {language === 'es' ? 'Sí, cerrar sesión' : 'Yes, sign out'}
               </button>
