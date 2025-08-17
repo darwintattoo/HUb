@@ -2,7 +2,7 @@
 
 ## Overview
 
-TattooStencilPro is a centralized authentication hub for tattoo artists, providing secure access to multiple AI-powered tattoo design applications. The platform uses Supabase authentication to manage user sessions, plans, and credits across all connected applications. Currently provides authenticated access to stencil generation and AI image editing tools. The authentication system supports email/password and Google OAuth login methods.
+TattooStencilPro is a centralized Hub platform designed for tattoo artists, serving as the main portal to access multiple AI-powered tattoo design applications. The platform will continuously expand as new tools and applications are added. Currently features a landing page showcasing tools like stencil generation and AI image editing, with more applications to be integrated over time. It's built as a full-stack application with a React frontend and Express backend, supporting both English and Spanish languages.
 
 ## User Preferences
 
@@ -43,15 +43,15 @@ Preferred communication style: Simple, everyday language.
 - **Storage**: Abstracted storage interface supporting in-memory and database implementations
 
 ### Key Features
-- **Authentication Hub**: Centralized authentication system using Supabase for secure user management
-- **User Authentication**: Email/password and Google OAuth login methods
-- **Session Management**: Secure session handling with access tokens and refresh tokens
-- **User Profiles**: Plan and credits tracking system for each user
-- **Application Handoff**: Secure token-based authentication transfer to connected applications
-- **Spanish Interface**: Full Spanish language interface for Latin American market
-- **External Tool Integration**: Direct links to Stencil Generator and AI Editor with session passthrough
-- **Real-time Session Status**: Live session checking and user status display
-- **Account Management**: User registration, login, logout, and profile viewing
+- **Centralized Hub**: Main portal for accessing all tattoo design applications, designed to scale as new tools are added
+- **Internationalization**: Built-in support for English and Spanish languages
+- **Responsive Design**: Mobile-first responsive design with Tailwind CSS
+- **Email Integration**: Mailchimp integration for user notifications and updates
+- **SEO Optimization**: Meta tags, Open Graph, and Twitter Card support
+- **Code Protection**: JavaScript obfuscation system for intellectual property protection
+- **External Tool Integration**: Links to functional stencil generator and AI image editor applications (with capacity for unlimited future tools)
+- **Professional Navigation**: Comprehensive navigation menu with product dropdown, mobile-responsive design, and sticky header
+- **Clean Landing Page**: Focused landing page showcasing functional tools with modern video presentation and floating image design
 
 ## External Applications
 - **Stencil Generator**: https://ink-stencil-darwintattoo1.replit.app/ - Functional stencil conversion tool
@@ -76,10 +76,9 @@ Preferred communication style: Simple, everyday language.
 - **Development Tools**: Replit integration, hot reload, error overlays
 
 ### Third-party Services
-- **Authentication**: Supabase for user authentication and session management
-- **Database**: Supabase PostgreSQL for user profiles, plans, and credits
-- **OAuth Provider**: Google OAuth for social login
-- **Font Loading**: System fonts (system-ui, sans-serif)
+- **Email Marketing**: Mailchimp integration for subscriber management
+- **Font Loading**: Google Fonts (Inter family)
+- **Analytics**: Google Search Console verification
 - **Domain**: Custom domain with SSL (tattoostencilpro.app)
 
 ### Production Considerations
@@ -111,17 +110,3 @@ Created deployment fix scripts to resolve the mismatch:
 - Cannot modify core config files (vite.config.ts, .replit, package.json) due to environment restrictions
 - Solution preserves existing build configuration while ensuring deployment compatibility
 - Scripts use ES modules syntax to match project configuration
-
-## Authentication System Update (August 17, 2025)
-
-### Changes Made
-- Replaced React-based landing page with simple HTML authentication hub
-- Integrated Supabase for centralized user authentication
-- Added Spanish language interface for primary user base
-- Implemented secure session handoff to external applications
-
-### Current Architecture
-- **Frontend**: Simple HTML/CSS/JavaScript authentication page
-- **Authentication**: Supabase client-side SDK with direct API calls
-- **Session Management**: Token-based authentication with access_token and refresh_token
-- **External Apps**: Session tokens passed via URL hash parameters for secure handoff
