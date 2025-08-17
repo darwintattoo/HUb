@@ -17,6 +17,15 @@ import dragonTattoo from '@assets/generated_images/dragon_tattoo_stencil_2da98a8
 import mandalaTattoo from '@assets/generated_images/mandala_tattoo_stencil_10675b74.png';
 import aiEditorImage from '@assets/Ai editor_1755352512747.webp';
 
+// Declare global type for Supabase auth
+declare global {
+  interface Window {
+    TSPAuth: {
+      supabase: any;
+    };
+  }
+}
+
 const translations = {
   es: {
     byDarwinEnriquez: "Por Darwin Enriquez",
@@ -504,6 +513,7 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProductDropdownOpen, setIsProductDropdownOpen] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
 
   const t = (key: string): string => {
     const keys = key.split('.');
@@ -513,6 +523,30 @@ export default function Home() {
     }
     return (value as string) || key;
   };
+
+  // Check authentication status from Supabase
+  useEffect(() => {
+    const checkAuth = async () => {
+      // Access Supabase from window object (loaded in index.html)
+      if (window.TSPAuth && window.TSPAuth.supabase) {
+        const { data: { session } } = await window.TSPAuth.supabase.auth.getSession();
+        if (session && session.user && session.user.email) {
+          console.log('User authenticated in React:', session.user.email);
+          setUserEmail(session.user.email);
+        } else {
+          console.log('User not authenticated in React');
+          setUserEmail(null);
+        }
+      }
+    };
+
+    checkAuth();
+
+    // Check every second for authentication changes
+    const interval = setInterval(checkAuth, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -642,33 +676,44 @@ export default function Home() {
               </button>
             </div>
             
-            {/* Login Button */}
+            {/* Login/Logout Button */}
             <button 
               data-login-btn="true"
               data-lang={language}
               onClick={() => {
-                const modal = document.getElementById('tsp-auth');
-                if (modal) {
-                  // Force show the modal by overriding all styles
-                  modal.classList.remove('hidden');
-                  modal.setAttribute('style', `
-                    display: flex !important;
-                    position: fixed !important;
-                    top: 0 !important;
-                    left: 0 !important;
-                    width: 100vw !important;
-                    height: 100vh !important;
-                    background: rgba(0,0,0,0.8) !important;
-                    align-items: center !important;
-                    justify-content: center !important;
-                    z-index: 99999 !important;
-                  `);
-                  console.log('Modal forcefully displayed');
+                if (userEmail) {
+                  // User is logged in, handle logout
+                  if (confirm('¿Cerrar sesión? / Sign out?')) {
+                    window.TSPAuth?.supabase?.auth.signOut();
+                    setUserEmail(null);
+                    window.location.reload();
+                  }
+                } else {
+                  // User is not logged in, show login modal
+                  const modal = document.getElementById('tsp-auth');
+                  if (modal) {
+                    // Force show the modal by overriding all styles
+                    modal.classList.remove('hidden');
+                    modal.setAttribute('style', `
+                      display: flex !important;
+                      position: fixed !important;
+                      top: 0 !important;
+                      left: 0 !important;
+                      width: 100vw !important;
+                      height: 100vh !important;
+                      background: rgba(0,0,0,0.8) !important;
+                      align-items: center !important;
+                      justify-content: center !important;
+                      z-index: 99999 !important;
+                    `);
+                    console.log('Modal forcefully displayed');
+                  }
                 }
               }}
               className="hidden lg:block bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap"
+              style={{ minWidth: userEmail ? '140px' : 'auto', fontSize: userEmail ? '12px' : '14px' }}
             >
-              {language === 'es' ? 'Iniciar Sesión' : 'Sign In'}
+              {userEmail || (language === 'es' ? 'Iniciar Sesión' : 'Sign In')}
             </button>
             
             {/* Mobile Menu Button */}
