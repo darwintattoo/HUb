@@ -514,6 +514,7 @@ export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProductDropdownOpen, setIsProductDropdownOpen] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const t = (key: string): string => {
     const keys = key.split('.');
@@ -766,15 +767,8 @@ export default function Home() {
                 console.log('Button clicked, userEmail:', userEmail);
                 
                 if (userEmail) {
-                  // User is logged in, handle logout
-                  if (confirm('¿Cerrar sesión? / Sign out?')) {
-                    const supabase = window.TSPAuth?.supabase || (window as any).supabase;
-                    if (supabase) {
-                      await supabase.auth.signOut();
-                      setUserEmail(null);
-                      window.location.reload();
-                    }
-                  }
+                  // User is logged in, show logout modal
+                  setShowLogoutModal(true);
                 } else {
                   // User is not logged in, show login modal
                   const modal = document.getElementById('tsp-auth');
@@ -796,10 +790,22 @@ export default function Home() {
                   }
                 }
               }}
-              className="hidden lg:block bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap"
-              style={{ minWidth: userEmail ? '140px' : 'auto', fontSize: userEmail ? '12px' : '14px' }}
+              className={`hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
+                userEmail 
+                  ? 'bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white border border-gray-700' 
+                  : 'bg-blue-600 hover:bg-blue-700 text-white'
+              }`}
             >
-              {userEmail ? userEmail : (language === 'es' ? 'Iniciar Sesión' : 'Sign In')}
+              {userEmail ? (
+                <>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  <span className="truncate max-w-[150px]">{userEmail}</span>
+                </>
+              ) : (
+                language === 'es' ? 'Iniciar Sesión' : 'Sign In'
+              )}
             </button>
             
             {/* Mobile Menu Button */}
@@ -1119,6 +1125,51 @@ export default function Home() {
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <SimpleForm t={t} />
       </Modal>
+      
+      {/* Logout Confirmation Modal */}
+      {showLogoutModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-gray-900 rounded-xl p-6 max-w-sm w-full border border-gray-800"
+          >
+            <h3 className="text-xl font-semibold mb-2 text-white">
+              {language === 'es' ? 'Cerrar Sesión' : 'Sign Out'}
+            </h3>
+            <p className="text-gray-400 mb-6 text-sm">
+              {language === 'es' 
+                ? `¿Estás seguro que deseas cerrar tu sesión?`
+                : `Are you sure you want to sign out?`}
+            </p>
+            <div className="text-xs text-gray-500 mb-6 truncate">
+              {userEmail}
+            </div>
+            <div className="flex gap-3">
+              <button
+                onClick={async () => {
+                  const supabase = window.TSPAuth?.supabase || (window as any).supabase;
+                  if (supabase) {
+                    await supabase.auth.signOut();
+                    setUserEmail(null);
+                    setShowLogoutModal(false);
+                    window.location.reload();
+                  }
+                }}
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2.5 px-4 rounded-lg transition-colors font-medium text-sm"
+              >
+                {language === 'es' ? 'Sí, cerrar sesión' : 'Yes, sign out'}
+              </button>
+              <button
+                onClick={() => setShowLogoutModal(false)}
+                className="flex-1 bg-gray-800 hover:bg-gray-700 text-white py-2.5 px-4 rounded-lg transition-colors font-medium text-sm"
+              >
+                {language === 'es' ? 'Cancelar' : 'Cancel'}
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }
