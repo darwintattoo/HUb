@@ -555,22 +555,19 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             {/* Logo */}
-            <div className="flex items-center space-x-4 group cursor-pointer">
-              <div className="relative">
-                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur opacity-25 group-hover:opacity-75 transition duration-1000"></div>
-                <img 
-                  src={logoPath} 
-                  alt="TattooStencilPro Logo" 
-                  className="relative h-14 w-14 rounded-full shadow-xl"
-                />
-              </div>
+            <div className="flex items-center space-x-3">
+              <img 
+                src={logoPath} 
+                alt="TattooStencilPro Logo" 
+                className="h-12 w-12"
+              />
               <div>
-                <h1 className="text-2xl font-bold tracking-tight">
-                  <span className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Tattoo</span>
-                  <span className="bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">Stencil</span>
-                  <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Pro</span>
+                <h1 className="text-xl font-bold">
+                  <span className="font-bold">Tattoo</span>
+                  <span className="font-light">Stencil</span>
+                  <span className="text-blue-400">Pro</span>
                 </h1>
-                <p className="text-xs text-gray-500 font-medium tracking-wide hidden sm:block">{t('byDarwinEnriquez')}</p>
+                <p className="text-xs text-gray-400 hidden sm:block">{t('byDarwinEnriquez')}</p>
               </div>
             </div>
             
