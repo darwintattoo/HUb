@@ -69,7 +69,81 @@ function main() {
       if (!indexContent.includes('createClient from "https://esm.sh/@supabase/supabase-js@2"')) {
         console.log('📝 Adding authentication script to index.html...');
         
-        const authScript = `
+        const authModalHTML = `
+    <!-- Authentication Modal Package -->
+    <style>
+      .tsp-auth-overlay{
+        position:fixed !important;
+        top:0 !important;
+        left:0 !important;
+        width:100vw !important;
+        height:100vh !important;
+        background:rgba(0,0,0,0.8) !important;
+        display:flex !important;
+        align-items:center !important;
+        justify-content:center !important;
+        z-index:99999 !important;
+      }
+      .tsp-auth-card{
+        background:#111 !important;
+        color:#fff !important;
+        width:100% !important;
+        max-width:400px !important;
+        border-radius:12px !important;
+        padding:24px !important;
+        box-shadow:0 20px 40px rgba(0,0,0,0.8) !important;
+        margin:20px !important;
+      }
+      .tsp-auth-overlay.hidden{
+        display:none !important;
+      }
+      .tsp-auth-card input, .tsp-auth-card button{
+        width:100% !important;
+        margin:8px 0 !important;
+        padding:12px !important;
+        border-radius:8px !important;
+        border:1px solid #333 !important;
+        background:#222 !important;
+        color:#fff !important;
+        font-size:14px !important;
+      }
+      .tsp-auth-card button{
+        background:#0066cc !important;
+        border:none !important;
+        cursor:pointer !important;
+        font-weight:500 !important;
+      }
+      .tsp-auth-card button:hover{
+        background:#0052a3 !important;
+      }
+      .tsp-auth-card button[id="tsp-close"]{
+        background:#444 !important;
+      }
+      .tsp-auth-card button[id="tsp-close"]:hover{
+        background:#555 !important;
+      }
+      .tsp-auth-muted{
+        color:#aaa !important;
+        font-size:14px !important;
+        text-align:center !important;
+        margin:8px 0 !important;
+      }
+    </style>
+
+    <div id="tsp-auth" class="tsp-auth-overlay hidden">
+      <div class="tsp-auth-card">
+        <h3 style="margin:0 0 16px; font-size:18px; font-weight:600;">Inicia sesión</h3>
+        <button id="tsp-google">Continuar con Google</button>
+        <div class="tsp-auth-muted">o</div>
+        <input id="tsp-email" type="email" placeholder="tu@correo.com" />
+        <input id="tsp-pass" type="password" placeholder="Contraseña" />
+        <button id="tsp-login">Entrar</button>
+        <button id="tsp-signup">Crear cuenta</button>
+        <button id="tsp-close">Cerrar</button>
+        <p id="tsp-msg" class="tsp-auth-muted"></p>
+      </div>
+    </div>
+
     <script type="module">
       import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
@@ -181,7 +255,7 @@ function main() {
     </script>`;
         
         // Insert auth script before closing </body> tag
-        indexContent = indexContent.replace('</body>', authScript + '\n  </body>');
+        indexContent = indexContent.replace('</body>', authModalHTML + '\n  </body>');
         fs.writeFileSync(indexPath, indexContent, 'utf8');
         console.log('✅ Authentication script added to deployment HTML');
       }
