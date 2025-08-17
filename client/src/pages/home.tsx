@@ -593,7 +593,7 @@ export default function Home() {
                       href="https://ink-stencil-darwintattoo1.replit.app/" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="flex items-center justify-between px-5 py-4 text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-blue-600/10 hover:to-purple-600/10 transition-all duration-200 border-b border-gray-800 group"
+                      className="flex items-center justify-between px-5 py-4 text-gray-300 hover:text-white hover:bg-blue-600/10 transition-all duration-200 border-b border-gray-800 group"
                     >
                       <div className="flex items-center gap-3">
                         <Palette size={18} className="text-gray-400" />
@@ -608,7 +608,7 @@ export default function Home() {
                       href="https://darwinfluxkontext.replit.app" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="flex items-center justify-between px-5 py-4 text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-blue-600/10 hover:to-purple-600/10 transition-all duration-200 group"
+                      className="flex items-center justify-between px-5 py-4 text-gray-300 hover:text-white hover:bg-blue-600/10 transition-all duration-200 group"
                     >
                       <div className="flex items-center gap-3">
                         <Wand2 size={18} className="text-gray-400" />
@@ -625,7 +625,7 @@ export default function Home() {
               
               <a href="#pricing" className="relative text-gray-300 font-medium text-sm px-4 py-2.5 rounded-lg hover:bg-white/5 hover:text-white transition-all duration-200 tracking-wide group">
                 <span>{t('nav.pricing')}</span>
-                <span className="absolute bottom-1 left-4 right-4 h-px bg-gradient-to-r from-blue-400 to-purple-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
+                <span className="absolute bottom-1 left-4 right-4 h-px bg-blue-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
               </a>
             </nav>
             
@@ -680,7 +680,7 @@ export default function Home() {
               <div className="space-y-2">
                 <div className="pb-2 mb-2 border-b border-gray-800/50">
                   <h4 className="text-white font-semibold text-sm uppercase tracking-wider mb-3 flex items-center">
-                    <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Tools</span>
+                    <span className="text-blue-400">Tools</span>
                   </h4>
                   <div className="space-y-1">
                     <a 
