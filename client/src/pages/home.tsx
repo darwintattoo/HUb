@@ -645,18 +645,23 @@ export default function Home() {
             {/* Login Button */}
             <button 
               onClick={() => {
-                console.log('Login button clicked');
                 const modal = document.getElementById('tsp-auth');
-                console.log('Modal found:', modal);
-                console.log('Modal classes before:', modal?.className);
                 if (modal) {
+                  // Force show the modal by overriding all styles
                   modal.classList.remove('hidden');
-                  modal.style.display = 'flex';
-                  console.log('Modal classes after:', modal.className);
-                  console.log('Modal style display:', modal.style.display);
-                  console.log('Modal shown');
-                } else {
-                  console.error('Modal not found');
+                  modal.setAttribute('style', `
+                    display: flex !important;
+                    position: fixed !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    width: 100vw !important;
+                    height: 100vh !important;
+                    background: rgba(0,0,0,0.8) !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    z-index: 99999 !important;
+                  `);
+                  console.log('Modal forcefully displayed');
                 }
               }}
               className="hidden lg:block bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap"
@@ -717,8 +722,20 @@ export default function Home() {
                 onClick={() => {
                   const modal = document.getElementById('tsp-auth');
                   if (modal) {
+                    // Force show the modal by overriding all styles
                     modal.classList.remove('hidden');
-                    modal.style.display = 'flex';
+                    modal.setAttribute('style', `
+                      display: flex !important;
+                      position: fixed !important;
+                      top: 0 !important;
+                      left: 0 !important;
+                      width: 100vw !important;
+                      height: 100vh !important;
+                      background: rgba(0,0,0,0.8) !important;
+                      align-items: center !important;
+                      justify-content: center !important;
+                      z-index: 99999 !important;
+                    `);
                   }
                   setIsMobileMenuOpen(false);
                 }}
