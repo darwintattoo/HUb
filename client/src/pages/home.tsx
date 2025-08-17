@@ -648,8 +648,12 @@ export default function Home() {
                 console.log('Login button clicked');
                 const modal = document.getElementById('tsp-auth');
                 console.log('Modal found:', modal);
+                console.log('Modal classes before:', modal?.className);
                 if (modal) {
                   modal.classList.remove('hidden');
+                  modal.style.display = 'flex';
+                  console.log('Modal classes after:', modal.className);
+                  console.log('Modal style display:', modal.style.display);
                   console.log('Modal shown');
                 } else {
                   console.error('Modal not found');
@@ -712,7 +716,10 @@ export default function Home() {
               <button 
                 onClick={() => {
                   const modal = document.getElementById('tsp-auth');
-                  if (modal) modal.classList.remove('hidden');
+                  if (modal) {
+                    modal.classList.remove('hidden');
+                    modal.style.display = 'flex';
+                  }
                   setIsMobileMenuOpen(false);
                 }}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg font-medium transition-colors text-center mt-4"
