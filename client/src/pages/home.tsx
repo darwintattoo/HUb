@@ -382,7 +382,8 @@ const ToolCard = ({ title, description, icon: Icon, imageUrl, videoUrl, t, href,
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full mt-auto text-center transition-colors inline-block"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full mt-auto text-center transition-colors inline-block btn"
+            data-tool={href.includes('ink-stencil') ? 'stencil' : href.includes('darwinfluxkontext') ? 'editor' : undefined}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
           >
