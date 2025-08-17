@@ -772,9 +772,36 @@ export default function Home() {
                 console.log('Button clicked, userEmail:', userEmail);
                 
                 if (userEmail) {
-                  // User is logged in, show logout modal
-                  console.log('Setting showLogoutModal to true');
-                  setShowLogoutModal(true);
+                  // User is logged in, sign out directly
+                  console.log('Signing out...');
+                  try {
+                    // Try to get Supabase instance from various sources
+                    const supabase = window.TSPAuth?.supabase || 
+                                   (window as any).supabase || 
+                                   (window as any).TSPSupabase;
+                    
+                    if (supabase && supabase.auth) {
+                      console.log('Found Supabase, calling signOut');
+                      const { error } = await supabase.auth.signOut();
+                      if (error) {
+                        console.error('SignOut error:', error);
+                      } else {
+                        console.log('SignOut successful');
+                      }
+                    } else {
+                      console.log('No Supabase found, clearing storage only');
+                    }
+                  } catch (err) {
+                    console.error('Error during signOut:', err);
+                  }
+                  
+                  // Always clear storage and reload
+                  console.log('Clearing storage and reloading...');
+                  localStorage.clear();
+                  sessionStorage.clear();
+                  setTimeout(() => {
+                    window.location.href = '/';
+                  }, 100);
                 } else {
                   // User is not logged in, show login modal
                   const modal = document.getElementById('tsp-auth');
@@ -1132,100 +1159,7 @@ export default function Home() {
         <SimpleForm t={t} />
       </Modal>
       
-      {/* Logout Confirmation Modal */}
-      {showLogoutModal && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4"
-          style={{ zIndex: 999999 }}
-          onClick={(e) => {
-            if (e.target === e.currentTarget) {
-              setShowLogoutModal(false);
-            }
-          }}
-        >
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-gray-900 rounded-xl p-6 max-w-sm w-full border border-gray-800"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h3 className="text-xl font-semibold mb-2 text-white">
-              {language === 'es' ? 'Cerrar Sesión' : 'Sign Out'}
-            </h3>
-            <p className="text-gray-400 mb-6 text-sm">
-              {language === 'es' 
-                ? `¿Estás seguro que deseas cerrar tu sesión?`
-                : `Are you sure you want to sign out?`}
-            </p>
-            <div className="text-xs text-gray-500 mb-6 truncate">
-              {userEmail}
-            </div>
-            <div className="flex gap-3">
-              <button
-                type="button"
-                onClick={async (e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  console.log('✅ Sign out button clicked!');
-                  
-                  // Get Supabase instance
-                  const supabase = window.TSPAuth?.supabase || (window as any).supabase;
-                  
-                  if (supabase) {
-                    try {
-                      console.log('Calling signOut...');
-                      // Clear local storage first
-                      localStorage.clear();
-                      sessionStorage.clear();
-                      
-                      // Then sign out from Supabase
-                      const { error } = await supabase.auth.signOut();
-                      
-                      if (error) {
-                        console.error('SignOut error:', error);
-                      } else {
-                        console.log('✅ Signed out successfully');
-                      }
-                      
-                      // Force immediate reload
-                      window.location.href = '/';
-                    } catch (err) {
-                      console.error('Exception during signOut:', err);
-                      // Even if there's an error, clear and reload
-                      localStorage.clear();
-                      sessionStorage.clear();
-                      window.location.href = '/';
-                    }
-                  } else {
-                    console.error('No Supabase instance found');
-                    // Fallback: clear everything and reload
-                    localStorage.clear();
-                    sessionStorage.clear();
-                    window.location.href = '/';
-                  }
-                }}
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2.5 px-4 rounded-lg transition-colors font-medium text-sm cursor-pointer select-none"
-                style={{ pointerEvents: 'auto' }}
-              >
-                {language === 'es' ? 'Sí, cerrar sesión' : 'Yes, sign out'}
-              </button>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  console.log('Cancel clicked');
-                  setShowLogoutModal(false);
-                }}
-                className="flex-1 bg-gray-800 hover:bg-gray-700 text-white py-2.5 px-4 rounded-lg transition-colors font-medium text-sm cursor-pointer select-none"
-                style={{ pointerEvents: 'auto' }}
-              >
-                {language === 'es' ? 'Cancelar' : 'Cancel'}
-              </button>
-            </div>
-          </motion.div>
-        </div>
-      )}
+
     </div>
   );
 }
