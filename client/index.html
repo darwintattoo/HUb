@@ -286,10 +286,42 @@
           }, 500);
         }
         
-        // Force check every 2 seconds to ensure button updates
-        setInterval(async () => {
-          await checkAuthStatus();
-        }, 2000);
+        // Force check every second until button is updated
+        const forceButtonUpdate = setInterval(async () => {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session && session.user && session.user.email) {
+            const buttons = document.querySelectorAll('button');
+            let foundSignInButton = false;
+            
+            buttons.forEach(btn => {
+              const btnText = btn.textContent.trim();
+              if (btnText === 'Sign In' || btnText === 'Iniciar Sesión') {
+                foundSignInButton = true;
+                console.log('Forcing button update to:', session.user.email);
+                btn.textContent = session.user.email;
+                btn.style.fontSize = '12px';
+                btn.style.minWidth = '140px';
+                
+                // Remove all event listeners and add logout
+                const newBtn = btn.cloneNode(true);
+                newBtn.onclick = async (e) => {
+                  e.preventDefault();
+                  if (confirm('¿Cerrar sesión?')) {
+                    await supabase.auth.signOut();
+                    window.location.reload();
+                  }
+                };
+                btn.parentNode.replaceChild(newBtn, btn);
+              }
+            });
+            
+            // If no Sign In button found, clear interval
+            if (!foundSignInButton) {
+              console.log('Button successfully updated, stopping force update');
+              clearInterval(forceButtonUpdate);
+            }
+          }
+        }, 1000);
       })();
       
       // Listen for auth changes
