@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Wand2, Smile, X, RotateCcw, Sparkles, Menu, ChevronDown, ExternalLink, Palette } from 'lucide-react';
+import { Wand2, Smile, X, RotateCcw, Sparkles, Menu, ChevronDown, ExternalLink, Palette, User, LogOut } from 'lucide-react';
 import { Modal } from '@/components/ui/modal';
+import { LoginModal } from '@/components/LoginModal';
+import { useAuth } from '@/contexts/AuthContext';
 import logoPath from '@assets/1Asset 1zzz.png';
 import stencilExample1 from '@assets/Captura de pantalla 2025-05-26 211021.png';
 import stencilExample2 from '@assets/Captura de pantalla 2025-05-26 211801.png';
@@ -276,7 +278,7 @@ const ProgressMeter = ({ t, openModal }: { t: (key: string) => string; openModal
   );
 };
 
-const ToolCard = ({ title, description, icon: Icon, imageUrl, videoUrl, t, href, isActive = false }: {
+const ToolCard = ({ title, description, icon: Icon, imageUrl, videoUrl, t, href, isActive = false, onTryNow }: {
   title: string;
   description: string;
   icon: any;
@@ -285,6 +287,7 @@ const ToolCard = ({ title, description, icon: Icon, imageUrl, videoUrl, t, href,
   t: (key: string) => string;
   href?: string;
   isActive?: boolean;
+  onTryNow?: () => void;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -377,17 +380,22 @@ const ToolCard = ({ title, description, icon: Icon, imageUrl, videoUrl, t, href,
           <h3 className="text-xl font-bold mb-2 text-white">{t(title)}</h3>
           <p className="text-gray-400 mb-4">{t(description)}</p>
         </div>
-        {isActive && href ? (
-          <motion.a
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full mt-auto text-center transition-colors inline-block"
+        {isActive && (href || onTryNow) ? (
+          <motion.button
+            onClick={(e) => {
+              e.stopPropagation();
+              if (onTryNow) {
+                onTryNow();
+              } else if (href) {
+                window.open(href, '_blank');
+              }
+            }}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full mt-auto text-center transition-colors inline-block w-full"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
           >
             {t('tryNow') || 'Try Now'}
-          </motion.a>
+          </motion.button>
         ) : (
           <motion.button
             className="bg-gray-600 text-white px-4 py-2 rounded-full mt-auto cursor-not-allowed"
@@ -503,6 +511,10 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProductDropdownOpen, setIsProductDropdownOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [pendingRedirect, setPendingRedirect] = useState<string | null>(null);
+  
+  const { user, session, signOut } = useAuth();
 
   const t = (key: string): string => {
     const keys = key.split('.');
@@ -548,6 +560,32 @@ export default function Home() {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  // Handle tool redirect with authentication
+  const handleToolRedirect = (toolUrl: string) => {
+    if (session) {
+      // User is authenticated, redirect with tokens
+      const url = new URL(toolUrl);
+      url.hash = `access_token=${session.access_token}&refresh_token=${session.refresh_token}`;
+      window.open(url.toString(), '_blank');
+    } else {
+      // User not authenticated, show login modal
+      setPendingRedirect(toolUrl);
+      setIsLoginModalOpen(true);
+    }
+  };
+
+  // Handle successful authentication
+  useEffect(() => {
+    if (session && pendingRedirect) {
+      // User just logged in and has a pending redirect
+      const url = new URL(pendingRedirect);
+      url.hash = `access_token=${session.access_token}&refresh_token=${session.refresh_token}`;
+      window.open(url.toString(), '_blank');
+      setPendingRedirect(null);
+      setIsLoginModalOpen(false);
+    }
+  }, [session, pendingRedirect]);
 
   return (
     <div className="min-h-screen bg-black text-white font-sans">
@@ -627,6 +665,29 @@ export default function Home() {
                 <span>{t('nav.pricing')}</span>
                 <span className="absolute bottom-1 left-4 right-4 h-px bg-blue-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200"></span>
               </a>
+
+              {/* User Account Section */}
+              {user ? (
+                <div className="flex items-center gap-2 ml-4">
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-800 rounded-lg">
+                    <User size={16} className="text-gray-400" />
+                    <span className="text-sm text-gray-300">{user.email?.split('@')[0]}</span>
+                  </div>
+                  <button
+                    onClick={() => signOut()}
+                    className="flex items-center gap-2 px-3 py-1.5 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all duration-200"
+                  >
+                    <LogOut size={16} />
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setIsLoginModalOpen(true)}
+                  className="ml-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 text-sm font-medium"
+                >
+                  Sign In
+                </button>
+              )}
             </nav>
             
             {/* Right side controls */}
@@ -852,7 +913,7 @@ export default function Home() {
                 videoUrl="https://inknationstudio.com/wp-content/uploads/2024/09/video021.mp4"
                 imageUrl="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
                 t={t}
-                href="https://ink-stencil-darwintattoo1.replit.app/"
+                onTryNow={() => handleToolRedirect("https://ink-stencil-darwintattoo1.replit.app/")}
                 isActive={true}
               />
 
@@ -862,7 +923,7 @@ export default function Home() {
                 icon={Sparkles}
                 imageUrl={aiEditorImage}
                 t={t}
-                href="https://darwinfluxkontext.replit.app/"
+                onTryNow={() => handleToolRedirect("https://darwinfluxkontext.replit.app/")}
                 isActive={true}
               />
 
@@ -954,6 +1015,12 @@ export default function Home() {
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <SimpleForm t={t} />
       </Modal>
+      
+      <LoginModal 
+        isOpen={isLoginModalOpen} 
+        onClose={() => setIsLoginModalOpen(false)} 
+        redirectTo={pendingRedirect || undefined}
+      />
     </div>
   );
 }
