@@ -70,7 +70,7 @@ const translations = {
     footer: "© 2024 TattooStencilPro por Darwin Enriquez. Todos los derechos reservados.",
 
     featuredDesigns: "Diseños Destacados",
-    stencilExamples: "Ejemplos de Transformación",
+    stencilExamples: "Portafolio Profesional",
     stencilExampleDescription: "Ve cómo nuestro generador de stencils transforma diseños complejos en plantillas perfectas para tatuar",
     tryNow: "Probar Ahora"
   },
@@ -124,7 +124,7 @@ const translations = {
     footer: "© 2024 TattooStencilPro by Darwin Enriquez. All rights reserved.",
 
     featuredDesigns: "Featured Designs",
-    stencilExamples: "Transformation Examples",
+    stencilExamples: "Portfolio Showcase",
     stencilExampleDescription: "See how our stencil generator transforms complex designs into perfect tattoo templates",
     tryNow: "Try Now"
   }
